@@ -1,10 +1,10 @@
-.. pydss
+.. pydgrid
 Python Distribution System Simulator
 
 
 
 :Name: pydss
-:Website: https://pydss.github.io/
+:Website: https://pydgrid.github.io/
 :Author: Juan Manuel Mauricio |orcid|
 :Version: 0.1.dev0
 
