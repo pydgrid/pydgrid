@@ -25,10 +25,3 @@ where:
 * ``"kV"``: phase-neutral RMS voltages list (kV)   
 * ``"deg"``: phase-neutral voltage angles list (deg)
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

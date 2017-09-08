@@ -18,13 +18,4 @@ Elements
    grid_feeders
    shunts
    
-   
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

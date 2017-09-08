@@ -9,7 +9,6 @@ Shunt elements
 Impedances that can be connected beetwen phases, phases and neutral and phases and neutral and ground.
 
 
-
 .. code:: python
 
    "shunts":[
@@ -25,11 +24,3 @@ where:
 * ``"R"``: shunt element resistance (Ω)
 * ``"X"``: shunt element reactance (Ω)
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

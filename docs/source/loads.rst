@@ -8,8 +8,6 @@ Loads
 
 Loads.
 
-
-
 .. code:: python
 
    "loads":[

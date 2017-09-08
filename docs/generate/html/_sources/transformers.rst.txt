@@ -30,10 +30,3 @@ where:
 * ``"conductors_1"``: primary side conductors
 * ``"conductors_2"``: secondary side conductors
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
