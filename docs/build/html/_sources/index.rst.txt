@@ -10,8 +10,9 @@ Welcome to pydss's documentation!
    :maxdepth: 2
    :caption: Contents:
    
-   definiciones
-   trafo
+   definitions
+   elements
+   
 
 
 

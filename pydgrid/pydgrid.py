@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Sun Mar  5 13:04:45 2017
@@ -7,17 +6,25 @@ Created on Sun Mar  5 13:04:45 2017
 """
 
 import numpy as np 
-import numba
-from numba import float64,int32,int64,complex128
 import json
-import re
 import time
 from pf import pf_eval,set_load_factor
 import time
 from scipy import sparse
 from scipy.sparse import linalg as sla
 
-line_codes_lib = {'OH1':[[0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j],
+
+
+class grid(object):
+    '''   
+    P+N : 1
+    3P  : 2
+    3P+N: 3
+    '''
+    
+    
+    def __init__(self):
+        self.line_codes_lib = {'OH1':[[0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j],
                       [0.049 + 0.505j, 0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j],
                       [0.049 + 0.462j, 0.049 + 0.505j, 0.540 + 0.777j, 0.049 + 0.505j],
                       [0.049 + 0.436j, 0.049 + 0.462j, 0.049 + 0.505j, 0.540 + 0.777j]],
@@ -67,27 +74,18 @@ line_codes_lib = {'OH1':[[0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 
               }
 
 
-class pydgrid(object):
-    '''
-    
-    
-    
-    P+N : 1
-    3P  : 2
-    3P+N: 3
-    
-    '''
-    
-    
-    def __init__(self):
-        self.a = 0
 
-
-    def read(self,json_file):        
-        self.json_file = json_file
-        self.json_data = open(json_file).read().replace("'",'"')
-        data = json.loads(self.json_data)
-        self.data = data
+    def read(self,data_input):      
+        
+        if type(data_input) == str:
+            json_file = data_input
+            self.json_file = json_file
+            self.json_data = open(json_file).read().replace("'",'"')
+            data = json.loads(self.json_data)
+        elif type(data_input) == dict:
+            data = data_input
+            self.data = data
+        
         
         flog = open('log.txt','w')
         
@@ -101,29 +99,47 @@ class pydgrid(object):
         
         if 'transformers' in data:
             transformers = data['transformers']
+            self.transformers = transformers
         else:
             transformers = []
+            
+        if 'line_codes' in data:
+            line_codes_data = data['line_codes']
+            self.line_codes = line_codes_data
+            
+        if 'loads' in data:
+            loads = data['loads']
+            self.loads = loads
+        else:
+            loads = []                        
+
+        if 'grid_feeders' in data:
+            grid_feeders = data['grid_feeders']
+            self.grid_feeders = grid_feeders
+        else:
+            grid_feeders = []   
+            
         lines = data['lines']
-        line_codes_data = data['line_codes']
-        loads = data['loads']
-        v_sources = data['v_sources']
+        
+        
+        grid_formers = data['grid_formers']
         buses = data['buses']
 
-        if 'groundings' in data:
-            groundings = data['groundings']
+        if 'shunts' in data:
+            shunts = data['shunts']
+            self.shunts = shunts
         else:
-            groundings = []
+            shunts = []
             
-        self.transformers = transformers
+        
         self.lines = lines
-        self.loads = loads
         self.buses = buses
         
         N_nodes_default = 4
         nodes = []
         A_n_cols = 0
         it_col = 0
-        v_sources_nodes = []
+        grid_formers_nodes = []
 
         node_sorter = []
         N_v_known = 0
@@ -132,21 +148,21 @@ class pydgrid(object):
         
         ## Known voltages
         V_known_list = []
-        for v_source in v_sources:
-            v_source_nodes = []
-            if not 'bus_nodes' in v_source:   # if nodes are not declared, default nodes are created
-                v_source.update({'bus_nodes': list(range(1,N_nodes_default+1))})
-            for item in  v_source['bus_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
-                node = '{:s}.{:s}'.format(v_source['bus'], str(item))
+        for grid_former in grid_formers:
+            grid_former_nodes = []
+            if not 'bus_nodes' in grid_former:   # if nodes are not declared, default nodes are created
+                grid_former.update({'bus_nodes': list(range(1,N_nodes_default+1))})
+            for item in  grid_former['bus_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
+                node = '{:s}.{:s}'.format(grid_former['bus'], str(item))
                 if not node in nodes: 
                     nodes +=[node]
-                v_source_nodes += [N_v_known]
+                grid_former_nodes += [N_v_known]
                 N_v_known += 1
-            for volt,ang in  zip(v_source['kV'],v_source['deg']): # known voltages list is created 
+            for volt,ang in  zip(grid_former['kV'],grid_former['deg']): # known voltages list is created 
                 V_known_list += [1000.0*volt*np.exp(1j*np.deg2rad(ang))]
-            v_sources_nodes += [v_source_nodes]    # global nodes for each vsources update  
+            grid_formers_nodes += [grid_former_nodes]    # global nodes for each vsources update  
         V_known = np.array(V_known_list).reshape(len(V_known_list),1) # known voltages list numpy array
-        self.v_sources_nodes = v_sources_nodes
+        self.grid_formers_nodes = grid_formers_nodes
 
         N_nz_nodes += N_v_known
         
@@ -163,7 +179,6 @@ class pydgrid(object):
         it_node_i = 0
         
         ### Loads
-        t_0 = time.time()
         for load in loads:
             if not 'bus_nodes' in load:   # if nodes are not declared, default nodes are created
                 if load['type']=='3P':
@@ -179,11 +194,11 @@ class pydgrid(object):
                 it_node_i += 4
                 if 'kVA' in load:
                     if type(load['kVA']) == float:
-                        S = -1000.0*load['kVA']*np.exp(1j*np.arccos(load['fp'])*np.sign(load['fp']))
+                        S = -1000.0*load['kVA']*np.exp(1j*np.arccos(load['pf'])*np.sign(load['pf']))
                         pq_3pn_list += [[S/3,S/3,S/3]]
                     if type(load['kVA']) == list:
                         pq = []
-                        for s,fp in zip(load['kVA'],load['fp']):                            
+                        for s,fp in zip(load['kVA'],load['pf']):                            
                             pq += [-1000.0*s*np.exp(1j*np.arccos(fp)*np.sign(fp))]
                         pq_3pn_list += [pq]
                                                
@@ -192,9 +207,9 @@ class pydgrid(object):
                 it_node_i += 3
                 if 'kVA' in load:
                     S_va = -1000.0*load['kVA']
-                    phi = np.arccos(load['fp'])
+                    phi = np.arccos(load['pf'])
                     if type(load['kVA']) == float:
-                        pq_3p_list += [[S_va*np.exp(1j*phi*np.sign(load['fp']))]]
+                        pq_3p_list += [[S_va*np.exp(1j*phi*np.sign(load['pf']))]]
 
             if load['type'] == '1P+N':
                 node_j = '{:s}.{:s}'.format(load['bus'],str(load['bus_nodes'][0]))
@@ -205,25 +220,24 @@ class pydgrid(object):
                 it_node_i += 2
                 if 'kVA' in load:
                     S_va = -1000.0*load['kVA']
-                    phi = np.arccos(load['fp'])
-                    pq_1pn_list += [[S_va*np.exp(1j*phi*np.sign(load['fp']))]]
+                    phi = np.arccos(load['pf'])
+                    pq_1pn_list += [[S_va*np.exp(1j*phi*np.sign(load['pf']))]]
                 if 'kW' in load:
-                    S_va = -1000.0*load['kW']/load['fp']
-                    phi = np.arccos(load['fp'])
-                    pq_1pn_list += [[S_va*np.exp(1j*phi*np.sign(load['fp']))]]
-        
+                    S_va = -1000.0*load['kW']/load['pf']
+                    phi = np.arccos(load['pf'])
+                    pq_1pn_list += [[S_va*np.exp(1j*phi*np.sign(load['pf']))]]
         
             if load['type'] == '1P':
                 pq_1p_int_list += [[it_node_i ]]
                 it_node_i += 1
                 if 'kVA' in load:
                     S_va = -1000.0*load['kVA']
-                    phi = np.arccos(load['fp'])
-                    pq_1p_list += [[S_va*np.exp(1j*phi*np.sign(load['fp']))]]
+                    phi = np.arccos(load['pf'])
+                    pq_1p_list += [[S_va*np.exp(1j*phi*np.sign(load['pf']))]]
                 if 'kW' in load:
-                    S_va = -1000.0*load['kW']/load['fp']
-                    phi = np.arccos(load['fp'])
-                    pq_1p_list += [[S_va*np.exp(1j*phi*np.sign(load['fp']))]]
+                    S_va = -1000.0*load['kW']/load['pf']
+                    phi = np.arccos(load['pf'])
+                    pq_1p_list += [[S_va*np.exp(1j*phi*np.sign(load['pf']))]]
 
         
         N_pq_3p = len(pq_3p_list)
@@ -231,7 +245,7 @@ class pydgrid(object):
         N_pq_1p = len(pq_1p_list)
         N_pq_1pn = len(pq_1pn_list)
         N_nz_nodes += it_node_i                               
-#            for kVA,fp in  zip(load['kVA'],load['fp']): # known complex power list 
+#            for kVA,fp in  zip(load['kVA'],load['pf']): # known complex power list 
 #                S_known_list += [1000.0*kVA*np.exp(1j*np.arccos(fp)*np.sign(fp))]
         pq_3pn_int = np.array(pq_3pn_int_list) # known complex power list to numpy array
         pq_3pn = np.array(pq_3pn_list) # known complex power list to numpy array
@@ -243,7 +257,46 @@ class pydgrid(object):
         pq_1p = np.array(pq_1p_list) # known complex power list to numpy array
 
 
+        ### Grid feeders
+        N_gfeeds = 0 
+        gfeed_bus_nodes_list = []
+        gfeed_currents_list = []
+        gfeed_powers_list = []
+        for grid_feeder in grid_feeders:
+            N_gfeeds += 1    
+            gfeed_bus_nodes = np.zeros((4,), dtype=np.int32) # every grid feeder considers 4 nodes per bus here
+            gfeed_currents = np.zeros((4,), dtype=np.complex128) # every grid feeder considers 4 nodes per bus here
+            gfeed_powers = np.zeros((4,), dtype=np.complex128) # every grid feeder considers 4 nodes per bus here
+            gf_node_it = 0
+            for node in grid_feeder['bus_nodes']:              
+                node_str = '{:s}.{:s}'.format(grid_feeder['bus'],str(node))
+                if not node_str in nodes: nodes +=[node_str]
+                gfeed_bus_nodes[gf_node_it] = nodes.index(node_str)
+                gf_node_it += 1
+                it_node_i += 1
+            if 'kW' in grid_feeder:
+                gf_it = 0
+                for kW,kvar in zip(grid_feeder['kW'],grid_feeder['kvar']):              
+                    gfeed_powers[gf_it] = 1000.0*(kW+1j*kvar)
+                    gf_it += 1
+            if 'kA' in grid_feeder:
+                gf_it = 0
+                for kA,phi_deg in zip(grid_feeder['kA'],grid_feeder['phi_deg']):              
+                    gfeed_currents[gf_it] = 1000.0*kA*np.exp(1j*np.deg2rad(phi_deg))
+                    gf_it += 1                
+            gfeed_bus_nodes_list += [gfeed_bus_nodes]
+            gfeed_currents_list += [gfeed_currents]
+            gfeed_powers_list += [gfeed_powers]
+        self.N_gfeeds = N_gfeeds          
+        self.gfeed_bus_nodes = np.array(gfeed_bus_nodes_list)-N_v_known
+        self.gfeed_currents  = np.array(gfeed_currents_list)
+        self.gfeed_powers    = np.array(gfeed_powers_list)
+
+        N_nz_nodes += it_node_i 
+
+
         ### Transformers to nodes
+        t_0 = time.time()
         for trafo in transformers:
             if trafo['connection'] == 'Dyn11':
                 N_nodes_primary_default = trafo['conductors_1']
@@ -274,12 +327,12 @@ class pydgrid(object):
         ### Lines to nodes
         for line in lines:
             line_code = line['code']
-            if not line_code in line_codes_lib:
+            if not line_code in self.line_codes_lib:
                 R = np.array(data['line_codes'][line_code]['R'])
                 X = np.array(data['line_codes'][line_code]['X'])
                 Z = R + 1j*X
-                line_codes_lib.update({line_code:Z.tolist()})
-            N_conductors = len(line_codes_lib[line['code']])
+                self.line_codes_lib.update({line_code:Z.tolist()})
+            N_conductors = len(self.line_codes_lib[line['code']])
             A_n_cols += N_conductors
             if not 'bus_j_nodes' in line:   # if nodes are not declared, default nodes are created
                 line.update({'bus_j_nodes': list(range(1,N_conductors+1))})
@@ -296,7 +349,7 @@ class pydgrid(object):
         N_nodes = len(nodes)
 
         ### Groundings (no new nodes, only aditionals columns in A matriz)
-        for ground in groundings:
+        for shunt in shunts:
             A_n_cols += 1        
         
         
@@ -307,6 +360,7 @@ class pydgrid(object):
         
         
         ### Transformers to Y primitive
+        t_0 = time.time()
         Y_trafos_prims =  []
         for trafo in transformers:
             S_n = trafo['S_n_kVA']*1000.0
@@ -357,18 +411,24 @@ class pydgrid(object):
                 A[row,col] = -1
                 it_col +=1   
 
-            Z_line_list += [line['m']*0.001*np.array(line_codes_lib[line['code']])]   # Line code to list of Z lines
+            Z_line_list += [line['m']*0.001*np.array(self.line_codes_lib[line['code']])]   # Line code to list of Z lines
 
-        ### Groundings       
-        for grounding in groundings:
-            for item in  grounding['bus_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
-                node_j = '{:s}.{:s}'.format(grounding['bus'], str(item))
-                row = nodes.index(node_j)
-                col = it_col
-                A_sp[row,col] = 1
-                A[row,col] = 1
-                it_col +=1  
-                Z_line_list += [np.array(grounding['R'] + 1j*grounding['X']).reshape((1,1))]   # Line code to list of Z lines
+        ### shunt elements       
+        for shunt in shunts:
+            node_j_str = str(shunt['bus_nodes'][0])
+            node_j = '{:s}.{:s}'.format(shunt['bus'], node_j_str)
+            row_j = nodes.index(node_j)           
+            col = it_col
+            A_sp[row_j,col] = 1
+            
+            node_k_str = str(shunt['bus_nodes'][1])
+            if not node_k_str == '0': # when connected to ground
+                node_k = '{:s}.{:s}'.format(shunt['bus'], str(shunt['bus_nodes'][1]))
+                row_k = nodes.index(node_k)            
+                A_sp[row_k,col] = -1
+                
+            it_col +=1  
+            Z_line_list += [np.array(shunt['R'] + 1j*shunt['X']).reshape((1,1))]   # Line code to list of Z lines
                 
                 
         Y_lines_primitive = diag_2d_inv(Z_line_list)        # dense
@@ -379,17 +439,12 @@ class pydgrid(object):
         ### Full  Y primitive         
         N_prim = N_trafos_len + N_lines_len
        
-#        #### dense
-#        if N_trafos_len>0:
-#            Y_primitive = np.vstack((np.hstack((Y_trafos_primitive,np.zeros((N_trafos_len,N_lines_len)))),
-#                                     np.hstack((np.zeros((N_lines_len,N_trafos_len)),Y_lines_primitive))))
-#        else:
-#            Y_primitive = Y_lines_primitive
-            
+          
        
         #### sparse
-        Y_primitive_sp = sparse.csc_matrix((N_prim,N_prim),dtype=np.complex128)
-       
+        Y_primitive_sp = sparse.lil_matrix((N_prim,N_prim),dtype=np.complex128)
+        
+      
         Y_primitive_sp[N_trafos_len:N_prim,N_trafos_len:N_prim] = Y_lines_primitive     
 
         
@@ -408,7 +463,6 @@ class pydgrid(object):
         self.A_v = A_v
         self.A_i = A_i
 
-        
 #        self.Y = A.T @ Y_primitive @ A (dense)
         self.Y = A_sp @ Y_primitive_sp @ A_sp.T        
         self.Y_primitive = Y_primitive_sp.toarray()
@@ -512,22 +566,29 @@ class pydgrid(object):
         if self.pq_1p_int.shape[0] == 0:
             self.pq_1p_int = np.array([[0]])
             self.pq_1p = np.array([[0]])
+
+        if self.pq_1pn_int.shape[0] == 0:
+            self.pq_1pn_int = np.array([[0]])
+            self.pq_1pn = np.array([[0]])
             
         dt_pf = np.dtype([
                   ('Y_vv',np.complex128,(N_v,N_v)),('Y_iv',np.complex128,(N_i,N_v)),
                   ('inv_Y_ii',np.complex128,(N_i,N_i)),('Y_ii',np.complex128,(N_i,N_i)),
                   ('I_node',np.complex128,(N_v+N_i,1)),('V_node',np.complex128,(N_v+N_i,1)),
+                  ('N_gfeeds',np.int32),('gfeed_bus_nodes',np.int32,self.gfeed_bus_nodes.shape),('gfeed_currents',np.complex128,self.gfeed_currents.shape),('gfeed_powers',np.complex128,self.gfeed_powers.shape),                    
                   ('N_pq_1p',np.int32),('pq_1p_int',np.int32,self.pq_1p_int.shape),('pq_1p',np.complex128,self.pq_1p.shape),('pq_1p_0',np.complex128,self.pq_1p.shape),                  
                   ('N_pq_1pn',np.int32),('pq_1pn_int',np.int32,self.pq_1pn_int.shape),('pq_1pn',np.complex128,self.pq_1pn.shape),('pq_1pn_0',np.complex128,self.pq_1pn.shape),
                   ('N_pq_3p',np.int32),('pq_3p_int',np.int32,self.pq_3p_int.shape),('pq_3p',np.complex128,self.pq_3p.shape),('pq_3p_0',np.complex128,self.pq_3p.shape),
                   ('N_pq_3pn',np.int32),('pq_3pn_int',np.int32,self.pq_3pn_int.shape),('pq_3pn',np.complex128,self.pq_3pn.shape),('pq_3pn_0',np.complex128,self.pq_3pn.shape),
                   ('N_nodes_v',np.int32),('N_nodes_i',np.int32),('iters',np.int32),('N_nz_nodes',np.int32)] )
     
-
+        
+        
         params_pf = np.rec.array([(
                                 self.Y_vv,self.Y_iv,
                                 self.inv_Y_ii,self.Y_ii.toarray(), 
                                 self.I_node,self.V_node,
+                                self.N_gfeeds, self.gfeed_bus_nodes,self.gfeed_currents,self.gfeed_powers,
                                 self.N_pq_1p, self.pq_1p_int,self.pq_1p,np.copy(self.pq_1p),
                                 self.N_pq_1pn, self.pq_1pn_int,self.pq_1pn,np.copy(self.pq_1pn),
                                 self.N_pq_3p, self.pq_3p_int,self.pq_3p,np.copy(self.pq_3p),
@@ -652,13 +713,12 @@ class pydgrid(object):
 #            params_run[0].out_cplx_i = params_run[0].out_cplx_i[0:params_run[0].N_outs,:]
             
                 
-
-
-            
-
-
     def get_v(self):
-        
+        '''
+		Compute phase-neutral and phase-phase voltages from power flow solution and put values 
+		in buses dictionary.		
+        '''
+		
         V_sorted = []
         I_sorted = []
         S_sorted = []
@@ -754,14 +814,13 @@ class pydgrid(object):
         return 0 #self.V              
         
     def get_i(self):
-
-                
-        t_0 = time.time()
-        
+        '''
+		Compute line currents from power flow solution and put values 
+		in transformers and lines dictionaries.		
+        '''
+       
         I_lines = self.Y_primitive_sp @ self.A_sp.T @ self.V_results
-        
-        t_0 = time.time()
-        
+                
         it_single_line = 0
         for trafo in self.transformers:
 
@@ -833,11 +892,8 @@ class pydgrid(object):
                 line.update({'deg_a':np.angle(I_a, deg=True)})
                 line.update({'deg_b':np.angle(I_b, deg=True)})
                 line.update({'deg_c':np.angle(I_c, deg=True)})
-                line.update({'deg_n':np.angle(I_n, deg=True)})            
-        self.I_lines = I_lines
-                        
+                line.update({'deg_n':np.angle(I_n, deg=True)})                                   
 
-        t_0 = time.time()            
 
     def bokeh_tools(self):
 
@@ -1296,7 +1352,7 @@ class opendss(object):
         string = ''
         for item in sys.loads:
             string += 'New Load.L_{:s} '.format(item['bus'])
-            string += 'Phases=3 Bus1={:s} kV=0.231 kVA={:2.3f} PF={:2.2f}'.format(item['bus'],item['kVA'],item['fp'])    
+            string += 'Phases=3 Bus1={:s} kV=0.231 kVA={:2.3f} PF={:2.2f}'.format(item['bus'],item['kVA'],item['pf'])    
             string += '\n' 
         for item in sys.lines:
             # New Line.LINE1 Bus1=1 Bus2=2 
@@ -1365,24 +1421,6 @@ def abcn2abc(Z_abcn):
     return Z_abc
     
 
-
-
-
-spec = [('value', float64[:,:]),
-                 ('cplx_value_1', complex128[:,:]),
-                 ('cplx_value_2', complex128[:,:]),
-                 ('cplx_value_3', complex128[:,:]),
-                 ('cplx_value_4', complex128[:,:]),
-                 ('cplx_value_5', complex128[:,:]),
-                 ('cplx_value_6', complex128[:,:]),
-                 ('cplx_value_7', complex128[:,:]),
-                 ('cplx_value_8', complex128[:,:]),
-                 ('cplx_value_9', complex128[:,:]),
-                 ('cplx_value_10', complex128[:,:]),
-                 ('cplx_value_11', complex128[:,:]),
-                 ('cplx_value_12', complex128[:,:])                 
-                 ]
-
    
 def opendss2pydgrid(self,files_dict):
     
@@ -1394,13 +1432,13 @@ if __name__ == "__main__":
     test ='luna_1'
 
     if test=='luna_1': 
-        sys1 = pydgrid()
+        sys1 = grid()
         t_0 = time.time()
-        sys1.read('./luna/luna_1_4w.json')  # Load data
+        sys1.read('../examples/luna/luna_1_4w.json')  # Load data
         sys1.pf()
-#        sys1.get_v()
-#        sys1.get_i()
-#        print('iters: ', sys1.params_pf['iters'])
+        sys1.get_v()
+        sys1.get_i()
+        print('iters: ', sys1.params_pf['iters'])
         
     if test=='cigre_lv': 
         sys1 = pydgrid()
@@ -1439,325 +1477,6 @@ if __name__ == "__main__":
         sys1.get_i()
         sys1.bokeh_tools()
         
-    if test=='opendss2pydgrid':
-        trafos_file = './Feeder_1/Transformers.txt'
-        buses_file = './Feeder_1/buscoord.dss'
-        linecodes_file = './Feeder_1/LineCode.txt'
-        lines_file = './Feeder_1/Lines.txt'        
-        loads_file = './Feeder_1/Loads.txt'
-        load_shapes_file = './Feeder_1/LoadShapes.txt' 
-        line_dict = {}
-        
-        buses = []
-        
-        ## Transformers
-        
-        fobj_trafos = open(trafos_file, 'r')
-        trafos_list = [] 
-        for trafo in fobj_trafos.readlines():
-            item_odss = 'Buses=['
-            start_idx = trafo.find(item_odss)
-            end_idx = trafo.find(']',start_idx)
-            value = trafo[((start_idx+len(item_odss))):end_idx]
-            bus_j,bus_k = value.split(' ') 
-
-            item_odss = 'Conns=['
-            start_idx = trafo.find(item_odss)
-            end_idx = trafo.find(']',start_idx)
-            value = trafo[((start_idx+len(item_odss))):end_idx]
-            conn_j,conn_k = value.split(' ') 
-            
-            item_odss = 'kVs=['
-            start_idx = trafo.find(item_odss)
-            end_idx = trafo.find(']',start_idx)
-            value = trafo[((start_idx+len(item_odss))):end_idx]
-            U_1_kV,U_2_kV = value.split(' ') 
-                       
-            item_odss = 'kVAs=['
-            start_idx = trafo.find(item_odss)
-            end_idx = trafo.find(']',start_idx)
-            value = trafo[((start_idx+len(item_odss))):end_idx]
-            S_n_kVA,S_n_kVA_2 = value.split(' ')
-
-            item_odss = 'XHL='
-            start_idx = trafo.find(item_odss)
-            end_idx = trafo.find(']',start_idx)
-            value = trafo[((start_idx+len(item_odss))):end_idx]
-            X_pu= value
-            
-            if conn_j == 'Delta' and conn_k == 'Wye':
-                connection = 'Dyg11_3w'
-                trafo_dict = {"bus_j": bus_j,  "bus_k": bus_k,  "S_n_kVA": float(S_n_kVA), 
-                              "U_1_kV":float(U_1_kV), "U_2_kV":float(U_2_kV), "R_cc_pu": float(0.0001), 
-                              "X_cc_pu":float(X_pu)/100.0, "connection": "Dyg11_3w", "conductors_1":3, "conductors_2":3 }
-
-   
-            if not bus_j in buses:
-                buses += [bus_j]
-            if not bus_k in buses:
-                buses += [bus_k]                
-            trafos_list += [trafo_dict]                       
-        
-        ## Lines
-        
-        fobj_lines = open(lines_file, 'r')
-        
-        read_list = [('Bus1','bus_j','str',1),
-                     ('Bus2','bus_k','str',1),
-                     ('Linecode','code','str',1),
-                     ('Length','m','float',1.0),
-                     ('phases','N_conductors','int',1)]
-        
-        lines_list = []
-        
-        for line in fobj_lines.readlines():
-            line_dict = {}
-            for item_odss,item_py,tipo,scale in read_list:
-                start_idx = line.find(item_odss + '=')
-                end_idx = line.find(' ',start_idx)
-                
-                value = line[((start_idx+len(item_odss))+1):end_idx]
-                if tipo=='float':
-                    value = float(value)*scale
-                if tipo=='int':
-                    value = int(value)*scale               
-                
-                line_dict.update({item_py:value})
-            
-            bus_j = line_dict['bus_j']
-            if not bus_j in buses:
-                buses += [bus_j]
-            bus_k = line_dict['bus_k']
-            if not bus_k in buses:
-                buses += [bus_k]                
-            
-            lines_list += [line_dict]    
-            
-            
-        ## Loads
-        loads_list = []
-        load_dict = {}
-        fobj_loads = open(loads_file, 'r')
-        
-        read_list = [('Phases','phases','int',1),
-                     ('Bus1','bus','str',1),
-                     ('kW','kW','float',1),
-                     ('PF','fp','float',1.0),
-                     ('Daily','shape','str',1)]
-        
-        load_list = []
-        for load in fobj_loads.readlines():
-            load_dict = {}
-            for item_odss,item_py,tipo,scale in read_list:
-                start_idx = load.find(item_odss + '=')
-                end_idx = load.find(' ',start_idx)
-                
-                value = load[((start_idx+len(item_odss))+1):end_idx]
-                if tipo=='float':
-                    value = float(value)*scale
-                if tipo=='int':
-                    value = int(value)*scale               
-                        
-                if item_odss == 'Bus1':
-                    if load_dict['phases'] == 1:
-                        value,node = value.split('.') 
-                        
-                        load_dict.update({'bus_nodes':[int(node)],'type':'1P'})
-                        
-                load_dict.update({item_py:value})
-            loads_list += [load_dict]
-
-            bus = load_dict['bus']
-            if not bus in buses:
-                buses += [bus]
-
-           
-
-        ## Buses
-        
-        buses_list = []
-        buses_array = np.genfromtxt(buses_file, delimiter=',', skip_header=1, dtype=[('nodes','S10'),('pos_x','f8'),('pos_y','f8')])   
-          
-        for bus in buses:
-            idx = np.where(buses_array['nodes']==np.array(bus,dtype='S10'))[0].astype(np.int32)
-            print(idx)
-            pos_x = buses_array['pos_x'][idx]
-            pos_y = buses_array['pos_y'][idx]
-            buses_dict = {"bus": bus,  
-                          "pos_x": float(pos_x), 
-                          "pos_y": float(pos_y), 
-                          "units": "m", 'U_kV':0.416}
-            buses_list += [buses_dict]                        
-            
-        ## Line codes
-        
-        fobj_linecodes = open(linecodes_file, 'r')
-
-        alpha = np.exp(2.0/3*np.pi*1j)
-        Asym =  np.array([[1, 1, 1],
-                          [1, alpha**2, alpha],
-                          [1, alpha, alpha**2]])
-        inv_Asym = np.linalg.inv(Asym)
-
-        line_codes = {}
-        for linecode in fobj_linecodes.readlines():
-            item_odss = 'LineCode.'
-            start_idx = linecode.find(item_odss)
-            end_idx = linecode.find(' ',start_idx)
-            linecode_id = linecode[((start_idx+len(item_odss))):end_idx]
-            l = {}
-            for item in ['R1','R0','X1','X0','C1','C0']:
-                item_odss = item + '='
-                start_idx = linecode.find(item_odss)
-                end_idx = linecode.find(' ',start_idx)
-                value = linecode[((start_idx+len(item_odss))):end_idx]
-                l.update({item:float(value)})
-            Z_012 = np.array([[l['R0']+1j*l['X0'],0,0],
-                              [0,l['R1']+1j*l['X1'],0],
-                              [0,0,l['R1']+1j*l['X1']]])
-            Z_abc = inv_Asym @ Z_012 @ Asym
-            
-            line_codes.update({linecode_id:{'R':Z_abc.real.tolist(),
-                                            'X':Z_abc.imag.tolist()}})
-            json.dumps(line_codes)    
-        
-        v_sources_list = [
-		{"bus": "SourceBus","bus_nodes": [1, 2, 3], "deg": [0, -120, -240], "kV": [11.547, 11.547, 11.547]}]
-        
-        from collections import OrderedDict
-        
-
- 
-    
-        # Load Shapes
-        fobj_loadshapes = open(load_shapes_file, 'r')    
-        
-        load_shapes_list = [] 
-        for load_shape in fobj_loadshapes.readlines():
-            item_odss = 'New Loadshape.'
-            start_idx = load_shape.find(item_odss)
-            end_idx = load_shape.find(' ',start_idx+4)
-            shape_id = load_shape[((start_idx+len(item_odss))):end_idx]
-
-            item_odss = 'npts='
-            start_idx = load_shape.find(item_odss)
-            end_idx = load_shape.find(' ',start_idx)
-            npts = int(load_shape[((start_idx+len(item_odss))):end_idx])
-
-            item_odss = 'interval='
-            start_idx = load_shape.find(item_odss)
-            end_idx = load_shape.find(' ',start_idx)
-            interval = float(load_shape[((start_idx+len(item_odss))):end_idx])
-            
-            item_odss = 'mult=(file='
-            start_idx = load_shape.find(item_odss)
-            end_idx = load_shape.find(')',start_idx+4)
-            shape_file = load_shape[((start_idx+len(item_odss))):end_idx]
-            shape_file = shape_file.replace('\\','/')
-            #fobj_shape = open(, 'r') 
-            values = np.loadtxt(shape_file)
-            t_s = np.linspace(0,npts*interval*3600,npts)
-            load_shapes_list += [(shape_id,{'t_s':t_s.tolist(), 'shape':values.tolist()})] #, 't_s':t_s.tolist(), 'shape':values.tolist()}]
-        dict_shapes = OrderedDict(load_shapes_list)
-
-        out = json.dumps(dict_shapes) 
-        out = out.replace('},','},\n')
-        out = out.replace('],','],\n')
-        fobj_out = open('load_shapes_list.json','w')
-        fobj_out.write(out)
-        fobj_out.close()
-        
-        
- 
-        data_dict = OrderedDict([('transformers',trafos_list),
-                     ('lines',lines_list),
-                     ('buses',buses_list),
-                     ('v_sources',v_sources_list),
-                     ('loads',loads_list),
-                     ('line_codes',line_codes)])
-        out = json.dumps(data_dict) 
-        out = out.replace('},','},\n')
-        out = out.replace('],','],\n')
-        fobj_out = open('out.json','w')
-        fobj_out.write(out)
-        fobj_out.close()            
-            
-        json_data = open('out.json').read().replace("'",'"')
-        data = json.loads(json_data)
-        
-#        sys1 = pydgrid('out.json')
-#        sys1.pf()
-#        sys1.get_v()
-#        sys1.get_i()
-
-#            item_odss = 'kVAs=['
-#            start_idx = trafo.find(item_odss)
-#            end_idx = trafo.find(']',start_idx)
-#            value = trafo[((start_idx+len(item_odss))):end_idx]
-#            S_n_kVA,S_n_kVA_2 = value.split(' ')
-#
-#            item_odss = 'XHL='
-#            start_idx = trafo.find(item_odss)
-#            end_idx = trafo.find(']',start_idx)
-#            value = trafo[((start_idx+len(item_odss))):end_idx]
-#            X_pu= value
-#            
-#            if conn_j == 'Delta' and conn_k == 'Wye':
-#                connection = 'Dyg11_3w'
-#                trafo_dict = {"bus_j": "R0",  "bus_k": "R1",  "S_n_kVA": float(S_n_kVA), 
-#                              "U_1_kV":float(U_1_kV), "U_2_kV":float(U_2_kV), "R_cc_pu": float(0.0001), 
-#                              "X_cc_pu":float(X_pu)/100.0, "connection": "Dyg11_3w", "conductors_1":3, "conductors_2":3 }
-
-
-
-
-
-              
-#            print(load_dict)
-
-
-            
-#            Bus1=762 Bus2=770 phases=3 Linecode=4c_.06 Length=5.2347 Units=m
-#            lines_list = []
-#    t0 = time.time()
-#    sys1 = system()
-#    print('time: {:f}'.format(time.time()-t0))
-# 
-#    t0 = time.time()
-#    sys1 = system()
-#    print('time: {:f}'.format(time.time()-t0))
-    
-#    t0 = time.time()
-##    sys1 = pydgrid('cigre_lv_isolated_3gformers.json')
-##    sys1 = pydgrid('thermal_test.json')
-#    sys1 = pydgrid('cigre_lv_isolated.json')
-#    sys1.pf()
-#    sys1.run()
-##    print('time: {:f}'.format(time.time()-t0))
-
-    if test=='pf':
-        sys1 = pydgrid('cigre_lv_connected.json')
-        sys1.pf()
-        sys1.get_v()      # post process voltages
-        sys1.get_i()      # post process currents
-#        print(sys1.buses[0])
-#        print(sys1.buses[1])
-#        print(sys1.buses[10])
-#        sys1.bokeh_tools()
-
-    if test=='pf_3w':
-        sys1 = pydgrid('cigre_lv_connected_3w.json')
-        sys1.pf()
-        sys1.get_v()      # post process voltages
-#       sys1.get_i()      # post process currents
-#        print(sys1.buses[0])
-#        print(sys1.buses[1])
-        print(sys1.buses[10]['v_an'])
-        print(sys1.buses[10]['v_bn'])
-        print(sys1.buses[10]['v_cn'])
-#        sys1.bokeh_tools()
-        
-
     if test=='trafo':
         S_n = 630.0e3
         U_1n = 400.0
@@ -1766,100 +1485,3 @@ if __name__ == "__main__":
         Y_trafo_prim = trafo_yprim(S_n,U_1n,U_2n,Z_cc_pu,type='Ynd11')
         
         Z_UG3_3w = abcn2abc(np.array(line_codes['UG3'])) 
-
-#    t0 = time.time()
-#    sys1 = pydgrid('cigre_lv_isolated.json')
-#    sys1.system.run_eval()
-#    print('time: {:f}'.format(time.time()-t0))
-       
-#    odss = opendss()
-#    
-#    odss.read_v_results('/home/jmmauricio/Documents/public/workspace/pydgrid/pydgrid/opendss/cigre_lv_VLN_Node.Txt')
-#    
-#    sys1 = pydgrid('cigre_lv_isolated.json')
-#    sys1 = pydgrid('bench_3bus.json')
-##    print(opendss(sys1))
-#    sys1.pf_eval()
-#    sys1.get_v()
-#    sys1.system.run_eval()
-#    pq_3pn_int = sys1.pq_3pn_int
-#    pq_3pn = sys1.pq_3pn
-#    Y_ii = sys1.Y_ii
-#    Y_iv = sys1.Y_iv
-#    Y_vv = sys1.Y_vv
-#    Y_vi = sys1.Y_vi  
-#    inv_Y_ii = sys1.inv_Y_ii
-#    
-#    V_known = sys1.V_known
-#    
-#    N_nodes_i = sys1.N_nodes_i 
-#    N_nodes_v = sys1.N_nodes_v
-#    N_nodes = sys1.N_nodes
-#    V_node = np.zeros((sys1.N_nodes,1),dtype=np.complex128)
-#    I_node = np.zeros((sys1.N_nodes,1),dtype=np.complex128)
-#    
-#    
-#    I_known_0 = np.zeros((sys1.N_nodes_i,1),dtype=np.complex128)
-#    V_unknown_0 =  np.zeros((sys1.N_nodes_i,1),dtype=np.complex128)+231   
-##        
-#    o= run()
-#    sys1.get_v()
-#    sys1.get_i()
-#    sys1.bokeh_tools()
-#    
-
-    #        
-#        
-#        
-#        V_unknown = V_unknown_0
-#        for it in range(max_iter):
-#            if len(i_fp_modes)>0:
-#                I_known[i_fp_modes] = known_1[i_fp_modes]*np.exp(1j*(np.angle(V_unknown[i_fp_modes]) + known_2[i_fp_modes]))
-#            # if len(pq_modes)>0:
-#            #    I_known[pq_modes] = 1000.0*np.conj((known_1[pq_modes] +1j*known_2[pq_modes])/V_unknown[pq_modes])
-#    
-#            I_known[3::4] = I_known[0::4]+I_known[1::4]+I_known[2::4]
-#            V_unknown =inv(Y_ii)@(I_known - Y_iv @ V_known)
-#            
-#            error = np.abs((V_unknown - V_unknown_0))
-#            if np.max(error) < 1.0e-6: break
-#            
-#            V_unknown_0 = V_unknown
-#    
-#        I_unknown =Y_vv @ V_known + Y_vi @ V_unknown
-#        
-#        return V_unknown,I_unknown,I_known,it
-        #return it        
-#sys1 = syst()
-##print(sys1.pq_3pn_int)
-##print(sys1.pq_3pn)
-##
-##print(sys1.pq_3p_int)
-##print(sys1.pq_3p)
-##
-##print(sys1.nodes)
-#
-#sys1.pf_eval()
-##print(sys1.pf_eval())
-#t_0 = time.time(); sys1.pf.pf_eval(); print(time.time()-t_0)
-#
-#fobj = open('matrix.txt','w')
-#
-#I_known = sys1.pf.I_known
-#V_unknown = sys1.pf.V_unknown
-#V_known = sys1.pf.V_known
-#
-#V = np.vstack((V_known,V_unknown))
-#S = V_unknown*np.conj(I_known)
-#mat = np.hstack((np.abs(sys1.pf.I_known),np.angle(sys1.pf.I_known,deg=True)))
-#mat = np.hstack((np.abs(sys1.pf.V_unknown),np.angle(sys1.pf.V_unknown,deg=True)))
-#mat = np.abs(V[0::4]-V[1::4])
-##mat = np.hstack((np.abs(S/1000),S.real/1000,S.imag/1000))
-#for it_row in range(mat.shape[0]):
-#    fobj.write(sys1.nodes[4*it_row]+ ' ' + sys1.nodes[4*it_row+1] +' ')
-#    for it_col in range(mat.shape[1]):
-#        
-#        fobj.write('{:2.2f} '.format(mat[it_row,it_col]))
-#    fobj.write('\n')
-#fobj.close()
-#        

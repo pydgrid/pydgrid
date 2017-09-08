@@ -3,15 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pydss's documentation!
-=================================
+Elements
+========
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
    
-   definitions
-   elements
+   buses
+   branches
+   transformers
+   grid_formers
+   loads
+   grid_feeders
+   shunts
+   
    
 
 

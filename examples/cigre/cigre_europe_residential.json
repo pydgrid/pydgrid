@@ -1,0 +1,64 @@
+{
+"transformers":[
+		{"bus_j": "R0",  "bus_k": "R1",  "S_n_kVA": 500.0, "U_1_kV":20.0, "U_2_kV":0.4, 
+		"R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": "Dyn11" }
+        ],
+"lines":[
+        {"bus_j": "R1",  "bus_k": "R2",  "code": "UG1", "m": 35.0 },
+        {"bus_j": "R2",  "bus_k": "R3",  "code": "UG1", "m": 35.0 },
+        {"bus_j": "R3",  "bus_k": "R4",  "code": "UG1", "m": 35.0 },
+        {"bus_j": "R4",  "bus_k": "R5",  "code": "UG1", "m": 35.0 },
+        {"bus_j": "R5",  "bus_k": "R6",  "code": "UG1", "m": 35.0 },
+        {"bus_j": "R6",  "bus_k": "R7",  "code": "UG1", "m": 35.0 },
+        {"bus_j": "R7",  "bus_k": "R8",  "code": "UG1", "m": 35.0 },
+        {"bus_j": "R8",  "bus_k": "R9",  "code": "UG1", "m": 35.0 },
+        {"bus_j": "R9",  "bus_k": "R10", "code": "UG1", "m": 35.0 },
+        {"bus_j": "R3",  "bus_k": "R11", "code": "UG3", "m": 30.0 },
+        {"bus_j": "R4",  "bus_k": "R12", "code": "UG3", "m": 35.0 },
+        {"bus_j": "R12", "bus_k": "R13", "code": "UG3", "m": 35.0 },
+        {"bus_j": "R13", "bus_k": "R14", "code": "UG3", "m": 35.0 },
+        {"bus_j": "R14", "bus_k": "R15", "code": "UG3", "m": 30.0 },
+        {"bus_j": "R6",  "bus_k": "R16", "code": "UG3", "m": 30.0 },
+        {"bus_j": "R9",  "bus_k": "R17", "code": "UG3", "m": 30.0 },
+        {"bus_j": "R10", "bus_k": "R18", "code": "UG3", "m": 30.0 }
+        ],
+"buses":[
+		{"bus": "R0",  "pos_x": 0, "pos_y":  20, "units": "m"},
+		{"bus": "R1",  "pos_x": 0, "pos_y":   0, "units": "m"},
+		{"bus": "R2",  "pos_x": 0, "pos_y": -35, "units": "m"},
+		{"bus": "R3",  "pos_x": 0, "pos_y": -70, "units": "m"},
+		{"bus": "R4",  "pos_x": 0, "pos_y": -105, "units": "m"},
+		{"bus": "R5",  "pos_x": 0, "pos_y": -140, "units": "m"},
+		{"bus": "R6",  "pos_x": 0, "pos_y": -175, "units": "m"},
+		{"bus": "R7",  "pos_x": 0, "pos_y": -210, "units": "m"},
+		{"bus": "R8",  "pos_x": 0, "pos_y": -245, "units": "m"},
+		{"bus": "R9",  "pos_x": 0, "pos_y": -280, "units": "m"},
+		{"bus": "R10", "pos_x": 0, "pos_y": -315, "units": "m"},
+		{"bus": "R11", "pos_x": -30, "pos_y": -70, "units": "m"},
+		{"bus": "R12", "pos_x": 35, "pos_y": -105, "units": "m"},
+		{"bus": "R13", "pos_x": 70, "pos_y": -105, "units": "m"},
+		{"bus": "R14", "pos_x": 105, "pos_y": -105, "units": "m"},
+		{"bus": "R15", "pos_x": 105, "pos_y": -140, "units": "m"},
+		{"bus": "R16", "pos_x": -35, "pos_y": -175, "units": "m"},
+		{"bus": "R17", "pos_x": 30, "pos_y": -280, "units": "m"},
+		{"bus": "R18", "pos_x": -30, "pos_y": -315, "units": "m"}
+		],
+"v_sources":[
+		{"bus": "R0","bus_nodes": [1, 2, 3], "deg": [0, -120, -240], "kV": [11.547, 11.547, 11.547]}
+		],
+"loads":[
+		{"bus": "R1" , "kVA": 1.0, "fp": 0.95,"type":"3P+N"},
+        {"bus": "R11", "kVA": 1.0, "fp": 0.95, "type":"3P+N"},
+        {"bus": "R15", "kVA": 2.0, "fp": 0.95, "type":"3P+N"},
+        {"bus": "R16", "kVA": 5.0, "fp": 0.95, "type":"3P+N"},
+        {"bus": "R17", "kVA": 5.0, "fp": 0.95, "type":"3P+N"},
+        {"bus": "R18", "kVA": 7.0, "fp": 0.95, "type":"3P+N"}  
+        ],
+"line_codes":
+		{"OH1":
+		{"R": [[ 0.54 ,  0.049,  0.049,  0.049],
+			   [ 0.049,  0.54 ,  0.049,  0.049],
+			   [ 0.049,  0.049,  0.54 ,  0.049],
+			   [ 0.049,  0.049,  0.049,  0.54 ]]}
+       }
+}

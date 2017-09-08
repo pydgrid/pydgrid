@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Mon Mar 27 11:41:44 2017
@@ -19,7 +18,7 @@ inv_Y_ii 7.129778146743774
 sys1.read() 10.854152202606201
 sys1.pf() 0.5933837890625
 '''
-@numba.jit(nopython=True,cache=True)
+@numba.jit(nopython=True ,cache=True)
 def pf_eval(params,ig=0,max_iter=50):
     '''
     
@@ -46,6 +45,12 @@ def pf_eval(params,ig=0,max_iter=50):
     pq_1pn_int = params[ig].pq_1pn_int
     pq_1pn     = params[ig].pq_1pn
     
+    N_gfeeds = params[ig].N_gfeeds
+    gfeed_bus_nodes = params[ig].gfeed_bus_nodes
+    gfeed_currents = params[ig].gfeed_currents
+    gfeed_powers = params[ig].gfeed_powers
+
+
     V_node = params[ig].V_node
     I_node = params[ig].I_node
     
@@ -92,7 +97,6 @@ def pf_eval(params,ig=0,max_iter=50):
         if N_pq_1pn > 0:
              
             for it in range(pq_1pn_int.shape[0]):
-                a=1
                 
                 V_ph = V_unknown[pq_1pn_int[it][0],0]
                 V_n  = V_unknown[pq_1pn_int[it][1],0]
@@ -102,7 +106,27 @@ def pf_eval(params,ig=0,max_iter=50):
                 
                 I_known[pq_1pn_int[it][0],0] +=  I_pn
                 I_known[pq_1pn_int[it][1],0] += -I_pn  
+
+        if N_gfeeds > 0:
+
+            for it in range(gfeed_bus_nodes.shape[0]):
+               
+                V_abc = V_unknown[gfeed_bus_nodes[it][0:3],0]
                 
+                S_abc_gf = gfeed_powers[it,0:3]
+                
+                I_abc_pq = np.conj(S_abc_gf/V_abc)
+                I_abc_ir = gfeed_currents[it,0:3]*np.exp(1j*np.angle(V_abc))
+                
+                I_abc = I_abc_pq + I_abc_ir
+                
+#                print(abs(I_abc))
+               
+                I_known[gfeed_bus_nodes[it][0:3],0] += I_abc
+                I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc)
+                
+   
+    
         I_aux = ( I_known - Y_iv @ V_known)    
         V_unknown = inv_Y_ii[:,0:N_nz_nodes] @ I_aux[0:N_nz_nodes,:]
         #V_unknown = inv_Y_ii  @ I_aux 

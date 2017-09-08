@@ -11,7 +11,7 @@ from setuptools.command.test import test
 
 # https://packaging.python.org/guides/single-sourcing-package-version/
 version = {}
-with open(os.path.join("pydss", "__init__.py")) as fp:
+with open(os.path.join("pydgrid", "__init__.py")) as fp:
     exec(fp.read(), version)
 
 
@@ -31,13 +31,13 @@ class PyTest(test):
 
 # http://blog.ionelmc.ro/2014/05/25/python-packaging/
 setup(
-    name="pydss",
+    name="pydgrid",
     version=version['__version__'],
     description="Python Distribution System Simulator",
     author="Juan Manuel Mauricio",
     author_email="jmmauricio@us.es",
-    url="http://pydss.github.io/",
-    download_url="https://github.com/jmmauricio/pydss",
+    url="http://pydgrid.github.io/",
+    download_url="https://github.com/pydgrid/pydgrid",
     license="MIT",
     keywords=[
         "distribution system", "electric engineering"
@@ -69,7 +69,7 @@ setup(
     package_dir={'': '.'},
     entry_points={
         'console_scripts': [
-            'pydss = pydss.cli:main'
+            'pydgrid = pydgrid.cli:main'
         ]
     },
     classifiers=[
@@ -84,12 +84,11 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: Implementation :: CPython",
         "Topic :: Scientific/Engineering",
-        "Topic :: Scientific/Engineering :: Physics",
-        "Topic :: Scientific/Engineering :: Astronomy",
     ],
-    long_description=io.open('README.md', encoding='utf-8').read(),
-    package_data={"poliastro": ['tests/*.py']},
+    long_description=io.open('README.rst', encoding='utf-8').read(),
+    package_data={"pygrid": ['tests/*.py']},
     include_package_data=True,
     zip_safe=False,
     cmdclass={'test': PyTest},
+    py_modules = ['pf']
 )
