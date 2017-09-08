@@ -1,0 +1,1345 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg19718"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="buses_nodes.svg">
+  <defs
+     id="defs19720">
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path8281"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker7868"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path7870"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker19657"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path19659"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker19661"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path19663"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker19665"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path19667"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-4"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path8281-9"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-8"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path8281-6"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path8281-5"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-27"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path8281-3"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path8281-1"
+         inkscape:connector-curvature="0" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="177.16664"
+     inkscape:cy="516.05028"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-center="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid19849"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata19723">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 310.00001,527.36218 55,0"
+       id="path20686-1-3-1-4-3-7"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <rect
+       style="color:#000000;fill:#f0ad4e;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19930-5-6-5-5-1"
+       width="75"
+       height="55.000008"
+       x="215"
+       y="477.36218"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       transform="matrix(2.4761904,0,0,2.4761904,-1234.9047,33.417751)"
+       id="g16779-4"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         inkscape:connector-curvature="0"
+         id="path70904-5-5-8-3-8"
+         style="fill:none;stroke:#000000;stroke-width:0.80769233;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none;display:inline"
+         d="m 548.00161,180.36218 c -3.86443,0 -7.00161,3.13404 -7.00161,6.99959 0,3.86555 3.13718,7.00041 7.00161,7.00041 3.86443,0 6.99839,-3.13486 6.99839,-7.00041 0,-3.86555 -3.13396,-6.99959 -6.99839,-6.99959" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path70904-5-5-8-6-9-82"
+         style="fill:none;stroke:#000000;stroke-width:0.80769233;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none;display:inline"
+         d="m 557.00161,180.36259 c -3.86443,0 -7.00161,3.13404 -7.00161,6.99959 0,3.86555 3.13718,7.00041 7.00161,7.00041 3.86443,0 6.99839,-3.13486 6.99839,-7.00041 0,-3.86555 -3.13396,-6.99959 -6.99839,-6.99959" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.40384614px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 531.01922,187.36218 9.98078,0"
+         id="path4610-8-6-45"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.40384614px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 564.00004,187.36218 9.42303,0"
+         id="path4610-8-4-4-51"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 185,482.36218 125,0"
+       id="path20686-1-3-1"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path20739-6-2"
+       d="m 195,542.36219 0,-14.5"
+       style="fill:none;stroke:#000000;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-2"
+       d="m 80,482.36218 33,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-5"
+       d="m 80,512.36218 33,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-2-4"
+       d="m 153,482.36218 32,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-5-2"
+       d="m 154,512.36218 30.99999,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-5-2-7"
+       d="m 150,513.36218 10,14 25,0"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <rect
+       style="color:#000000;fill:none;stroke:#337ab7;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19930-5"
+       width="20"
+       height="50.000008"
+       x="70"
+       y="472.36218"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 185,497.36218 125,0"
+       id="path20686-1-3-1-7"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 185,512.36218 125,0"
+       id="path20686-1-3-1-5"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 185,527.36218 125,0"
+       id="path20686-1-3-1-2"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       id="g16333"
+       transform="matrix(0.5,0,0,0.5,147.5,353.68109)"
+       style="stroke-width:1.5"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <g
+         transform="matrix(0,1.2288159,-0.88958184,0,297.70278,328.42505)"
+         id="g70380"
+         style="stroke-width:1.43467951">
+        <path
+           inkscape:connector-curvature="0"
+           id="path70382"
+           style="fill:none;stroke:#000000;stroke-width:1.43467951;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none"
+           d="m 61.797,227.863 -1.629,-3.797 -3.254,7.594 -3.254,-7.594 -3.258,7.594 -3.254,-7.594 -3.253,7.594 -1.629,-3.797" />
+      </g>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 95,380.36218 0,-3"
+         id="path16136-7"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 95,407.36218 0,-3"
+         id="path16136-7-6"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       transform="matrix(0.5,0,0,0.5,46.5,492.43109)"
+       id="g8020"
+       style="stroke-width:1.5"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 290,132.36218 14,0"
+         id="path7996"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 294.5,137.36218 5,0"
+         id="path7998"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 292,134.86218 10,0"
+         id="path8000"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 297,127.36218 0,5"
+         id="path7998-9"
+         inkscape:connector-curvature="0" />
+    </g>
+    <rect
+       style="color:#000000;fill:none;stroke:#337ab7;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19930-5-6"
+       width="20"
+       height="65.000008"
+       x="185"
+       y="472.36218"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;stroke:#337ab7;stroke-width:1.42857145999999990;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-77"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,118,106.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;stroke:#337ab7;stroke-width:1.42857144;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1;fill-rule:nonzero"
+       id="path20780-1-2-0"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,118,121.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;stroke:#337ab7;stroke-width:1.42857144;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1;fill-rule:nonzero"
+       id="path20780-1-7-9"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,118,136.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#5cb85c;stroke:#5cb85c;stroke-width:1.42857144;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1;fill-rule:nonzero"
+       id="path20780-1-7-9-4"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,118,151.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <rect
+       style="color:#000000;fill:none;stroke:#337ab7;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19930-5-6-5"
+       width="20"
+       height="65.000008"
+       x="300"
+       y="472.36218"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;stroke:#337ab7;stroke-width:1.42857144;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1;fill-rule:nonzero"
+       id="path20780-1-2-0-2"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,233,121.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;stroke:#337ab7;stroke-width:1.42857144;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1;fill-rule:nonzero"
+       id="path20780-1-7-9-2"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,233,136.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#5cb85c;stroke:#5cb85c;stroke-width:1.42857144;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;fill-opacity:1;fill-rule:nonzero"
+       id="path20780-1-7-9-4-3"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,233,151.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       id="g12551"
+       transform="matrix(0,0.5,-0.5,0,116.18109,467.36218)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <g
+         id="g16145-1"
+         transform="translate(-15,-265)">
+        <g
+           id="g15315-0"
+           transform="translate(-35,2.6171874e-6)">
+          <path
+             d="m 70,392.35988 c 0,5.52061 4.477217,10.0023 9.999424,10.0023 5.522209,0 10.000576,-4.48169 10.000576,-10.0023 0,-5.52062 -4.478367,-9.9977 -10.000576,-9.9977 -5.522207,0 -9.999424,4.47708 -9.999424,9.9977"
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none;display:inline"
+             id="path70904-5"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path15311-4"
+             d="m 80,382.36218 0,-5"
+             style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path15313-5"
+             d="m 80,402.36218 0,5"
+             style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <g
+             id="g70398-5"
+             transform="matrix(1.1522065,0,0,1.25,67.784307,75.27218)">
+            <path
+               d="m 14.941,253.672 c -4.339,13.019 -4.339,-13.024 -8.679,0"
+               style="fill:none;stroke:#000000;stroke-width:1.66651738;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none"
+               id="path70400-1"
+               inkscape:connector-curvature="0" />
+          </g>
+        </g>
+      </g>
+      <use
+         transform="matrix(1.198113,0,0,1.198113,-454.56843,-42.093698)"
+         style="fill:#000000;fill-opacity:1;display:inline"
+         id="use9598-4"
+         y="134.765"
+         x="391.41299"
+         xlink:href="#textext-2dc96b71-1"
+         width="744.09448"
+         height="1052.3622" />
+    </g>
+    <g
+       id="g12551-0"
+       transform="matrix(0,0.5,-0.5,0,116.18109,482.36218)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <g
+         id="g16145-1-6"
+         transform="translate(-15,-265)">
+        <g
+           id="g15315-0-0"
+           transform="translate(-35,2.6171874e-6)">
+          <path
+             d="m 70,392.35988 c 0,5.52061 4.477217,10.0023 9.999424,10.0023 5.522209,0 10.000576,-4.48169 10.000576,-10.0023 0,-5.52062 -4.478367,-9.9977 -10.000576,-9.9977 -5.522207,0 -9.999424,4.47708 -9.999424,9.9977"
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none;display:inline"
+             id="path70904-5-2"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path15311-4-2"
+             d="m 80,382.36218 0,-5"
+             style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path15313-5-8"
+             d="m 80,402.36218 0,5"
+             style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <g
+             id="g70398-5-4"
+             transform="matrix(1.1522065,0,0,1.25,67.784307,75.27218)">
+            <path
+               d="m 14.941,253.672 c -4.339,13.019 -4.339,-13.024 -8.679,0"
+               style="fill:none;stroke:#000000;stroke-width:1.66651738;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none"
+               id="path70400-1-3"
+               inkscape:connector-curvature="0" />
+          </g>
+        </g>
+      </g>
+      <use
+         transform="matrix(1.198113,0,0,1.198113,-454.56843,-42.093698)"
+         style="fill:#000000;fill-opacity:1;display:inline"
+         id="use9598-4-1"
+         y="134.765"
+         x="391.41299"
+         xlink:href="#textext-2dc96b71-1"
+         width="744.09448"
+         height="1052.3622" />
+    </g>
+    <g
+       id="g12551-1"
+       transform="matrix(0,0.5,-0.5,0,116.18109,497.36218)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <g
+         id="g16145-1-1"
+         transform="translate(-15,-265)">
+        <g
+           id="g15315-0-9"
+           transform="translate(-35,2.6171874e-6)">
+          <path
+             d="m 70,392.35988 c 0,5.52061 4.477217,10.0023 9.999424,10.0023 5.522209,0 10.000576,-4.48169 10.000576,-10.0023 0,-5.52062 -4.478367,-9.9977 -10.000576,-9.9977 -5.522207,0 -9.999424,4.47708 -9.999424,9.9977"
+             style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none;display:inline"
+             id="path70904-5-0"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path15311-4-0"
+             d="m 80,382.36218 0,-5"
+             style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <path
+             inkscape:connector-curvature="0"
+             id="path15313-5-0"
+             d="m 80,402.36218 0,5"
+             style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+          <g
+             id="g70398-5-2"
+             transform="matrix(1.1522065,0,0,1.25,67.784307,75.27218)">
+            <path
+               d="m 14.941,253.672 c -4.339,13.019 -4.339,-13.024 -8.679,0"
+               style="fill:none;stroke:#000000;stroke-width:1.66651738;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none"
+               id="path70400-1-5"
+               inkscape:connector-curvature="0" />
+          </g>
+        </g>
+      </g>
+      <use
+         transform="matrix(1.198113,0,0,1.198113,-454.56843,-42.093698)"
+         style="fill:#000000;fill-opacity:1;display:inline"
+         id="use9598-4-7"
+         y="134.765"
+         x="391.41299"
+         xlink:href="#textext-2dc96b71-1"
+         width="744.09448"
+         height="1052.3622" />
+    </g>
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-2-6"
+       d="m 60.000001,482.36218 20,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-2-6-9"
+       d="m 60,497.36218 20,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-2-6-1"
+       d="m 60,512.36218 20,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#d9534f;stroke:#d9534f;stroke-width:1.42857145999999990;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,3,106.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#d9534f;stroke:#d9534f;stroke-width:1.42857145999999990;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-2"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,3,121.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#d9534f;stroke:#d9534f;stroke-width:1.42857145999999990;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-7"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,3,136.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       transform="matrix(0,0.5,-0.5,0,103.68109,348.86218)"
+       id="g8020-9"
+       style="stroke-width:1.5"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 290,132.36218 14,0"
+         id="path7996-8"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 294.5,137.36218 5,0"
+         id="path7998-7"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 292,134.86218 10,0"
+         id="path8000-6"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 297,127.36218 0,5"
+         id="path7998-9-5"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-2-1"
+       d="m 40,482.36218 0,30"
+       style="fill:none;stroke:#000000;stroke-width:0.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-2-1-1"
+       d="m 40.000001,482.36218 5.75,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-2-1-1-4"
+       d="m 40.125,497.36218 5.75,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4610-1-40-2-1-1-8"
+       d="m 40.000001,512.36218 5.75,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99999988px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 310,482.36218 20,0"
+       id="path20686-1-3-1-4"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <rect
+       style="color:#000000;fill:#5cb85c;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19930-5-6-5-5"
+       width="20"
+       height="14.040613"
+       x="330"
+       y="475.34189"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <text
+       xml:space="preserve"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="303.17203"
+       y="465.71609"
+       id="text21406"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan21408"
+         x="303.17203"
+         y="465.71609"
+         style="font-size:12px">B2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="188.17203"
+       y="465.71609"
+       id="text21406-7"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan21408-6"
+         x="188.17203"
+         y="465.71609"
+         style="font-size:12px">B1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="73.172028"
+       y="465.71609"
+       id="text21406-6"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan21408-9"
+         x="73.172028"
+         y="465.71609"
+         style="font-size:12px">B0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="253.66406"
+       y="542.36218"
+       id="text21458"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         x="255"
+         y="542.36218"
+         id="tspan21466"
+         style="font-size:8px;text-align:center;text-anchor:middle">Linea con </tspan><tspan
+         sodipodi:role="line"
+         x="253.66406"
+         y="552.36218"
+         style="font-size:8px;text-align:center;text-anchor:middle"
+         id="tspan21470">conductores acoplados</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 350,482.36218 15,0"
+       id="path20686-1-3-1-4-3"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 365,527.36217 0,-45.00001"
+       id="path20686-1-3-1-4-3-6"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="340.66406"
+       y="497.36218"
+       id="text21458-6"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         x="342"
+         y="497.36218"
+         id="tspan21466-9"
+         style="font-size:8px;text-align:center;text-anchor:middle">Carga </tspan><tspan
+         sodipodi:role="line"
+         x="340.66406"
+         y="507.36218"
+         style="font-size:8px;text-align:center;text-anchor:middle"
+         id="tspan21470-7">PQ</tspan></text>
+    <path
+       inkscape:connector-curvature="0"
+       id="path20739-6-2-6"
+       d="m 121.21339,672.43962 0,-19.92263"
+       style="fill:none;stroke:#000000;stroke-width:0.75;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       id="g16333-0"
+       transform="matrix(0.686987,0,0,0.686987,55.949622,413.19672)"
+       style="stroke-width:1.5"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <g
+         transform="matrix(0,1.2288159,-0.88958184,0,297.70278,328.42505)"
+         id="g70380-9"
+         style="stroke-width:1.43467951">
+        <path
+           inkscape:connector-curvature="0"
+           id="path70382-0"
+           style="fill:none;stroke:#000000;stroke-width:1.04418242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none"
+           d="m 61.797,227.863 -1.629,-3.797 -3.254,7.594 -3.254,-7.594 -3.258,7.594 -3.254,-7.594 -3.253,7.594 -1.629,-3.797" />
+      </g>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.09172368;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 95,380.36218 0,-3"
+         id="path16136-7-7"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.09172368;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 95,407.36218 0,-3"
+         id="path16136-7-6-6"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       transform="matrix(0.686987,0,0,0.686987,-82.821753,603.83562)"
+       id="g8020-6"
+       style="stroke-width:1.5"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.09172368;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 290,132.36218 14,0"
+         id="path7996-87"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.09172368;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 294.5,137.36218 5,0"
+         id="path7998-76"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.09172368;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 292,134.86218 10,0"
+         id="path8000-65"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.09172368;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 297,127.36218 0,5"
+         id="path7998-9-3"
+         inkscape:connector-curvature="0" />
+    </g>
+    <rect
+       style="color:#000000;fill:none;stroke:#337ab7;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect19930-5-6-7"
+       width="27.479481"
+       height="89.308319"
+       x="107.47365"
+       y="576.26147"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;stroke:#337ab7;stroke-width:1.03973687;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-77-6"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.9617818,0,0,0.9617818,15.417389,73.176021)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;stroke:#337ab7;stroke-width:1.03973687;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-2-0-9"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.9617818,0,0,0.9617818,15.417389,93.785631)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;stroke:#337ab7;stroke-width:1.03973687;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-7-9-7"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.9617818,0,0,0.9617818,15.417389,114.39524)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;stroke:#337ab7;stroke-width:1.03973687;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-7-9-4-2"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.9617818,0,0,0.9617818,15.417389,135.00485)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <text
+       xml:space="preserve"
+       style="font-size:65.95075226px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="113.04533"
+       y="572.12988"
+       id="text21406-7-6"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan21408-6-4"
+         x="113.04533"
+         y="572.12988"
+         style="font-size:13.73974037px">B1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="150"
+       y="594.16516"
+       id="text21406-7-0"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan21408-6-7"
+         x="150"
+         y="594.16516"
+         style="font-size:12px">B1.1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="149.85001"
+       y="614.77478"
+       id="text21406-7-0-5"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan21408-6-7-4"
+         x="149.85001"
+         y="614.77478"
+         style="font-size:12px">B1.2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="149.802"
+       y="635.25238"
+       id="text21406-7-0-0"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan21408-6-7-1"
+         x="149.802"
+         y="635.25238"
+         style="font-size:12px">B1.3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:48px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="149.718"
+       y="655.99402"
+       id="text21406-7-0-2"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan21408-6-7-8"
+         x="149.718"
+         y="655.99402"
+         style="font-size:12px">B1.4</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;stroke:#337ab7;stroke-width:1.42857146;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-77-7"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,118,151.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#5cb85c;stroke:#5cb85c;stroke-width:1.42857145999999990;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-77-4"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,233,106.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#d9534f;stroke:#d9534f;stroke-width:1.42857146;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-5"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,183,36.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="309.90186"
+       y="415.09418"
+       id="text21458-1"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         x="309.90186"
+         y="415.09418"
+         style="font-size:8px;text-align:center;text-anchor:middle"
+         id="tspan21470-0">Nodo de tensión conocida</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#5cb85c;stroke:#5cb85c;stroke-width:1.42857146;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-5-0"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,183,51.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="321.05029"
+       y="430.09418"
+       id="text21458-1-7"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         x="321.05029"
+         y="430.09418"
+         style="font-size:8px;text-align:center;text-anchor:middle"
+         id="tspan21470-0-0">Nodo corriente conocida no nula</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#337ab7;fill-opacity:1;fill-rule:nonzero;stroke:#337ab7;stroke-width:1.42857146;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path20780-1-5-0-8"
+       sodipodi:cx="110"
+       sodipodi:cy="537.36218"
+       sodipodi:rx="5"
+       sodipodi:ry="5"
+       d="m 115,537.36218 a 5,5 0 1 1 -10,0 5,5 0 1 1 10,0 z"
+       transform="matrix(0.7,0,0,0.69999999,183,66.20866)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="318.82373"
+       y="444.31818"
+       id="text21458-1-7-1"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         x="318.82373"
+         y="444.31818"
+         style="font-size:8px;text-align:center;text-anchor:middle"
+         id="tspan21470-0-0-6">Nodo corriente conocida y nula</tspan></text>
+    <path
+       inkscape:connector-curvature="0"
+       id="path70906"
+       d="m 147.83135,589.99159 -14.83898,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99921268;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path70906-2"
+       d="m 180,543.802 -25.00001,23.56021"
+       style="fill:none;stroke:#000000;stroke-width:0.99921262;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path70906-23"
+       d="m 147.83135,651.82042 -14.83898,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99921268;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path70906-9"
+       d="m 147.83135,610.60121 -14.83898,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99921268;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path70906-5"
+       d="m 147.83135,631.2108 -14.83898,0"
+       style="fill:none;stroke:#000000;stroke-width:0.99921268;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend);display:inline"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <text
+       xml:space="preserve"
+       style="font-size:9.33523178px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="275.53494"
+       y="576.35077"
+       id="text22021"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="576.35077"
+         id="tspan22051">sys.nodes = [<tspan
+   style="fill:#d9534f"
+   id="tspan22142">'B0.1'</tspan>,</tspan><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="588.01984"
+         id="tspan22118"
+         style="fill:#d9534f">                 'B0.2'<tspan
+   style="fill:#000000"
+   id="tspan22154">,</tspan></tspan><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="599.68884"
+         id="tspan22120"><tspan
+   style="fill:#d9534f"
+   id="tspan22144">                 'B0.3'</tspan>,</tspan><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="611.35791"
+         id="tspan22122"
+         style="fill:#5cb85c">                 'B2.1'<tspan
+   style="fill:#000000"
+   id="tspan22156">,</tspan></tspan><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="623.02692"
+         id="tspan22124"
+         style="fill:#5cb85c">                 'B2.4'<tspan
+   style="fill:#000000"
+   id="tspan22158">,</tspan></tspan><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="634.69598"
+         id="tspan22126"
+         style="fill:#337ab7">                 'B1.1'<tspan
+   style="fill:#000000"
+   id="tspan22160">, </tspan></tspan><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="646.36499"
+         id="tspan22128"
+         style="fill:#337ab7">                 'B1.2'<tspan
+   style="fill:#000000"
+   id="tspan22162">,</tspan></tspan><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="658.03406"
+         id="tspan22130"
+         style="fill:#337ab7">                 'B1.3'<tspan
+   style="fill:#000000"
+   id="tspan22164">,</tspan></tspan><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="669.70306"
+         id="tspan22132"
+         style="fill:#337ab7">                 'B1.4'<tspan
+   style="fill:#000000"
+   id="tspan22166">,</tspan></tspan><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="681.37213"
+         id="tspan22134"
+         style="fill:#337ab7">                 'B2.2'<tspan
+   style="fill:#000000"
+   id="tspan22168">,</tspan></tspan><tspan
+         sodipodi:role="line"
+         x="275.53494"
+         y="693.04114"
+         id="tspan22136"><tspan
+   style="fill:#337ab7"
+   id="tspan22150">                 'B2.3'</tspan>]</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
+       x="319.46075"
+       y="627.34052"
+       id="text22138"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan22140"
+         x="319.46075"
+         y="627.34052"> </tspan></text>
+  </g>
+</svg>
