@@ -1,0 +1,28 @@
+{
+"transformers":[
+		{"bus_j": "Bus_0",  "bus_k": "Bus_1",  "S_n_kVA": 150.0, "U_1_kV":20.0, "U_2_kV":0.4,
+		"R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": "Dyg11_3w", 
+		"conductors_1": 3, "conductors_2": 3}
+        ],
+"lines":[
+        {"bus_j": "Bus_1",  "bus_k": "Bus_2",  "code": "UG1w3", "m": 200.0}
+        ],
+"buses":[
+		{"bus": "Bus_0",  "pos_x": 0, "pos_y":   0, "units": "m", "U_kV":20.0},
+		{"bus": "Bus_1",  "pos_x": 0, "pos_y":  10, "units": "m", "U_kV":0.4},
+		{"bus": "Bus_2",  "pos_x": 0, "pos_y": 200, "units": "m", "U_kV":0.4}
+		],
+"v_sources":[
+		{"bus": "Bus_0","bus_nodes": [1, 2, 3], "deg": [0, -120, -240], "kV": [11.547, 11.547, 11.547]}
+		],
+"loads":[
+		{"bus": "Bus_2" , "kVA": 33.0, "fp": 0.85,"type":"3P"}
+        ],
+"line_codes":
+		{"OH1":
+		{"R": [[ 0.54 ,  0.049,  0.049,  0.049],
+			   [ 0.049,  0.54 ,  0.049,  0.049],
+			   [ 0.049,  0.049,  0.54 ,  0.049],
+			   [ 0.049,  0.049,  0.049,  0.54 ]]}
+       }
+}
