@@ -16,41 +16,47 @@ New Transformer.T1 Phases=3 Windings=2   XHL=4.0
 New linecode.UG1 nphases=4 BaseFreq=50
 ~ rmatrix = [0.211 | 0.049 0.211 | 0.049 0.049 0.211 | 0.049 0.049 0.049 0.211]
 ~ xmatrix = [0.747 | 0.673 0.747 | 0.651 0.673 0.747 | 0.673 0.651 0.673 0.747]
+~ units=km 
 
 New linecode.UG2 nphases=4 BaseFreq=50
 ~ rmatrix = [0.314 | 0.049 0.314 | 0.049 0.049 0.314 | 0.049 0.049 0.049 0.314]
 ~ xmatrix = [0.762 | 0.687 0.762 | 0.665 0.687 0.762 | 0.687 0.665 0.687 0.762]
+~ units=km 
 
 New linecode.UG3 nphases=4 BaseFreq=50
 ~ rmatrix = [0.871 | 0.049 0.871 | 0.049 0.049 0.871 | 0.049 0.049 0.049 0.871]
 ~ xmatrix = [0.797 | 0.719 0.797 | 0.697 0.719 0.797 | 0.719 0.697 0.719 0.797]
+~ units=km 
 
 !LOAD SHAPE DEFINITION
 !New LoadShape.day npts=24 interval=1.0 mult=[0.3 0.28 0.25 0.23 0.2 0.2 0.23 0.3 0.4 0.43 0.45 0.5 0.5 0.55 0.6 0.6 0.55 0.5 0.64 0.85 1.0 0.9 0.75 0.52 0.3]
 
+
+
 !LINE DEFINITION
 !Main line
-New Line.Line_R1R2  Phases=4 Bus1=R1.1.2.3.4 Bus2=R2.1.2.3.4  LineCode=UG1 Length=0.105
-New Line.Line_R2R3  Phases=4 Bus1=R2.1.2.3.4 Bus2=R3.1.2.3.4  LineCode=UG1 Length=0.105
-New Line.Line_R3R4  Phases=4 Bus1=R3.1.2.3.4 Bus2=R4.1.2.3.4  LineCode=UG1 Length=0.105
-New Line.Line_R4R5  Phases=4 Bus1=R4.1.2.3.4 Bus2=R5.1.2.3.4  LineCode=UG1 Length=0.105
-New Line.Line_R5R6  Phases=4 Bus1=R5.1.2.3.4 Bus2=R6.1.2.3.4  LineCode=UG1 Length=0.105
-New Line.Line_R6R7  Phases=4 Bus1=R6.1.2.3.4 Bus2=R7.1.2.3.4  LineCode=UG1 Length=0.105
-New Line.Line_R7R8  Phases=4 Bus1=R7.1.2.3.4 Bus2=R8.1.2.3.4  LineCode=UG1 Length=0.105
-New Line.Line_R8R9  Phases=4 Bus1=R8.1.2.3.4 Bus2=R9.1.2.3.4  LineCode=UG1 Length=0.105
-New Line.Line_R9R10  Phases=4 Bus1=R9.1.2.3.4 Bus2=R10.1.2.3.4  LineCode=UG1 Length=0.105
+New Line.Line_R1R2    Phases=4 Bus1=R1.1.2.3.4 Bus2=R2.1.2.3.4   LineCode=UG1 Length=35.0 Units=m
+New Line.Line_R2R3    Phases=4 Bus1=R2.1.2.3.4 Bus2=R3.1.2.3.4   LineCode=UG1 Length=35.0 Units=m
+New Line.Line_R3R4    Phases=4 Bus1=R3.1.2.3.4 Bus2=R4.1.2.3.4   LineCode=UG1 Length=35.0 Units=m
+New Line.Line_R4R5    Phases=4 Bus1=R4.1.2.3.4 Bus2=R5.1.2.3.4   LineCode=UG1 Length=35.0 Units=m
+New Line.Line_R5R6    Phases=4 Bus1=R5.1.2.3.4 Bus2=R6.1.2.3.4   LineCode=UG1 Length=35.0 Units=m
+New Line.Line_R6R7    Phases=4 Bus1=R6.1.2.3.4 Bus2=R7.1.2.3.4   LineCode=UG1 Length=35.0 Units=m
+New Line.Line_R7R8    Phases=4 Bus1=R7.1.2.3.4 Bus2=R8.1.2.3.4   LineCode=UG1 Length=35.0 Units=m
+New Line.Line_R8R9    Phases=4 Bus1=R8.1.2.3.4 Bus2=R9.1.2.3.4   LineCode=UG1 Length=35.0 Units=m
+New Line.Line_R9R10  Phases=4 Bus1=R9.1.2.3.4 Bus2=R10.1.2.3.4  LineCode=UG1 Length=35.0 Units=m
 
 !Secondary lines
-New Line.Line_R3R11  Phases=4 Bus1=R3.1.2.3.4 Bus2=R11.1.2.3.4  LineCode=UG3 Length=0.09
+New Line.Line_R3R11  Phases=4 Bus1=R3.1.2.3.4 Bus2=R11.1.2.3.4  LineCode=UG3 Length=35.000000 Units=m
 
-New Line.Line_R4R12  Phases=4 Bus1=R4.1.2.3.4 Bus2=R12.1.2.3.4  LineCode=UG3 Length=0.105
-New Line.Line_R12R13  Phases=4 Bus1=R12.1.2.3.4 Bus2=R13.1.2.3.4  LineCode=UG3 Length=0.105
-New Line.Line_R13R14  Phases=4 Bus1=R13.1.2.3.4 Bus2=R14.1.2.3.4  LineCode=UG3 Length=0.105
-New Line.Line_R14R15  Phases=4 Bus1=R14.1.2.3.4 Bus2=R15.1.2.3.4  LineCode=UG3 Length=0.105
+New Line.Line_R4R12  Phases=4 Bus1=R4.1.2.3.4 Bus2=R12.1.2.3.4  LineCode=UG3 Length=35.000000 Units=m
+New Line.Line_R12R13  Phases=4 Bus1=R12.1.2.3.4 Bus2=R13.1.2.3.4  LineCode=UG3 Length=35.000000 Units=m
+New Line.Line_R13R14  Phases=4 Bus1=R13.1.2.3.4 Bus2=R14.1.2.3.4  LineCode=UG3 Length=35.000000 Units=m
+New Line.Line_R14R15  Phases=4 Bus1=R14.1.2.3.4 Bus2=R15.1.2.3.4  LineCode=UG3 Length=35.000000 Units=m
 
-New Line.Line_R6R16  Phases=4 Bus1=R6.1.2.3.4 Bus2=R16.1.2.3.4  LineCode=UG3 Length=0.09
-New Line.Line_R9R17  Phases=4 Bus1=R9.1.2.3.4 Bus2=R17.1.2.3.4  LineCode=UG3 Length=0.09
-New Line.Line_R10R18  Phases=4 Bus1=R10.1.2.3.4 Bus2=R18.1.2.3.4  LineCode=UG3 Length=0.09
+New Line.Line_R6R16  Phases=4 Bus1=R6.1.2.3.4 Bus2=R16.1.2.3.4  LineCode=UG3 Length=30.000000 Units=m
+New Line.Line_R9R17  Phases=4 Bus1=R9.1.2.3.4 Bus2=R17.1.2.3.4   LineCode=UG3 Length=30.000000 Units=m
+New Line.Line_R10R18  Phases=4 Bus1=R10.1.2.3.4 Bus2=R18.1.2.3.4  LineCode=UG3  Length=30.000000 Units=m
+
 
 !LOAD DEFINITION
 New Load.Load_R11 Bus1=R11.1.2.3.4 Model=1 kv=0.4  kva=15  Pf=0.95 Vminpu=0.6 Vmaxpu=1.4 !daily=day
@@ -59,7 +65,7 @@ New Load.Load_R16 Bus1=R16.1.2.3.4 Model=1 kv=0.4  kva=55  Pf=0.95 Vminpu=0.6 Vm
 New Load.Load_R17 Bus1=R17.1.2.3.4 Model=1 kv=0.4  kva=35  Pf=0.95 Vminpu=0.6 Vmaxpu=1.4 !daily=day
 New Load.Load_R18 Bus1=R18.1.2.3.4 Model=1 kv=0.4  kva=47  Pf=0.95 Vminpu=0.6 Vmaxpu=1.4 !daily=day
 
-New Load.Load_R1 Bus1=R1.1.2.3.4 Model=1 kv=0.4  kva=200  Pf=0.95 Vminpu=0.6 Vmaxpu=1.4 !daily=day
+! New Load.Load_R1 Bus1=R1.1.2.3.4 Model=1 kv=0.4  kva=200  Pf=0.95 Vminpu=0.6 Vmaxpu=1.4 !daily=day
 
 !GROUNDING DEFINITION
 New Reactor.Reactor_R2  Phases=1 bus1=R2.4  R=40 X=0
@@ -83,13 +89,13 @@ New Reactor.Reactor_T1 Phases=1 bus1=R1.4 R=3 X=0 !PUESTA A TIERRA DEL TRAFO
 Set Voltagebases=[20 0.4]
 Set Maxiter=50
 calcv
-//Solve
+Solve
 
 !SHOW SOME RESULTS
-//Show Voltages LN Nodes
+Show Voltages LN Nodes
 //Show Voltages LN Seq
 //Show Currents Elem
-//Show Powers kVA Elem
+Show Powers kVA Elem
 //Show Losses
 
 

@@ -18,7 +18,10 @@ inv_Y_ii 7.129778146743774
 sys1.read() 10.854152202606201
 sys1.pf() 0.5933837890625
 '''
-@numba.jit(nopython=True ,cache=True)
+
+numba.caching.config.CACHE_DIR = '/home/jmmauricio/Documents'
+
+@numba.jit(nopython=True)
 def pf_eval(params,ig=0,max_iter=50):
     '''
     
@@ -69,11 +72,11 @@ def pf_eval(params,ig=0,max_iter=50):
         if N_pq_3pn > 0:
             for it in range(pq_3pn_int.shape[0]):
                
-                V_abc = V_unknown[pq_3pn_int[it][0:3],0]
+                V_abc_n = V_unknown[pq_3pn_int[it][0:3],0] -  V_unknown[pq_3pn_int[it][3],0]
                 S_abc_3 = pq_3pn[it,:]
                
-                I_known[pq_3pn_int[it][0:3],0] = np.conj(S_abc_3/V_abc)
-                I_known[pq_3pn_int[it][3],0] =  -np.sum(I_known[pq_3pn_int[it][0:3],0])
+                I_known[pq_3pn_int[it][0:3],0] += np.conj(S_abc_3/V_abc_n)
+                I_known[pq_3pn_int[it][3],0]   +=  -np.sum(I_known[pq_3pn_int[it][0:3],0])
                 
         if N_pq_3p > 0:        
             for it in range(pq_3p_int.shape[0]):
@@ -81,7 +84,7 @@ def pf_eval(params,ig=0,max_iter=50):
                 V_abc = V_unknown[pq_3p_int[it],0]
                 S_abc_1 = pq_3p[it,0]
                
-                I_known[pq_3p_int[it],0] = np.conj(S_abc_1/V_abc)
+                I_known[pq_3p_int[it],0] += np.conj(S_abc_1/V_abc)
                 #I_known[pq_3p_int[it][0],0] =  -np.sum(I_known[pq_3p_int[it][0:3],0])
 
         if N_pq_1p > 0:
@@ -91,7 +94,7 @@ def pf_eval(params,ig=0,max_iter=50):
                 V_abc = V_unknown[pq_1p_int[it],0]
                 S_abc = pq_1p[it,:]
                
-                I_known[pq_1p_int[it],0] = np.conj(S_abc/V_abc)
+                I_known[pq_1p_int[it],0] += np.conj(S_abc/V_abc)
                 #I_known[pq_3p_int[it][0],0] =  -np.sum(I_known[pq_3p_int[it][0:3],0])           
  
         if N_pq_1pn > 0:
@@ -148,14 +151,14 @@ def pf_eval(params,ig=0,max_iter=50):
     return V_node,I_node
 
 
-@numba.jit(nopython=True,cache=True)
+@numba.jit(nopython=True)
 def set_load_factor(t,params_pf,params_lshapes,ig=0):
     for it in range(params_lshapes[ig].N_loads):
         time_idx = np.argmax(params_lshapes[ig].time[it,:]>t)
         params_pf[ig]['pq_1p'][it] = params_pf[ig]['pq_1p_0'][it] *params_lshapes[ig].shapes[it,time_idx] 
                 
 
-@numba.jit(nopython=True,cache=True)
+@numba.jit(nopython=True)
 def time_serie(t_ini,t_end,Dt,params_pf,params_lshapes):
     ig = 0
     N_times = int(np.ceil(t_end-t_ini)/Dt)

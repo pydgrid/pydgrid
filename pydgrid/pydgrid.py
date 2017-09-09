@@ -6,9 +6,14 @@ Created on Sun Mar  5 13:04:45 2017
 """
 
 import numpy as np 
+import numba
+
+numba.caching.config.CACHE_DIR = '/home/jmmauricio/Documents'
+
+
 import json
 import time
-from pf import pf_eval,set_load_factor
+from pydgrid.pf import pf_eval,set_load_factor
 import time
 from scipy import sparse
 from scipy.sparse import linalg as sla
@@ -24,6 +29,9 @@ class grid(object):
     
     
     def __init__(self):
+        
+        self.s_radio_scale = 0.01
+        
         self.line_codes_lib = {'OH1':[[0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j],
                       [0.049 + 0.505j, 0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j],
                       [0.049 + 0.462j, 0.049 + 0.505j, 0.540 + 0.777j, 0.049 + 0.505j],
@@ -571,6 +579,11 @@ class grid(object):
             self.pq_1pn_int = np.array([[0]])
             self.pq_1pn = np.array([[0]])
             
+        if self.gfeed_bus_nodes.shape[0] == 0:
+            self.gfeed_bus_nodes = np.array([[0]])
+            self.gfeed_currents = np.array([[0]])
+            self.gfeed_powers = np.array([[0]])            
+            
         dt_pf = np.dtype([
                   ('Y_vv',np.complex128,(N_v,N_v)),('Y_iv',np.complex128,(N_i,N_v)),
                   ('inv_Y_ii',np.complex128,(N_i,N_i)),('Y_ii',np.complex128,(N_i,N_i)),
@@ -951,13 +964,26 @@ class grid(object):
         p_abc = ['{:2.2f}'.format(float((item['p_a'] +item['p_b']+item['p_c'])/1000)) for item in self.buses] 
         q_abc = ['{:2.2f}'.format(float((item['q_a'] +item['q_b']+item['q_c'])/1000)) for item in self.buses]
         s_radio = []
-        for item in self.buses:            
-            s_total = np.abs(item['p_a'] + 1j*item['q_a']) + np.abs(item['p_b'] + 1j*item['q_b']) +  np.abs(item['p_c'] + 1j*item['q_c'])
-            scale = 0.01
-            s_scaled = s_total*scale
-            if s_scaled>20.0:
-                s_scaled = 20.0
+        s_color = []
+        for item in self.buses:
+            p_total = item['p_a'] + item['p_b'] + item['p_c']
+            q_total = item['q_a'] + item['q_b'] + item['q_c']            
+            s_total = np.abs(p_total + 1j*q_total)
+            scale = self.s_radio_scale
+            s_scaled = abs(np.sqrt(s_total))*scale
+            if s_scaled<10:
+                s_scaled = 10
+            if s_scaled>100.0:
+                s_scaled = 100.0
             s_radio += [s_scaled]
+            if p_total>0.0:
+                s_color += ['red']
+            if p_total<0.0:
+                s_color += ['green']
+            if p_total==0.0:
+                s_color += ['blue']
+                                
+                
         self.bus_data = dict(x=x, y=y, bus_id=bus_id,
                              v_an=v_an, v_bn=v_bn, v_cn=v_cn, v_ng=v_ng, 
                              deg_an=deg_an, deg_bn=deg_bn, deg_cn=deg_cn, 
@@ -965,7 +991,7 @@ class grid(object):
                              p_a=p_a,p_b=p_b,p_c=p_c,
                              q_a=q_a,q_b=q_b,q_c=q_c,
                              p_abc=p_abc,q_abc=q_abc,
-                             s_radio=s_radio)
+                             s_radio=s_radio, s_color=s_color)
         
         self.line_tooltip = '''
             <div>
@@ -1339,14 +1365,6 @@ class opendss(object):
         
         pass
 
-    
-        
-        
-        
-        
-        
-        
-        
     def pyss2opendss(self):
         
         string = ''
@@ -1429,7 +1447,7 @@ def opendss2pydgrid(self,files_dict):
 
 if __name__ == "__main__":
     import time 
-    test ='luna_1'
+    test ='cigre_lv'
 
     if test=='luna_1': 
         sys1 = grid()
@@ -1441,14 +1459,17 @@ if __name__ == "__main__":
         print('iters: ', sys1.params_pf['iters'])
         
     if test=='cigre_lv': 
-        sys1 = pydgrid()
+        sys1 = grid()
         t_0 = time.time()
-        sys1.read('cigre_lv.json')  # Load data
+        sys1.read('../examples/cigre/cigre_europe_residential.json')  # Load data
         print('sys1.read()',time.time()-t_0) 
         t_0 = time.time()
         sys1.pf()
+        sys1.get_v()
+        sys1.get_i()
         print('sys1.pf()',time.time()-t_0) 
         t_0 = time.time()
+        print('iters: ', sys1.params_pf['iters'])
         
     if test=='lv_europe_connected_load1': 
         sys1 = pydgrid()

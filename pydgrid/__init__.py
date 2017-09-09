@@ -7,8 +7,8 @@ Created on Fri Jun 16 12:54:49 2017
 
 #import tools
 
-__version__ = '0.1.6'
+__version__ = '0.1.7'
 
-from pydgrid import grid
+
 
 
