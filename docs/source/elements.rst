@@ -11,7 +11,7 @@ Elements
    :caption: Contents:
    
    buses
-   branches
+   lines
    transformers
    grid_formers
    loads

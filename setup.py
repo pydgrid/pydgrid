@@ -1,10 +1,15 @@
 # coding: utf-8
 
+
+'''
+python setup.py sdist upload
+'''
+
 from setuptools import setup, find_packages
 
 setup(
     name='pydgrid',
-    version='0.1.15',
+    version='0.1.16',
     author='Juan Manuel Mauricio',
     author_email='jmmauricio@us.es',
     description='Python Distribution System Simulator',
