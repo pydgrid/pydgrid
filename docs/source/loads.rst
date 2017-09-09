@@ -8,6 +8,13 @@ Loads
 
 Loads.
 
+
+
+.. image:: ./png/loads.png
+   :width: 600 px
+ 
+
+ 
 .. code:: python
 
    "loads":[

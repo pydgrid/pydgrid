@@ -14,7 +14,10 @@
    id="svg3431"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="New document 4">
+   sodipodi:docname="lines.svg"
+   inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/lines.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
   <defs
      id="defs3433">
     <marker
@@ -53,9 +56,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="115.73186"
-     inkscape:cy="52.39854"
+     inkscape:zoom="5.6"
+     inkscape:cx="115.22539"
+     inkscape:cy="53.023089"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"

@@ -166,14 +166,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="177.16664"
-     inkscape:cy="516.05028"
+     inkscape:zoom="3.959798"
+     inkscape:cx="292.15576"
+     inkscape:cy="551.32827"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:snap-object-midpoints="true"
-     inkscape:snap-center="true"
+     inkscape:snap-object-midpoints="false"
+     inkscape:snap-center="false"
      inkscape:window-width="1920"
      inkscape:window-height="1027"
      inkscape:window-x="0"
@@ -195,7 +195,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -212,12 +212,12 @@
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300" />
     <rect
-       style="color:#000000;fill:#f0ad4e;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       style="color:#000000;fill:#f0ad4e;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect19930-5-6-5-5-1"
        width="75"
-       height="55.000008"
+       height="65"
        x="215"
-       y="477.36218"
+       y="472.36218"
        inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300" />
@@ -839,23 +839,23 @@
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Latin Modern Sans;-inkscape-font-specification:Latin Modern Sans"
-       x="253.66406"
-       y="542.36218"
+       x="252.32726"
+       y="547.36218"
        id="text21458"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300"><tspan
          sodipodi:role="line"
-         x="255"
-         y="542.36218"
-         id="tspan21466"
-         style="font-size:8px;text-align:center;text-anchor:middle">Linea con </tspan><tspan
-         sodipodi:role="line"
-         x="253.66406"
-         y="552.36218"
+         x="252.32726"
+         y="547.36218"
          style="font-size:8px;text-align:center;text-anchor:middle"
-         id="tspan21470">conductores acoplados</tspan></text>
+         id="tspan21470">Coupled conductors</tspan><tspan
+         sodipodi:role="line"
+         x="252.32726"
+         y="557.36218"
+         style="font-size:8px;text-align:center;text-anchor:middle"
+         id="tspan3390">nodes</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 350,482.36218 15,0"
@@ -1340,6 +1340,6 @@
          sodipodi:role="line"
          id="tspan22140"
          x="319.46075"
-         y="627.34052"> </tspan></text>
+         y="627.34052" /></text>
   </g>
 </svg>

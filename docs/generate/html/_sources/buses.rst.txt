@@ -8,7 +8,11 @@ Buses
 
 Buses are composed by nodes. 
 
+.. image:: ./png/buses_nodes.png
+   :width: 600 px
+ 
 
+ 
 
 .. code-block::
 	"buses":[
