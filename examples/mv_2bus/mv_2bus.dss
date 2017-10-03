@@ -1,0 +1,40 @@
+clear
+New circuit.cigre_lv
+
+Set DefaultBaseFrequency=50 
+Edit Vsource.Source Bus1=R0  BasekV=20.0  pu=1 ISC3=30000000 ISC1=15000000
+
+New Load.L_R1 Phases=3 Bus1=R1.1.2.3.4 kV=0.4 kVA=200.000 PF=0.95  vmin=0.2
+New Load.L_R11 Phases=3 Bus1=R11.1.2.3.4 kV=0.4 kVA=15.000 PF=0.95 vmin=0.2
+New Load.L_R15 Phases=3 Bus1=R15.1.2.3.4 kV=0.4  kVA=52.000 PF=0.95 vmin=0.2
+New Load.L_R16 Phases=3 Bus1=R16.1.2.3.4 kV=0.4  kVA=55.000 PF=0.95 vmin=0.2
+New Load.L_R17 Phases=3 Bus1=R17.1.2.3.4 kV=0.4  kVA=35.000 PF=0.95 vmin=0.2
+New Load.L_R18 Phases=3 Bus1=R18.1.2.3.4 kV=0.4  kVA=47.000 PF=0.95  vmin=0.2
+
+
+New LineCode.UG1  nphases=4
+New linecode.606 nphases=3 BaseFreq=60 
+~ rmatrix = (0.4960 | 0.1883 0.4903 | 0.1770 0.1983 0.4898) 
+~ xmatrix = (0.2773 | 0.0204 0.2511 | -0.0089 0.0204 0.2773) 
+~ units=km 
+
+New LineCode.OH3 nphases=4  BaseFreq=50 
+~ rmatrix = (2.065000 | 0.049000 2.065000 | 0.049000 0.049000 2.065000 | 0.049000 0.049000 0.049000 2.065000 )
+~ xmatrix = (0.825000 | 0.505000 0.825000 | 0.462000 0.505000 0.825000 | 0.436000 0.462000 0.505000 0.825000 )
+~ units=km 
+New LineCode.NN1 nphases=3  BaseFreq=50 
+~ rmatrix = (0.871000 | 0.049000 0.871000 | 0.049000 0.049000 0.871000 )
+~ xmatrix = (0.797000 | 0.719000 0.797000 | 0.719000 0.719000 0.797000 )
+~ units=km 
+New LineCode.OH1 nphases=4  BaseFreq=50 
+~ rmatrix = (0.540000 | 0.049000 0.540000 | 0.049000 0.049000 0.540000 | 0.049000 0.049000 0.049000 0.540000 )
+~ xmatrix = (0.777000 | 0.505000 0.777000 | 0.462000 0.505000 0.777000 | 0.436000 0.462000 0.505000 0.777000 )
+~ units=km 
+New LineCode.UG2 nphases=4  BaseFreq=50 
+~ rmatrix = (0.314000 | 0.049000 0.314000 | 0.049000 0.049000 0.314000 | 0.049000 0.049000 0.049000 0.314000 )
+~ xmatrix = (0.762000 | 0.687000 0.762000 | 0.665000 0.687000 0.762000 | 0.687000 0.665000 0.687000 0.762000 )
+~ units=km 
+New LineCode.UG3 nphases=4  BaseFreq=50 
+~ rmatrix = (0.871000 | 0.049000 0.871000 | 0.049000 0.049000 0.871000 | 0.049000 0.049000 0.049000 0.871000 )
+~ xmatrix = (0.797000 | 0.719000 0.797000 | 0.697000 0.719000 0.797000 | 0.719000 0.697000 0.719000 0.797000 )
+~ units=km 

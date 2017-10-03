@@ -64,11 +64,11 @@
 		 "deg": [0, -120, -240], "kV": [11.547, 11.547, 11.547]}
 		],
 "loads":[
-        {"bus":  "R1", "kVA":200.0, "pf": 0.95, "type":"3P+N"},
-        {"bus": "R11", "kVA": 15.0, "pf": 0.95, "type":"3P+N"},
-        {"bus": "R15", "kVA": 52.0, "pf": 0.95, "type":"3P+N"},
-        {"bus": "R16", "kVA": 55.0, "pf": 0.95, "type":"3P+N"},
-        {"bus": "R17", "kVA": 35.0, "pf": 0.95, "type":"3P+N"},
-        {"bus": "R18", "kVA": 47.0, "pf": 0.95, "type":"3P+N"}  
+        {"bus":  "R1", "kVA":200.0, "pf": 0.95, "type":"3P+N", "shape": "Shape_1"},
+        {"bus": "R11", "kVA": 15.0, "pf": 0.95, "type":"3P+N", "shape": "Shape_1"},
+        {"bus": "R15", "kVA": 52.0, "pf": 0.95, "type":"3P+N", "shape": "Shape_1"},
+        {"bus": "R16", "kVA": 55.0, "pf": 0.95, "type":"3P+N", "shape": "Shape_1"},
+        {"bus": "R17", "kVA": 35.0, "pf": 0.95, "type":"3P+N", "shape": "Shape_1"},
+        {"bus": "R18", "kVA": 47.0, "pf": 0.95, "type":"3P+N", "shape": "Shape_1"}  
         ]
 }

@@ -19,9 +19,8 @@ sys1.read() 10.854152202606201
 sys1.pf() 0.5933837890625
 '''
 
-numba.caching.config.CACHE_DIR = '/home/jmmauricio/Documents'
 
-@numba.jit(nopython=True)
+@numba.jit(nopython=True, cache=True,nogil=True)
 def pf_eval(params,ig=0,max_iter=50):
     '''
     
@@ -52,6 +51,7 @@ def pf_eval(params,ig=0,max_iter=50):
     gfeed_bus_nodes = params[ig].gfeed_bus_nodes
     gfeed_currents = params[ig].gfeed_currents
     gfeed_powers = params[ig].gfeed_powers
+    gfeed_i_abcn  = params[ig].gfeed_i_abcn
 
 
     V_node = params[ig].V_node
@@ -67,7 +67,7 @@ def pf_eval(params,ig=0,max_iter=50):
     #print(np.abs(V_unknown))
     for iteration in range(max_iter):
         
-        I_known   = np.copy(I_node[N_v:])
+        I_known   = np.copy(I_node[N_v:])*0.0
         
         if N_pq_3pn > 0:
             for it in range(pq_3pn_int.shape[0]):
@@ -121,12 +121,12 @@ def pf_eval(params,ig=0,max_iter=50):
                 I_abc_pq = np.conj(S_abc_gf/V_abc)
                 I_abc_ir = gfeed_currents[it,0:3]*np.exp(1j*np.angle(V_abc))
                 
-                I_abc = I_abc_pq + I_abc_ir
+                I_abc = I_abc_pq + I_abc_ir + gfeed_i_abcn[it,0:3]
                 
 #                print(abs(I_abc))
                
                 I_known[gfeed_bus_nodes[it][0:3],0] += I_abc
-                I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc)
+                I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc) + gfeed_i_abcn[it,3]
                 
    
     
@@ -151,14 +151,22 @@ def pf_eval(params,ig=0,max_iter=50):
     return V_node,I_node
 
 
-@numba.jit(nopython=True)
+@numba.jit(nopython=True, cache=True)
 def set_load_factor(t,params_pf,params_lshapes,ig=0):
     for it in range(params_lshapes[ig].N_loads):
         time_idx = np.argmax(params_lshapes[ig].time[it,:]>t)
-        params_pf[ig]['pq_1p'][it] = params_pf[ig]['pq_1p_0'][it] *params_lshapes[ig].shapes[it,time_idx] 
-                
+        #params_pf[ig]['pq_1p'][it]  = params_pf[ig]['pq_1p_0'][it]  * params_lshapes[ig].shapes[it,time_idx] 
+        factor = params_lshapes[ig].shapes[it,time_idx]
+        if time_idx>0:
+            factor_1 = params_lshapes[ig].shapes[it,time_idx-1]
+            factor_2 = params_lshapes[ig].shapes[it,time_idx]
+            time_1   = params_lshapes[ig].time[it,time_idx-1]
+            time_2   = params_lshapes[ig].time[it,time_idx]
+            factor = (factor_2-factor_1)/(time_2-time_1)*(t-time_1)+factor_1
+        
+        params_pf[ig]['pq_3pn'][it] = params_pf[ig]['pq_3pn_0'][it] * factor
 
-@numba.jit(nopython=True)
+@numba.jit(nopython=True, cache=True)
 def time_serie(t_ini,t_end,Dt,params_pf,params_lshapes):
     ig = 0
     N_times = int(np.ceil(t_end-t_ini)/Dt)
@@ -178,7 +186,7 @@ def time_serie(t_ini,t_end,Dt,params_pf,params_lshapes):
  
 if __name__ == "__main__":
     import time
-    import pydss
+    import pydgrid
     test ='lveurope'
     if test=='lveurope': 
         t_0 = time.time()

@@ -270,11 +270,15 @@ class grid(object):
         gfeed_bus_nodes_list = []
         gfeed_currents_list = []
         gfeed_powers_list = []
+        gfeed_id_list = []
+        gfeed_i_abcn_list = []
         for grid_feeder in grid_feeders:
             N_gfeeds += 1    
             gfeed_bus_nodes = np.zeros((4,), dtype=np.int32) # every grid feeder considers 4 nodes per bus here
             gfeed_currents = np.zeros((4,), dtype=np.complex128) # every grid feeder considers 4 nodes per bus here
             gfeed_powers = np.zeros((4,), dtype=np.complex128) # every grid feeder considers 4 nodes per bus here
+            gfeed_i_abcn = np.zeros((4,), dtype=np.complex128) # every grid feeder considers 4 nodes per bus here
+
             gf_node_it = 0
             for node in grid_feeder['bus_nodes']:              
                 node_str = '{:s}.{:s}'.format(grid_feeder['bus'],str(node))
@@ -295,11 +299,20 @@ class grid(object):
             gfeed_bus_nodes_list += [gfeed_bus_nodes]
             gfeed_currents_list += [gfeed_currents]
             gfeed_powers_list += [gfeed_powers]
+            gfeed_i_abcn_list += [gfeed_i_abcn]
+            if "id" in grid_feeder:       
+                gfeed_id_list += [grid_feeder["id"]]
+            else:
+                gfeed_id_list += ['{:s}.{:s}'.format('gfeeder',grid_feeder['bus'])]
+                
+            
         self.N_gfeeds = N_gfeeds          
         self.gfeed_bus_nodes = np.array(gfeed_bus_nodes_list)-N_v_known
         self.gfeed_currents  = np.array(gfeed_currents_list)
         self.gfeed_powers    = np.array(gfeed_powers_list)
-
+        self.gfeed_i_abcn    = np.array(gfeed_i_abcn_list)
+        self.gfeed_id    = gfeed_id_list
+        
         N_nz_nodes += it_node_i 
 
 
@@ -510,6 +523,9 @@ class grid(object):
         self.N_nz_nodes = N_nz_nodes
  
         node_sorter = []
+        node_1_sorter = []
+        node_2_sorter = []
+        node_3_sorter = []
         for bus in self.buses:
             N_nodes = 0
             for node in range(10):
@@ -517,10 +533,18 @@ class grid(object):
                 if bus_node in self.nodes:
                     node_idx = self.nodes.index(bus_node) 
                     node_sorter += [node_idx]
+                    if node == 1:
+                        node_1_sorter += [node_idx]
+                    if node == 2:
+                        node_2_sorter += [node_idx]
+                    if node == 3:
+                        node_3_sorter += [node_idx]                        
                     N_nodes += 1
                 bus.update({'N_nodes':N_nodes})
         self.node_sorter = node_sorter
-
+        self.node_1_sorter = node_1_sorter
+        self.node_2_sorter = node_2_sorter
+        self.node_3_sorter = node_3_sorter
         flog.close()        
 
 
@@ -583,12 +607,14 @@ class grid(object):
             self.gfeed_bus_nodes = np.array([[0]])
             self.gfeed_currents = np.array([[0]])
             self.gfeed_powers = np.array([[0]])            
-            
+            self.gfeed_i_abcn = np.array([[0]])            
+           
         dt_pf = np.dtype([
                   ('Y_vv',np.complex128,(N_v,N_v)),('Y_iv',np.complex128,(N_i,N_v)),
                   ('inv_Y_ii',np.complex128,(N_i,N_i)),('Y_ii',np.complex128,(N_i,N_i)),
                   ('I_node',np.complex128,(N_v+N_i,1)),('V_node',np.complex128,(N_v+N_i,1)),
-                  ('N_gfeeds',np.int32),('gfeed_bus_nodes',np.int32,self.gfeed_bus_nodes.shape),('gfeed_currents',np.complex128,self.gfeed_currents.shape),('gfeed_powers',np.complex128,self.gfeed_powers.shape),                    
+                  ('N_gfeeds',np.int32),('gfeed_bus_nodes',np.int32,self.gfeed_bus_nodes.shape),
+                  ('gfeed_currents',np.complex128,self.gfeed_currents.shape),('gfeed_powers',np.complex128,self.gfeed_powers.shape),('gfeed_i_abcn',np.complex128,self.gfeed_i_abcn.shape),                  
                   ('N_pq_1p',np.int32),('pq_1p_int',np.int32,self.pq_1p_int.shape),('pq_1p',np.complex128,self.pq_1p.shape),('pq_1p_0',np.complex128,self.pq_1p.shape),                  
                   ('N_pq_1pn',np.int32),('pq_1pn_int',np.int32,self.pq_1pn_int.shape),('pq_1pn',np.complex128,self.pq_1pn.shape),('pq_1pn_0',np.complex128,self.pq_1pn.shape),
                   ('N_pq_3p',np.int32),('pq_3p_int',np.int32,self.pq_3p_int.shape),('pq_3p',np.complex128,self.pq_3p.shape),('pq_3p_0',np.complex128,self.pq_3p.shape),
@@ -601,7 +627,7 @@ class grid(object):
                                 self.Y_vv,self.Y_iv,
                                 self.inv_Y_ii,self.Y_ii.toarray(), 
                                 self.I_node,self.V_node,
-                                self.N_gfeeds, self.gfeed_bus_nodes,self.gfeed_currents,self.gfeed_powers,
+                                self.N_gfeeds, self.gfeed_bus_nodes,self.gfeed_currents,self.gfeed_powers,self.gfeed_i_abcn,
                                 self.N_pq_1p, self.pq_1p_int,self.pq_1p,np.copy(self.pq_1p),
                                 self.N_pq_1pn, self.pq_1pn_int,self.pq_1pn,np.copy(self.pq_1pn),
                                 self.N_pq_3p, self.pq_3p_int,self.pq_3p,np.copy(self.pq_3p),
