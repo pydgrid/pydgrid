@@ -5,15 +5,20 @@ Created on Sun Mar  5 13:04:45 2017
 
 @author: jmmauricio
 """
-
+import numpy as np
+import json
+import os
 
 def opendss2json(files):
-        trafos_file = './Feeder_1/Transformers.txt'
-        buses_file = './Feeder_1/buscoord.dss'
-        linecodes_file = './Feeder_1/LineCode.txt'
-        lines_file = './Feeder_1/Lines.txt'        
-        loads_file = './Feeder_1/Loads.txt'
-        load_shapes_file = './Feeder_1/LoadShapes.txt' 
+        folder = files['folder']
+        shapes_folder = files['shapes_folder']
+        trafos_file = os.path.join(folder,files['trafos_file'])
+        buses_file  = os.path.join(folder,files['buses_file'])
+        linecodes_file  = os.path.join(folder,files['linecodes_file'])
+        lines_file  = os.path.join(folder,files['lines_file'])       
+        trafos_file  = os.path.join(folder,files['trafos_file'])
+        loads_file  = os.path.join(folder,files['loads_file'])        
+        load_shapes_file  = os.path.join(folder,files['load_shapes_file'])
         line_dict = {}
         
         buses = []
@@ -110,7 +115,7 @@ def opendss2json(files):
         read_list = [('Phases','phases','int',1),
                      ('Bus1','bus','str',1),
                      ('kW','kW','float',1),
-                     ('PF','fp','float',1.0),
+                     ('PF','pf','float',1.0),
                      ('Daily','shape','str',1)]
         
         load_list = []
@@ -223,7 +228,7 @@ def opendss2json(files):
             shape_file = load_shape[((start_idx+len(item_odss))):end_idx]
             shape_file = shape_file.replace('\\','/')
             #fobj_shape = open(, 'r') 
-            values = np.loadtxt(shape_file)
+            values = np.loadtxt(os.path.join(shapes_folder,shape_file))
             t_s = np.linspace(0,npts*interval*3600,npts)
             load_shapes_list += [(shape_id,{'t_s':t_s.tolist(), 'shape':values.tolist()})] #, 't_s':t_s.tolist(), 'shape':values.tolist()}]
         dict_shapes = OrderedDict(load_shapes_list)
@@ -252,3 +257,28 @@ def opendss2json(files):
             
         json_data = open('out.json').read().replace("'",'"')
         data = json.loads(json_data)
+        
+
+
+if __name__ == "__main__":
+    files = 0
+    files_dict = dict(
+    folder = '../../examples/Feeder_1/',
+    trafos_file = 'Transformers.txt',
+    buses_file = 'buscoord.dss',
+    linecodes_file = 'LineCode.txt',
+    lines_file = 'Lines.txt',        
+    loads_file = 'Loads.txt',
+    load_shapes_file = 'LoadShapes.txt', 
+    shapes_folder = '../../examples/Feeder_1/lct_profiles')
+    
+    
+    opendss2json(files_dict)
+    
+    from pydgrid.pydgrid import grid
+    
+    sys1 = grid()
+    sys1.read('out.json')  # Load data
+    sys1.pf()
+    
+    

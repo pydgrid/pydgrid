@@ -37,6 +37,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="pydss 1 documentation" href="index.html"/>
         <link rel="up" title="Elements" href="elements.html"/>
+        <link rel="next" title="Jupyter Notebooks" href="jupyter_notebooks.html"/>
         <link rel="prev" title="Grid feeders" href="grid_feeders.html"/> 
 
   
@@ -94,6 +95,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="elements.html">Elements</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="buses.html">Buses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lines.html">Lines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transformers.html">Transformers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="grid_formers.html">Grid formers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="loads.html">Loads</a></li>
@@ -101,6 +103,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Shunt elements</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_notebooks.html">Jupyter Notebooks</a></li>
 </ul>
 
             
@@ -166,10 +169,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="shunt-elements">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="shunt-elements">
 <h1>Shunt elements<a class="headerlink" href="#shunt-elements" title="Permalink to this headline">¶</a></h1>
 <p>Impedances that can be connected beetwen phases, phases and neutral and phases and neutral and ground.</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="s2">&quot;shunts&quot;</span><span class="p">:[</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;shunts&quot;</span><span class="p">:[</span>
           <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_1&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">]},</span>
           <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_2&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span>  <span class="mf">40.0</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">]}</span>
          <span class="p">]</span>
@@ -193,6 +230,8 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="jupyter_notebooks.html" class="btn btn-neutral float-right" title="Jupyter Notebooks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="grid_feeders.html" class="btn btn-neutral" title="Grid feeders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

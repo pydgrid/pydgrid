@@ -9,10 +9,11 @@ Welcome to pydss's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   
+
    definitions
    elements
-   
+   jupyter_notebooks
+
 
 
 

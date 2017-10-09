@@ -117,7 +117,7 @@ def pf_eval(params,ig=0,max_iter=50):
                 V_abc = V_unknown[gfeed_bus_nodes[it][0:3],0]
                 
                 S_abc_gf = gfeed_powers[it,0:3]
-                
+#                print(S_abc_gf)
                 I_abc_pq = np.conj(S_abc_gf/V_abc)
                 I_abc_ir = gfeed_currents[it,0:3]*np.exp(1j*np.angle(V_abc))
                 

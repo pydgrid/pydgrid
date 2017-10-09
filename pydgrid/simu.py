@@ -25,7 +25,7 @@ class simu(object):  # feed mode
         for item in obj_bess_vsc_feeder.params_bess_vsc_feeder:
             item['ix_0'] = ix_0
             ix_0 += item['N_x']
-            print(obj_bess_vsc_feeder.params_bess_vsc_feeder['ix_0'])
+ 
         N_x = ix_0
         
         dtype = np.dtype([('Dt', 'float64'),
@@ -46,7 +46,7 @@ class simu(object):  # feed mode
     
         self.params_simu= np.rec.array(element_list,dtype=dtype)
         self.params_bess_vsc_feeder = obj_bess_vsc_feeder.params_bess_vsc_feeder
-        self.N_x = N_x
+#        self.N_x = N_x
 
 @numba.jit(nopython=True,cache=True)    
 def ini_eval(t,

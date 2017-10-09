@@ -1,0 +1,6 @@
+New vsource.microturbine30kW_a Bus1=2.1 phases=1 BasekV=0.231 pu=1  Angle= 0.0  ISC3=30000 ISC1=15000
+New vsource.microturbine30kW_b Bus1=2.2 phases=1 BasekV=0.231 pu=1  Angle=-120  ISC3=30000 ISC1=15000
+New vsource.microturbine30kW_c Bus1=2.3 phases=1 BasekV=0.231 pu=1  Angle= 120  ISC3=30000 ISC1=15000
+New vsource.fuellcell10kW_a Bus1=118.1 phases=1 BasekV=0.231 pu=1  Angle= 0.0   ISC3=30000 ISC1=15000 
+New vsource.fuellcell10kW_b Bus1=118.2 phases=1 BasekV=0.231 pu=1  Angle=-120  ISC3=30000 ISC1=15000
+New vsource.fuellcell10kW_c Bus1=118.3 phases=1 BasekV=0.231 pu=1  Angle= 120  ISC3=30000 ISC1=15000

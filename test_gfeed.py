@@ -20,7 +20,7 @@ import time
 #sys1.get_v()
 #sys1.get_i()
 #print('iters: ', sys1.params_pf['iters'])
-#    
+#
 sys1 = grid()
 sys1.read('./examples/luna/luna_gfeeder_dyn.json')  # Load data
 sys1.pf()
@@ -52,5 +52,5 @@ print(simu1.params_bess_vsc_feeder.switch)
 
 fig, ax = plt.subplots()
 
-ax.plot(T,abs(V_nodes))
+ax.plot(T/3600,abs(V_nodes))
 ax.set_ylim((200,300))

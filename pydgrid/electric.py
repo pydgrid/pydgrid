@@ -37,144 +37,116 @@ class bess_vsc_feeder(object):  # feed mode
         
         N_x = 4
         igf = 0
-        
-        ctrl_mode_list = []
-        gfeed_idx_list = []
-        N_x_list = []
-        ix_0_list = []
-        bus_nodes_list = []
-        S_base_list = []
-        V_dc_list = []
-        v_abcn_0_list = []
-        i_abcn_0_list = []
-        v_abcn_list = []
-        i_abcn_list = []
-        S_ref_list = []
-        S_list = []        
-        S_0_list = []
-        x_list =[]
-        f_list = []
-        h_list = []
-        m_list = []
-        N_conductors_list = []
-        thermal_model_list = []
-        soc_max_list = []
-        soc_0_list = []
-        soc_list = []
-        switch_list = []
-        
+        N_s_points = 100
+        elements_data = []
+
         s_times = []
         s_shapes = []
-        s_initials = []
         s_npoints = []
-        s_initial = 0
         for item in bess_vsc_feeders:
-            ctrl_mode_list += [item['ctrl_mode']]
+            ctrl_mode = item['ctrl_mode']
             gfeed_idx = grid.gfeed_id.index(item['id'])
-            gfeed_idx_list += [gfeed_idx]
-            N_x_list += [N_x]
-            ix_0_list    += [0]
+            N_x = N_x
+            ix_0 = 0
             bus_nodes = grid.gfeed_bus_nodes[gfeed_idx]+grid.N_nodes_v
-            bus_nodes_list += [bus_nodes]
-            S_base_list += [item['s_n_kVA']*1000.0]
-            V_dc_list   += [item['V_dc']]
-            v_abcn_0_list = [np.zeros((4,1))]
-            i_abcn_0_list = [np.zeros((4,1))]
-            v_abcn_list = [np.zeros((4,1))]
-            i_abcn_list = [np.zeros((4,1))]
-            S_ref_list = [np.zeros((4,1))]
-            S_list = [np.zeros((4,1))]        
-            S_0_list = [np.zeros((4,1))]
-            x_list   += [np.zeros((N_x,1))]
-            f_list   += [np.zeros((N_x,1))]
-            h_list   += [np.zeros((N_x,1))]            
-            m_list += [np.zeros((4,1))]
-            N_conductors_list += [4]
-            thermal_model_list += [0]
-            soc_max_list += [item['soc_max_kWh']*1000*3600]
-            soc_0_list += [item['soc_ini_kWh']*1000*3600]
-            soc_list += [item['soc_ini_kWh']*1000*3600]
-            switch_list = [1.0]
-           
-                                                
+            S_base = item['s_n_kVA']*1000.0
+            V_dc  = item['V_dc']
+            v_abcn_0 = np.zeros((4,1))
+            i_abcn_0 = np.zeros((4,1))
+            v_abcn = np.zeros((4,1))
+            i_abcn = np.zeros((4,1))
+            S_ref = np.zeros((4,1))
+            S = np.zeros((4,1))        
+            S_0 = np.zeros((4,1))
+            x   = np.zeros((N_x,1))
+            f   = np.zeros((N_x,1))
+            h   = np.zeros((N_x,1))            
+            m = np.zeros((4,1))
+            N_conductors= 4
+            thermal_model = 0
+            soc_max= item['soc_max_kWh']*1000*3600
+            soc_0 = item['soc_ini_kWh']*1000*3600
+            soc= item['soc_ini_kWh']*1000*3600
+            switch = 1.0
+   
+            s_times  =  np.zeros((N_s_points,1))
+            s_shapes =  np.zeros((N_s_points,1),dtype=np.complex128)  
+            s_npoints = 0                                     
             if item["ctrl_mode"]==12:  # pq reference
-                shape = shapes[item["shape"]]
+                shape_id = item['shape']
+                shape = data['shapes'][shape_id]
                 npoints = len(shape['t_s'])
-                s_times = np.array(shape['T_s'])
-                s_shapes = np.array(shape['kW']) + 1j*np.array(shape('kvar'))
-                s_initials  += [s_initial] 
-                s_npoints     += [npoints]
-                s_initial += npoints
-                
+                s_times[0:npoints,0] = np.array(shape['t_s'])
+                s_shapes[0:npoints,0] = (np.array(shape['kW']) + 1j*np.array(shape['kvar']))*1000
+                s_npoints = npoints
+   
             igf += 1
                 
+            elements_data += [
+                             (ctrl_mode,
+                              gfeed_idx,
+                              N_x,
+                              ix_0,
+                              bus_nodes,
+                              S_base,
+                              V_dc,
+                              v_abcn_0,
+                              i_abcn_0,
+                              v_abcn,
+                              i_abcn,
+                              S_ref,
+                              S,      
+                              S_0,
+                              x,
+                              f,
+                              h,           
+                              m,
+                              N_conductors,
+                              thermal_model,
+                              soc_max,
+                              soc_0,
+                              soc,
+                              switch,
+                              s_times,
+                              s_shapes,
+                              s_npoints
+                             )
+                             ]
             
-        elements_data = [
-                        ctrl_mode_list,
-                        gfeed_idx_list,
-                        N_x_list,
-                        ix_0_list,
-                        bus_nodes_list,
-                        S_base_list,
-                        V_dc_list,
-                        v_abcn_0_list,
-                        i_abcn_0_list,
-                        v_abcn_list,
-                        i_abcn_list,
-                        S_ref_list,
-                        S_list,      
-                        S_0_list,
-                        x_list,
-                        f_list,
-                        h_list,           
-                        m_list,
-                        N_conductors_list,
-                        thermal_model_list,
-                        soc_max_list,
-                        soc_0_list,
-                        soc_list,
-                        switch_list,
-                        s_times,
-                        s_shapes,
-                        s_initials,
-                        s_npoints]
-            
- 
-            
+        dtype_list =[ ('ctrl_mode','int32'), # ctrl_mode_list
+                      ('gfeed_idx','int32'), # gfeed_idx_list
+                      ('N_x','int32'),
+                      ('ix_0','int32'), # N_x_list, ix_0_list
+                      ('bus_nodes',np.int32,(4,)),  #  bus_nodes_list
+                      ('S_base',np.float64),  # S_base_list
+                      ('V_dc',np.float64), # V_dc_list
+                      ('v_abcn_0',np.complex128,(4,1)), # 
+                      ('i_abcn_0',np.complex128,(4,1)), # 
+                      ('v_abcn',np.complex128,(4,1)), # 
+                      ('i_abcn',np.complex128,(4,1)), # 
+                      ('S_ref',np.complex128,(4,1)), # S_ref_list
+                      ('S',np.complex128,(4,1)), # S_list
+                      ('S_0',np.complex128,(4,1)), # S_0_list
+                      ('x',np.float64,(N_x,1)),  #  x_list
+                      ('f',np.float64,(N_x,1)),  # f_list
+                      ('h',np.float64,(N_x,1)), # h_list
+                      ('m','float64',(4,1)), # m_list
+                      ('N_conductors','int32'), # N_conductors_list
+                      ('thermal_model','int32'), # thermal_model_list
+                      ('soc_max','float64'), # soc_max_list
+                      ('soc_0','float64'), # soc_0_list
+                      ('soc','float64'),  # soc_list
+                      ('switch','float64'), # switch_list
+                      ('s_times',np.float64,(N_s_points,1)), # s_times
+                      ('s_shapes',np.complex128,(N_s_points,1)), # s_shapes
+                      ('s_npoints','int64')  # s_npoints                       
+                     ]
+        dtype = np.dtype(dtype_list)     
         
-        
-        dtype = np.dtype([('ctrl_mode', 'int32'), # ctrl_mode_list
-                          ('gfeed_idx','int32'), # gfeed_idx_list
-                          ('N_x','int32'),('ix_0','int32'), # N_x_list, ix_0_list
-                          ('bus_nodes',np.int32,(4,)),  #  bus_nodes_list
-                          ('S_base',np.float64),  # S_base_list
-                          ('V_dc',np.float64), # V_dc_list
-                          ('v_abcn_0',np.complex128,(4,1)), # 
-                          ('i_abcn_0',np.complex128,(4,1)), # 
-                          ('v_abcn',np.complex128,(4,1)), # 
-                          ('i_abcn',np.complex128,(4,1)), # 
-                          ('S_ref',np.complex128,(4,1)), # S_ref_list
-                          ('S',np.complex128,(4,1)), # S_list
-                          ('S_0',np.complex128,(4,1)), # S_0_list
-                          ('x',np.float64,(N_x,1)),  #  x_list
-                          ('f',np.float64,(N_x,1)),  # f_list
-                          ('h',np.float64,(N_x,1)), # h_list
-                          ('m','float64',(4,1)), # m_list
-                          ('N_conductors','int32'), # N_conductors_list
-                          ('thermal_model','int32'), # thermal_model_list
-                          ('soc_max','float64'), # soc_max_list
-                          ('soc_0','float64'), # soc_0_list
-                          ('soc','float64'),  # soc_list
-                          ('switch','float64'),
-                          ('t_s',np.float64,(N_x,1))
-                          ('s_ref',np.complex128,(4,1))
-                         ])
-                     
-    
-        self.params_bess_vsc_feeder = np.rec.array(element_list,dtype=dtype) 
+        self.params_bess_vsc_feeder = np.rec.array(elements_data,dtype=dtype) 
         self.N_bess_vsc_feeder = igf
         self.N_x = N_x
-        self.bess_vsc_feeder = element_list
+        self.bess_vsc_feeder = elements_data
 
         
     def thermal_abb(self, file_1,file_2,idxs_1,idxs_2,Rth_sink,tau_sink,T_a,N_switch_sink):       
@@ -306,7 +278,7 @@ class bess_vsc_feeder(object):  # feed mode
         print(string)
         
 
-@numba.jit(nopython=True,cache=True, nogil=True)
+@numba.jit(nopython=True,parallel=True, nogil=True)
 def bess_vsc_feeder_eval(t,mode,params,params_pf,params_simu):
     '''
     
@@ -328,13 +300,14 @@ def bess_vsc_feeder_eval(t,mode,params,params_pf,params_simu):
     '''
 
     N = len(params) # total number of bess_vsc_feeder
-    for it in range(N):
+    for it in numba.prange(N):
         ix_0 = params[it].ix_0
         nodes = params[it].bus_nodes
         N_conductors = params[it].N_conductors
         v_abcn = params_pf[0].V_node[nodes,:]
         i_abcn = params[it].i_abcn
-        gfeed_idx = params[it].gfeed_idx        
+        gfeed_idx = params[it].gfeed_idx    
+        ctrl_mode = params[it].ctrl_mode    
     
     
 # %% initialization    
@@ -370,10 +343,10 @@ def bess_vsc_feeder_eval(t,mode,params,params_pf,params_simu):
  
 # %% derivatives    
         if mode == 1:  # der
-            
+            S_ctrl = params[it].S_ref
     
             S_abcn = v_abcn*np.conj(i_abcn)
-            P_abcn = S_abcn.real
+            P_abcn = S_abcn.real + S_ctrl.real
             if N_conductors == 3:
                 p_ac_total = np.sum(P_abcn[0:3,:])  
             if N_conductors == 4:
@@ -381,14 +354,15 @@ def bess_vsc_feeder_eval(t,mode,params,params_pf,params_simu):
             
             params_simu[0].f[ix_0+0,0] =  -p_ac_total
             
-            bess_control_eval(t,ctrl_mode,1,params)
+            bess_control_eval(t,it,ctrl_mode,1,params)
             
             
 # %% out
         if mode == 3: # out
+            S_ctrl = params[it].S_ref
             ix_0 = params[it].ix_0
             
-            bess_control_eval(t,ctrl_mode,3,params)
+            bess_control_eval(t,it,ctrl_mode,3,params)
             
             params_pf[0].gfeed_powers[gfeed_idx,:]   = params[it].i_abcn_0[:,0]*0.0
             params_pf[0].gfeed_currents[gfeed_idx,:] = params[it].i_abcn_0[:,0]*np.exp(-1j*np.angle(v_abcn))[:,0]*0            
@@ -404,21 +378,28 @@ def bess_vsc_feeder_eval(t,mode,params,params_pf,params_simu):
             params[it].i_abcn[:] = np.copy(params[it].i_abcn_0)*switch
             params_pf[0].gfeed_i_abcn[gfeed_idx,:] = params[it].i_abcn[:,0]
             
+            params_pf[0].gfeed_powers[gfeed_idx,0:3] = S_ctrl[0:3,0]*switch
+            
             params[it].switch = switch
 
 
 
 @numba.jit(nopython=True,cache=True, nogil=True)
-def bess_control_eval(t,ctrl_mode,mode,params):
+def bess_control_eval(t,it,ctrl_mode,mode,params):
     
     if ctrl_mode == 12:
-        bess_pq_profile(t,ctrl_mode,mode,params)
+        bess_pq_profile(t,it,ctrl_mode,mode,params)
     
-@numba.jit(nopython=True,cache=True, nogil=True):   
-def bess_pq_profile(t,ctrl_mode,mode,param):
-    
-    params.
-    
+@numba.jit(nopython=True,cache=True)
+def bess_pq_profile(t,it,ctrl_mode,mode,params):
+    s_shapes = params[it]['s_shapes']
+    s_npoints = params[it]['s_npoints']
+    s_times = params[it]['s_times']
+    time_idx = np.argmax(s_times>t)
+    if time_idx>0:
+        params[it].S_ref[:,0] = s_shapes[time_idx]*np.array([1.0,1.0,1.0,0.0])
+
+            
     
     
     

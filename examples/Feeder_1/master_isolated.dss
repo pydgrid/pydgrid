@@ -1,0 +1,14 @@
+clear
+New circuit.LV_N1_F1
+
+Set DefaultBaseFrequency=50  ! for European system
+
+
+redirect  (Master.txt)
+
+
+New Energymeter.m1 Line.LINE1 2
+solve
+Export Voltages
+Export Currents
+Export Powers
