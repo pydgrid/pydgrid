@@ -4,16 +4,17 @@
 
 language: python
 python:
-  - "3.2"
-  - "3.3"
-  - "3.4"
   - "3.5"
-  - "3.6"
 
 branches:
   only:
     - master
 
+install:
+  - pip install numpy  # Required
+  - pip install .  # Test installation correctness
+  - pip install .[dev]  # Test development dependencies
+  
 script:
   - python setup.py test -vv  # Test against installed code
   - sphinx-build -vW -b html docs/source _HTMLTest  # Test docs build
