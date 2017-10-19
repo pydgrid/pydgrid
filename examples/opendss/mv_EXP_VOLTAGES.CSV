@@ -1,0 +1,3 @@
+Bus, BasekV, Node1, Magnitude1, Angle1, pu1, Node2, Magnitude2, Angle2, pu2, Node3, Magnitude3, Angle3, pu3
+"B1", 20, 1,          0,    0.0,         0, 2,          0,    0.0,         0, 3,          0,    0.0,         0
+"B2", 20, 1,          0,    0.0,         0, 2,          0,    0.0,         0, 3,          0,    0.0,         0

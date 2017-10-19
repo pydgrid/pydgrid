@@ -1,0 +1,46 @@
+Clear
+!Caso 1: Matriz de impedancias 4x4 con Zij distintos
+!Caso general: Carga equilibrada 
+
+!VSOURCE DEFINITION 
+new object=circuit.Caso_L1_M4cs_T1_R1_D3
+~ bus1=Sourcebus1 basekv=20 pu=1.0 Angle=0 Frequency=50 Phases=3 Mvasc3=100000 Mvasc1=125000 !Se parte de una fuente ideal
+
+set tolerance=0.00001
+
+!TRANSFORMER DEFINITION
+New Transformer.T1 Phases=3 Windings=2   XHL=4.0031
+~ wdg=1 bus=SourceBus1   conn=delta  kv=20  kva=150   %r=1.003125 
+~ wdg=2 bus=SourceBus.1.2.3.4  conn=wye   kv=0.4  kva=150  %r=0
+
+
+!LINE CODES DEFINITION
+!El modelo de línea definido es el cable UG1 del modelo Europeo de BT proporcionado por Cigré
+New linecode.unico nphases=4 BaseFreq=50
+~ R1=0.162  X1=0.0813  R0=0.309  X0=2.0784
+
+!LINE DEFINITION
+New Line.Line1  Phases=4 Bus1=Sourcebus.1.2.3.4 Bus2=Final.1.2.3.4  LineCode=unico Length=0.2
+
+!LOAD DEFINITION
+New Load.Load1 Bus1=Final.1.4 Phases=1 Model=1 kv=(0.4 3 sqrt /)  kva=50  Pf=0.85 Vminpu=0.6 Vmaxpu=1.4
+New Load.Load2 Bus1=Final.2.4 Phases=1 Model=1 kv=(0.4 3 sqrt /)   kva=30  Pf=0.85 Vminpu=0.6 Vmaxpu=1.4
+New Load.Load3 Bus1=Final.3.4 Phases=1 Model=1 kv=(0.4 3 sqrt /)   kva=20  Pf=0.85 Vminpu=0.6 Vmaxpu=1.4
+
+!GROUNDING DEFINITION
+New Reactor.RG1  Phases=1 bus1=Sourcebus.4 R=0.0001 X=0 !Puesta a tierra del trafo rígida
+New Reactor.RG2  Phases=1 bus1=Final.4 R=0.0001 X=0 !Puesta a tierra del trafo rígida
+
+!COMMANDS TO SOLVE
+Set Voltagebases=[20 0.4]
+calcv
+Solve
+
+
+!SHOW SOME RESULTS
+Show Voltages LN Nodes
+//Show Voltages LN Seq
+Show Currents Elem
+Show Powers kVA Elem
+//Show Losses
+//Visualize what=currents element=Transformer.T1

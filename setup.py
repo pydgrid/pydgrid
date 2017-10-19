@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pydgrid',
-    version='0.1.16',
+    version='0.1.17',
     author='Juan Manuel Mauricio',
     author_email='jmmauricio@us.es',
     description='Python Distribution System Simulator',

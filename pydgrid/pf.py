@@ -33,6 +33,7 @@ def pf_eval(params,ig=0,max_iter=50):
     N_v = params[ig].N_nodes_v
     N_i = params[ig].N_nodes_i
     N_nz_nodes = params[ig].N_nz_nodes
+    pf_solver = params[ig].pf_solver
     
     N_pq_3pn  = params[ig].N_pq_3pn
     pq_3pn_int = params[ig].pq_3pn_int
@@ -131,7 +132,12 @@ def pf_eval(params,ig=0,max_iter=50):
    
     
         I_aux = ( I_known - Y_iv @ V_known)    
-        V_unknown = inv_Y_ii[:,0:N_nz_nodes] @ I_aux[0:N_nz_nodes,:]
+        if pf_solver == 1:
+            V_unknown = inv_Y_ii[:,0:N_nz_nodes] @ I_aux[0:N_nz_nodes,:]
+        if pf_solver == 2:            
+            V_unknown = lu_sparse_solve(params,I_aux)
+        if pf_solver == 3:  # not working          
+            V_unknown = lu_sparse_solve2(params,I_aux,N_nz_nodes)
         #V_unknown = inv_Y_ii  @ I_aux 
         #V_unknown = np.linalg.solve(Y_ii, I_known - Y_iv @ V_known)
         
@@ -151,37 +157,133 @@ def pf_eval(params,ig=0,max_iter=50):
     return V_node,I_node
 
 
-@numba.jit(nopython=True, cache=True)
-def set_load_factor(t,params_pf,params_lshapes,ig=0):
-    for it in range(params_lshapes[ig].N_loads):
-        time_idx = np.argmax(params_lshapes[ig].time[it,:]>t)
-        #params_pf[ig]['pq_1p'][it]  = params_pf[ig]['pq_1p_0'][it]  * params_lshapes[ig].shapes[it,time_idx] 
-        factor = params_lshapes[ig].shapes[it,time_idx]
-        if time_idx>0:
-            factor_1 = params_lshapes[ig].shapes[it,time_idx-1]
-            factor_2 = params_lshapes[ig].shapes[it,time_idx]
-            time_1   = params_lshapes[ig].time[it,time_idx-1]
-            time_2   = params_lshapes[ig].time[it,time_idx]
-            factor = (factor_2-factor_1)/(time_2-time_1)*(t-time_1)+factor_1
-        
-        params_pf[ig]['pq_3pn'][it] = params_pf[ig]['pq_3pn_0'][it] * factor
+@numba.jit(nopython=True, cache=True, nogil=True)
+def lu_sparse_solve(struct,b_original):
+    '''
+    Pc @ lu_sparse_solve_2(stru,Pr @ b)
+    '''
+    b = b_original[struct[0]['perm_r']]
+    L_indptr = struct[0]['L_indptr']
+    L_indices = struct[0]['L_indices']
+    L_data = struct[0]['L_data']   
+    U_indptr = struct[0]['U_indptr']
+    U_indices = struct[0]['U_indices']
+    U_data = struct[0]['U_data']  
+    
+    y = np.zeros(b.shape, dtype=np.complex128)
+    x = np.zeros(b.shape, dtype=np.complex128)
+
+    N = b.shape[0]
+    for i in range(N):
+        if i == 0:
+            y[0,0] = b[0,0]/L_data[0]
+        if i>0:
+            j = L_indptr[i]
+            k = L_indptr[i+1]
+            sumatoria = L_data[j:k] @ y[L_indices[j:k],0]
+            y[i,0] = (b[i,0] - sumatoria) 
+
+    for i in range(N):
+        if i == 0:
+            j = U_indptr[N-1]
+            x[N-1,0] = y[N-1,0]/U_data[-1]
+        if i>0:
+            ii = N-i-1
+            j = U_indptr[ii]
+            k = U_indptr[ii+1]
+            sumatoria = U_data[j:k] @ x[U_indices[j:k],0]
+            x[ii,0] = (y[ii,0] - sumatoria) / U_data[j]
+            
+    return x[struct[0]['perm_c']]
+
+@numba.jit(nopython=True, cache=True, nogil=True)
+def lu_sparse_solve2(struct,b_original,N_nz_nodes):
+    '''
+    Pc @ lu_sparse_solve_2(stru,Pr @ b)
+    '''
+    b = b_original[struct[0]['perm_r']]
+    L_indptr = struct[0]['L_indptr']
+    L_indices = struct[0]['L_indices']
+    L_data = struct[0]['L_data']   
+    U_indptr = struct[0]['U_indptr']
+    U_indices = struct[0]['U_indices']
+    U_data = struct[0]['U_data']  
+    
+    y = np.zeros(b.shape, dtype=np.complex128)
+    x = np.zeros(b.shape, dtype=np.complex128)
+
+    N = b.shape[0]
+    for i in range(N_nz_nodes+1):
+        if i == 0:
+            y[0,0] = b[0,0]/L_data[0]
+        if i>0:
+            j = L_indptr[i]
+            k = L_indptr[i+1]
+            sumatoria = L_data[j:k] @ y[L_indices[j:k],0]
+            y[i,0] = (b[i,0] - sumatoria) 
+
+    for i in range(N):
+        if i == 0:
+            j = U_indptr[N-1]
+            x[N-1,0] = y[N-1,0]/U_data[-1]
+        if i>0:
+            ii = N-i-1
+            j = U_indptr[ii]
+            k = U_indptr[ii+1]
+            sumatoria = U_data[j:k] @ x[U_indices[j:k],0]
+            x[ii,0] = (y[ii,0] - sumatoria) / U_data[j]
+            
+    return x[struct[0]['perm_c']]
 
 @numba.jit(nopython=True, cache=True)
+def set_load_factor(t,params_pf,params_lshapes,ig=0):
+    interp = 0
+    for it in range(params_lshapes[ig].N_loads):
+        time_idx = np.argmax(params_lshapes[ig].time[:,it]>t)
+        #params_pf[ig]['pq_1p'][it]  = params_pf[ig]['pq_1p_0'][it]  * params_lshapes[ig].shapes[it,time_idx] 
+        factor = params_lshapes[ig].shapes[time_idx,it]
+        if time_idx>0:
+            factor_1 = params_lshapes[ig].shapes[time_idx-1,it]
+            factor_2 = params_lshapes[ig].shapes[time_idx,it]
+            time_1   = params_lshapes[ig].time[time_idx-1,it]
+            time_2   = params_lshapes[ig].time[time_idx,it]
+            if interp == 1:
+                factor = (factor_2-factor_1)/(time_2-time_1)*(t-time_1)+factor_1
+            if interp == 0:
+                factor = factor_1
+        if params_pf[ig]['N_pq_3pn'] > 0:
+            params_pf[ig]['pq_3pn'][it] = params_pf[ig]['pq_3pn_0'][it] * factor
+        if params_pf[ig]['N_pq_3p'] > 0:            
+            params_pf[ig]['pq_3p'][it] = params_pf[ig]['pq_3p_0'][it] * factor
+        if params_pf[ig]['N_pq_1p'] > 0:            
+            params_pf[ig]['pq_1p'][it] = params_pf[ig]['pq_1p_0'][it] * factor
+        if params_pf[ig]['N_pq_1pn'] > 0:            
+            params_pf[ig]['pq_1pn'][it] = params_pf[ig]['pq_1pn_0'][it] * factor
+
+
+@numba.jit(nopython=True, parallel=False)
 def time_serie(t_ini,t_end,Dt,params_pf,params_lshapes):
     ig = 0
     N_times = int(np.ceil(t_end-t_ini)/Dt)
     N_v = params_pf[ig].N_nodes_v
     N_i = params_pf[ig].N_nodes_i
     N_nodes = int(N_v + N_i)
+    T = np.zeros((N_times,1), dtype=np.float64)
     V_nodes = np.zeros((N_times,N_nodes), dtype=np.complex128)
     I_nodes = np.zeros((N_times,N_nodes), dtype=np.complex128)
-    for it in range(N_times):
+    Iters = np.zeros((N_times,1), dtype=np.int32)    
+#    I_lines = self.Y_primitive_sp @ self.A_sp.T @ self.V_results
+    for it in range(N_times):    
+#    for it in numba.prange(N_times):
+
         t=it*Dt
         set_load_factor(t,params_pf,params_lshapes,ig=0) 
         V_node,I_node = pf_eval(params_pf,ig=0,max_iter=50)
+        T[it,:] = t
         V_nodes[it,:] = V_node[:,0]
         I_nodes[it,:] = I_node[:,0]
-    return V_nodes,I_nodes
+        Iters[it,:] = params_pf[0].iters
+    return T,V_nodes,I_nodes,Iters
 
  
 if __name__ == "__main__":

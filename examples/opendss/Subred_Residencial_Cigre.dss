@@ -1,15 +1,15 @@
 Clear
 !Medium voltage 2 bus system
-
+set defaultbasefreq=50
 !VSOURCE DEFINITION 
 new object=circuit.mv
-~ bus1=B1 basekv=20.0 pu=1.0 Angle=0 Frequency=50 Phases=3 Mvasc3=10000000 Mvasc1=12500000 
+~ bus1=B1 basekv=20.0 pu=1.0 Angle=0  Phases=3 Mvasc3=10000000 Mvasc1=12500000 
 
 set tolerance=0.0000001
 
 !LINECODE DEFINITION
 !New Linecode.sub_20kV  nphases=3 R1=0.501 X1=0.716 R0=0.817 X0=1.598 C1=47.493 C0=47.493 units=km baseFreq=50 
-New LineCode.UG_600_Al_XLPE_35kV nphases=3 R1=0.2666 X1=0.3506 R0=0.7207 X0=0.1272 c1=346.368  c0=346.368 units=mi baseFreq=60 normamps=508
+New LineCode.UG_600_Al_XLPE_35kV nphases=3 R1=0.2666 X1=0.3506 R0=0.7207 X0=0.1272 c1=346.368  c0=346.368 units=mi baseFreq=50 normamps=508
 !LINE DEFINITION
 !Main line
 New Line.Line_B1B2    Phases=3 Bus1=B1 Bus2=B2   LineCode=UG_600_Al_XLPE_35kV Length=2.82 units=km

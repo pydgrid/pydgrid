@@ -1,0 +1,29 @@
+Clear
+set defaultbasefreq=50
+
+New Circuit.Stevenson1
+~ bus1=1 Basekv=20  pu=1.0   baseFreq=50  phases=3  mvasc3=1000000000   Mvasc1=1250000000  
+
+! Lines in ohms @ 20 kV
+! EPROTENAX H COMPACT 150 mm2 18/30 kV
+New Line.1-2 phases=3 Bus1=1  Bus2=2  R1 = 0.277  R0 = 0.831  X1 = 0.118  X0 =0.354   C1=250    C0=750  Length=2.0 units=km  baseFreq=50 
+
+
+!  ~ debug=yes
+New load.Bus2  phases=3  bus1=2  kV=(20 3 sqrt /)  kW=(0 3 /)  kvar=(0 3 /)  vmin=0.9
+
+Set voltagebases=[20]
+calcv
+
+set tolerance=0.0000001
+set maxiterations=100
+solve
+
+
+Show Powers kVA Elements
+
+Show Voltage LN Nodes
+! show mismatch
+! Show convergence
+! Show Power kVA
+! dump

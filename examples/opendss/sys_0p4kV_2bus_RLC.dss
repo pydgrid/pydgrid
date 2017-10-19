@@ -1,0 +1,25 @@
+Clear
+
+New Circuit.Stevenson1
+~ bus1=1 Basekv=0.4  pu=1.0  phases=3  mvasc3=1000000   Mvasc1=12500000 
+
+! Lines in ohms @ 0.4 kV
+New Line.1-2 phases=3 Bus1=1  Bus2=2  X1 = 1.188  X0 = 3.669  R1 = 0.580  R0 = 1.465   C1=20000000    C0=200000  Length=0.1 units=km
+
+!  ~ debug=yes
+New load.Bus2  phases=3  bus1=2  kV=(0.4 3 sqrt /)  kW=(0 3 /)  kvar=(0 3 /)  vmin=0.9
+
+Set voltagebases=[0.4]
+calcv
+
+set maxiterations=30
+solve
+
+
+Show Powers kVA Elements
+
+Show Voltage LN Nodes
+show mismatch
+Show convergence
+Show Power kVA
+dump

@@ -1,0 +1,45 @@
+
+CIRCUIT ELEMENT CURRENTS
+
+(Currents into element from indicated bus)
+
+Power Delivery Elements
+
+  Bus Phase    Magnitude, A     Angle      (Real)   +j  (Imag)
+
+ELEMENT = "Vsource.SOURCE"
+1        1                0 /_    0.0 =          0 +j         0
+1        2                0 /_    0.0 =          0 +j         0
+1        3                0 /_    0.0 =          0 +j         0
+------------
+1        0                0 /_    0.0 =          0 +j         0
+1        0                0 /_    0.0 =          0 +j         0
+1        0                0 /_    0.0 =          0 +j         0
+
+ELEMENT = "Line.LINE1"
+1        1                0 /_    0.0 =          0 +j         0
+1        2                0 /_    0.0 =          0 +j         0
+1        3                0 /_    0.0 =          0 +j         0
+------------
+2        1                0 /_    0.0 =          0 +j         0
+2        2                0 /_    0.0 =          0 +j         0
+2        3                0 /_    0.0 =          0 +j         0
+
+= = = = = = = = = = = = = = = = = = =  = = = = = = = = = = =  = =
+
+Power Conversion Elements
+
+  Bus Phase    Magnitude, A     Angle      (Real)   +j  (Imag)
+
+ELEMENT = "Load.LOAD1"
+2        1                0 /_    0.0 =          0 +j         0
+2        0                0 /_    0.0 =          0 +j         0
+
+ELEMENT = "Load.LOAD2"
+2        2                0 /_    0.0 =          0 +j         0
+2        0                0 /_    0.0 =          0 +j         0
+
+ELEMENT = "Load.LOAD3"
+2        3                0 /_    0.0 =          0 +j         0
+2        0                0 /_    0.0 =          0 +j         0
+

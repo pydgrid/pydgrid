@@ -1,0 +1,33 @@
+Clear
+set defaultbasefreq=50
+
+New Circuit.Kersting6p1
+~ bus1=1 Basekv=12.47  pu=1.0406   baseFreq=50  phases=3  mvasc3=1000000000   Mvasc1=1250000000  
+
+! Lines in ohms @ 20 kV
+! EPROTENAX H COMPACT 150 mm2 18/30 kV
+New Line.1-2 phases=3 Bus1=1  Bus2=2  X1 = 1.188  X0 = 3.669  R1 = 0.580  R0 = 1.465  C1 = 41.694  C0 = 19.337 Length=1.0 units=km  baseFreq=50 
+
+
+!  ~ debug=yes
+New load.Bus2  phases=3   Model=0  bus1=2  kV=(12.47 3 sqrt /)   kva=2000 Pf=0.9 vmin=0.7
+
+Set voltagebases=[12.47]
+calcv
+
+set tolerance=0.0000001
+set maxiterations=100
+solve
+
+
+Show Powers kVA Elements
+
+Show Voltage LN Nodes
+Show Currents
+! show mismatch
+! Show convergence
+! Show Power kVA
+dump line.testline debug
+
+select line.1-2 
+show yprim

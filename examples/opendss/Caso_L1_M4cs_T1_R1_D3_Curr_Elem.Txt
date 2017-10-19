@@ -1,0 +1,68 @@
+
+CIRCUIT ELEMENT CURRENTS
+
+(Currents into element from indicated bus)
+
+Power Delivery Elements
+
+  Bus      Phase    Magnitude, A     Angle      (Real)   +j  (Imag)
+
+ELEMENT = "Vsource.SOURCE"
+SOURCEBUS1     1                0 /_    0.0 =          0 +j         0
+SOURCEBUS1     2                0 /_    0.0 =          0 +j         0
+SOURCEBUS1     3                0 /_    0.0 =          0 +j         0
+------------
+SOURCEBUS1     0                0 /_    0.0 =          0 +j         0
+SOURCEBUS1     0                0 /_    0.0 =          0 +j         0
+SOURCEBUS1     0                0 /_    0.0 =          0 +j         0
+
+ELEMENT = "Transformer.T1"
+SOURCEBUS1     1                0 /_    0.0 =          0 +j         0
+SOURCEBUS1     2                0 /_    0.0 =          0 +j         0
+SOURCEBUS1     3                0 /_    0.0 =          0 +j         0
+SOURCEBUS1     0                0 /_    0.0 =          0 +j         0
+------------
+SOURCEBUS      1                0 /_    0.0 =          0 +j         0
+SOURCEBUS      2                0 /_    0.0 =          0 +j         0
+SOURCEBUS      3                0 /_    0.0 =          0 +j         0
+SOURCEBUS      4                0 /_    0.0 =          0 +j         0
+
+ELEMENT = "Line.LINE1"
+SOURCEBUS      1                0 /_    0.0 =          0 +j         0
+SOURCEBUS      2                0 /_    0.0 =          0 +j         0
+SOURCEBUS      3                0 /_    0.0 =          0 +j         0
+SOURCEBUS      4                0 /_    0.0 =          0 +j         0
+------------
+FINAL          1                0 /_    0.0 =          0 +j         0
+FINAL          2                0 /_    0.0 =          0 +j         0
+FINAL          3                0 /_    0.0 =          0 +j         0
+FINAL          4                0 /_    0.0 =          0 +j         0
+
+ELEMENT = "Reactor.RG1"
+SOURCEBUS      4                0 /_    0.0 =          0 +j         0
+------------
+SOURCEBUS      0                0 /_    0.0 =          0 +j         0
+
+ELEMENT = "Reactor.RG2"
+FINAL          4                0 /_    0.0 =          0 +j         0
+------------
+FINAL          0                0 /_    0.0 =          0 +j         0
+
+= = = = = = = = = = = = = = = = = = =  = = = = = = = = = = =  = =
+
+Power Conversion Elements
+
+  Bus      Phase    Magnitude, A     Angle      (Real)   +j  (Imag)
+
+ELEMENT = "Load.LOAD1"
+FINAL          1                0 /_    0.0 =          0 +j         0
+FINAL          4                0 /_    0.0 =          0 +j         0
+
+ELEMENT = "Load.LOAD2"
+FINAL          2                0 /_    0.0 =          0 +j         0
+FINAL          4                0 /_    0.0 =          0 +j         0
+
+ELEMENT = "Load.LOAD3"
+FINAL          3                0 /_    0.0 =          0 +j         0
+FINAL          4                0 /_    0.0 =          0 +j         0
+

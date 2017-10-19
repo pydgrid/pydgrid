@@ -6,18 +6,18 @@ Created on Sun Mar  5 13:04:45 2017
 """
 
 import numpy as np 
+import os
 import numba
-
+import string
 numba.caching.config.CACHE_DIR = '/home/jmmauricio/Documents'
-
+import multiprocessing
 
 import json
 import time
-from pydgrid.pf import pf_eval,set_load_factor
+from pydgrid.pf import pf_eval,set_load_factor,time_serie
 import time
 from scipy import sparse
 from scipy.sparse import linalg as sla
-
 
 
 class grid(object):
@@ -31,54 +31,60 @@ class grid(object):
     def __init__(self):
         
         self.s_radio_scale = 0.01
+        self.s_radio_max = 20
+        self.s_radio_min = 1
+        self.pf_solver = 1
         
-        self.line_codes_lib = {'OH1':[[0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j],
-                      [0.049 + 0.505j, 0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j],
-                      [0.049 + 0.462j, 0.049 + 0.505j, 0.540 + 0.777j, 0.049 + 0.505j],
-                      [0.049 + 0.436j, 0.049 + 0.462j, 0.049 + 0.505j, 0.540 + 0.777j]],
-              'OH2':[[1.369 + 0.812j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j], 
-                     [0.049 + 0.505j, 1.369 + 0.812j, 0.049 + 0.505j, 0.049 + 0.462j], 
-                     [0.049 + 0.462j, 0.049 + 0.505j, 1.369 + 0.812j, 0.049 + 0.505j], 
-                     [0.049 + 0.436j, 0.049 + 0.462j, 0.049 + 0.505j, 1.369 + 0.812j]],
-              'OH3':[[2.065 + 0.825j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j], 
-                     [0.049 + 0.505j, 2.065 + 0.825j, 0.049 + 0.505j, 0.049 + 0.462j], 
-                     [0.049 + 0.462j, 0.049 + 0.505j, 2.065 + 0.825j, 0.049 + 0.505j], 
-                     [0.049 + 0.436j, 0.049 + 0.462j, 0.049 + 0.505j, 2.065 + 0.825j]], 
-              'UG1':[[0.211 + 0.747j, 0.049 + 0.673j, 0.049 + 0.651j, 0.049 + 0.673j], 
-                     [0.049 + 0.673j, 0.211 + 0.747j, 0.049 + 0.673j, 0.049 + 0.651j], 
-                     [0.049 + 0.651j, 0.049 + 0.673j, 0.211 + 0.747j, 0.049 + 0.673j], 
-                     [0.049 + 0.673j, 0.049 + 0.651j, 0.049 + 0.673j, 0.211 + 0.747j]],
-         'UG1_luna':[[0.211 + 0.747j, 0.049 +0.6657j, 0.049 +0.6657j, 0.049 +0.6657j], 
-                     [0.049 +0.6657j, 0.211 + 0.747j, 0.049 +0.6657j, 0.049 +0.6657j], 
-                     [0.049 +0.6657j, 0.049 +0.6657j, 0.211 + 0.747j, 0.049 +0.6657j], 
-                     [0.049 +0.6657j, 0.049 +0.6657j, 0.049 +0.6657j, 0.211 + 0.747j]],
-              'UG2':[[0.314 + 0.762j, 0.049 + 0.687j,0.049 + 0.665j, 0.049 + 0.687j], 
-                     [0.049 + 0.687j, 0.314 + 0.762j, 0.049 + 0.687j, 0.049 + 0.665j], 
-                     [0.049 + 0.665j, 0.049 + 0.687j, 0.314 + 0.762j, 0.049 + 0.687j], 
-                     [0.049 + 0.687j, 0.049 + 0.665j, 0.049 + 0.687j, 0.314 + 0.762j]], 
-              'UG3':[[0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.697j, 0.049 + 0.719j], 
-                     [0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.697j], 
-                     [0.049 + 0.697j, 0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j], 
-                     [0.049 + 0.719j, 0.049 + 0.697j, 0.049 + 0.719j, 0.871 + 0.797j]],
-              'EQU':[[0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.719j, 0.049 + 0.719j], 
-                     [0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.719j], 
-                     [0.049 + 0.719j, 0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j], 
-                     [0.049 + 0.719j, 0.049 + 0.719j, 0.049 + 0.719j, 0.871 + 0.797j]],
-              'TR1':[[0.0032+0.0128j, 0.000j, 0.000j, 0.000j], 
-                     [0.000j, 0.0032+0.0128j, 0.000j, 0.000j], 
-                     [0.000j, 0.000j, 0.0032+0.0128j, 0.000j],  
-                     [0.000j, 0.000j, 0.000j, 0.0032+0.0128j]],
-              'PN1':[[0.314 + 0.762j, 0.049 + 0.687j], 
-                     [0.049 + 0.687j, 0.314 + 0.762j]],
-              'NN1':[[0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.719j], 
-                     [0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j], 
-                     [0.049 + 0.719j, 0.049 + 0.719j, 0.871 + 0.797j]],
-              'UG1w3':[[ 0.28700247+0.16535143j,  0.12115403+0.11008501j,0.12500247+0.06935143j],
-                       [ 0.12115403+0.11008501j,  0.27947509+0.20221853j,0.12115403+0.11008501j],
-                       [ 0.12500247+0.06935143j,  0.12115403+0.11008501j,0.28700247+0.16535143j]],
-              'UG3w3':[[ 1.15225232+0.45874501j, 0.32098424+0.39046333j, 0.33025232+0.35874501j],
-                       [ 0.32098424+0.39046333j, 1.13401861+0.4779049j, 0.32098424+0.39046333j],
-                       [ 0.33025232+0.35874501j,  0.32098424+0.39046333j,1.15225232+0.45874501j]]                       
+        self.line_codes_lib = {
+              'OH1':{'Z': [[0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j],
+                         [0.049 + 0.505j, 0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j],
+                         [0.049 + 0.462j, 0.049 + 0.505j, 0.540 + 0.777j, 0.049 + 0.505j],
+                         [0.049 + 0.436j, 0.049 + 0.462j, 0.049 + 0.505j, 0.540 + 0.777j]]},
+              'OH2':{'Z': [[1.369 + 0.812j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j], 
+                         [0.049 + 0.505j, 1.369 + 0.812j, 0.049 + 0.505j, 0.049 + 0.462j], 
+                         [0.049 + 0.462j, 0.049 + 0.505j, 1.369 + 0.812j, 0.049 + 0.505j], 
+                         [0.049 + 0.436j, 0.049 + 0.462j, 0.049 + 0.505j, 1.369 + 0.812j]]},
+              'OH3':{'Z': [[2.065 + 0.825j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j], 
+                         [0.049 + 0.505j, 2.065 + 0.825j, 0.049 + 0.505j, 0.049 + 0.462j], 
+                         [0.049 + 0.462j, 0.049 + 0.505j, 2.065 + 0.825j, 0.049 + 0.505j], 
+                         [0.049 + 0.436j, 0.049 + 0.462j, 0.049 + 0.505j, 2.065 + 0.825j]]}, 
+              'UG1':{'Z': [[0.211 + 0.747j, 0.049 + 0.673j, 0.049 + 0.651j, 0.049 + 0.673j], 
+                         [0.049 + 0.673j, 0.211 + 0.747j, 0.049 + 0.673j, 0.049 + 0.651j], 
+                         [0.049 + 0.651j, 0.049 + 0.673j, 0.211 + 0.747j, 0.049 + 0.673j], 
+                         [0.049 + 0.673j, 0.049 + 0.651j, 0.049 + 0.673j, 0.211 + 0.747j]]},
+         'UG1_luna':{'Z': [[0.211 + 0.747j, 0.049 +0.6657j, 0.049 +0.6657j, 0.049 +0.6657j], 
+                         [0.049 +0.6657j, 0.211 + 0.747j, 0.049 +0.6657j, 0.049 +0.6657j], 
+                         [0.049 +0.6657j, 0.049 +0.6657j, 0.211 + 0.747j, 0.049 +0.6657j], 
+                         [0.049 +0.6657j, 0.049 +0.6657j, 0.049 +0.6657j, 0.211 + 0.747j]]},
+              'UG2':{'Z': [[0.314 + 0.762j, 0.049 + 0.687j,0.049 + 0.665j, 0.049 + 0.687j], 
+                         [0.049 + 0.687j, 0.314 + 0.762j, 0.049 + 0.687j, 0.049 + 0.665j], 
+                         [0.049 + 0.665j, 0.049 + 0.687j, 0.314 + 0.762j, 0.049 + 0.687j], 
+                         [0.049 + 0.687j, 0.049 + 0.665j, 0.049 + 0.687j, 0.314 + 0.762j]]}, 
+              'UG3':{'Z': [[0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.697j, 0.049 + 0.719j], 
+                         [0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.697j], 
+                         [0.049 + 0.697j, 0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j], 
+                         [0.049 + 0.719j, 0.049 + 0.697j, 0.049 + 0.719j, 0.871 + 0.797j]]},
+              'EQU':{'Z': [[0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.719j, 0.049 + 0.719j], 
+                         [0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.719j], 
+                         [0.049 + 0.719j, 0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j], 
+                         [0.049 + 0.719j, 0.049 + 0.719j, 0.049 + 0.719j, 0.871 + 0.797j]]},
+              'TR1':{'Z': [[0.0032+0.0128j, 0.000j, 0.000j, 0.000j], 
+                         [0.000j, 0.0032+0.0128j, 0.000j, 0.000j], 
+                         [0.000j, 0.000j, 0.0032+0.0128j, 0.000j],  
+                         [0.000j, 0.000j, 0.000j, 0.0032+0.0128j]]},
+              'PN1':{'Z': [[0.314 + 0.762j, 0.049 + 0.687j], 
+                         [0.049 + 0.687j, 0.314 + 0.762j]]},
+              'NN1':{'Z': [[0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.719j], 
+                         [0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j], 
+                         [0.049 + 0.719j, 0.049 + 0.719j, 0.871 + 0.797j]]},
+              'UG1w3':{'Z': [
+                          [ 0.28700247+0.16535143j,  0.12115403+0.11008501j,0.12500247+0.06935143j],
+                          [ 0.12115403+0.11008501j,  0.27947509+0.20221853j,0.12115403+0.11008501j],
+                          [ 0.12500247+0.06935143j,  0.12115403+0.11008501j,0.28700247+0.16535143j]]},
+              'UG3w3':{'Z': [
+                          [ 1.15225232+0.45874501j, 0.32098424+0.39046333j, 0.33025232+0.35874501j],
+                          [ 0.32098424+0.39046333j, 1.13401861+0.4779049j, 0.32098424+0.39046333j],
+                          [ 0.33025232+0.35874501j,  0.32098424+0.39046333j,1.15225232+0.45874501j]]}                       
               }
 
 
@@ -110,6 +116,7 @@ class grid(object):
             self.transformers = transformers
         else:
             transformers = []
+            self.transformers = transformers
             
         if 'line_codes' in data:
             line_codes_data = data['line_codes']
@@ -347,14 +354,26 @@ class grid(object):
                 
         ### Lines to nodes
         for line in lines:
+            line['type'] = 'z'
             line_code = line['code']
             if not line_code in self.line_codes_lib:
                 R = np.array(data['line_codes'][line_code]['R'])
                 X = np.array(data['line_codes'][line_code]['X'])
                 Z = R + 1j*X
-                self.line_codes_lib.update({line_code:Z.tolist()})
-            N_conductors = len(self.line_codes_lib[line['code']])
-            A_n_cols += N_conductors
+                self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
+                
+                if 'B_mu' in data['line_codes'][line_code]:
+                    Y = 1j*np.array(data['line_codes'][line_code]['B_mu'])*1e-6
+                    self.line_codes_lib[line_code].update({'Y':Y.tolist()})
+                    line['type'] = 'pi'
+                    
+                
+            N_conductors = len(self.line_codes_lib[line['code']]['Z'])
+            if line['type'] == 'z':
+                A_n_cols += N_conductors
+            if line['type'] == 'pi':
+                A_n_cols += 3*N_conductors                
+            
             if not 'bus_j_nodes' in line:   # if nodes are not declared, default nodes are created
                 line.update({'bus_j_nodes': list(range(1,N_conductors+1))})
             if not 'bus_k_nodes' in line:   # if nodes are not declared, default nodes are created
@@ -416,24 +435,65 @@ class grid(object):
         ### Lines to Y primitive       
         Z_line_list =  []
         for line in lines:
-            for item in  line['bus_j_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
-                node_j = '{:s}.{:s}'.format(line['bus_j'], str(item))
-                row = nodes.index(node_j)
-                col = it_col
-                A_sp[row,col] = 1
-                A[row,col] = 1
-                #it_col +=1   
-    
-            #for item in  line['bus_k_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
-                node_k = '{:s}.{:s}'.format(line['bus_k'], str(item))
-                row = nodes.index(node_k)
-                col = it_col
-                A_sp[row,col] = -1
-                A[row,col] = -1
-                it_col +=1   
+            if line['type'] == 'z':
+                for item in  line['bus_j_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
+                    node_j = '{:s}.{:s}'.format(line['bus_j'], str(item))
+                    row = nodes.index(node_j)
+                    col = it_col
+                    A_sp[row,col] = 1
+                    A[row,col] = 1
+                    #it_col +=1   
+        
+                #for item in  line['bus_k_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
+                    node_k = '{:s}.{:s}'.format(line['bus_k'], str(item))
+                    row = nodes.index(node_k)
+                    col = it_col
+                    A_sp[row,col] = -1
+                    A[row,col] = -1
+                    it_col +=1   
+                Z = line['m']*0.001*np.array(self.line_codes_lib[line['code']]['Z'])
+                Z_line_list += [line['m']*0.001*np.array(self.line_codes_lib[line['code']]['Z'])]   # Line code to list of Z lines
 
-            Z_line_list += [line['m']*0.001*np.array(self.line_codes_lib[line['code']])]   # Line code to list of Z lines
+            if line['type'] == 'pi':
+                for item in  line['bus_j_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
+                    node_j = '{:s}.{:s}'.format(line['bus_j'], str(item))
+                    row = nodes.index(node_j)
+                    col = it_col
+                    A_sp[row,col] = 1
+                    A[row,col] = 1
+                    #it_col +=1   
+        
+                #for item in  line['bus_k_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
+                    node_k = '{:s}.{:s}'.format(line['bus_k'], str(item))
+                    row = nodes.index(node_k)
+                    col = it_col
+                    A_sp[row,col] = -1
+                    A[row,col] = -1
+                    it_col +=1   
 
+                for item in  line['bus_j_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
+                    node_j = '{:s}.{:s}'.format(line['bus_j'], str(item))
+                    row = nodes.index(node_j)
+                    col = it_col
+                    A_sp[row,col] = 1
+                    A[row,col] = 1
+                    it_col +=1  
+
+                for item in  line['bus_k_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
+                    node_k = '{:s}.{:s}'.format(line['bus_k'], str(item))
+                    row = nodes.index(node_k)
+                    col = it_col
+                    A_sp[row,col] = 1
+                    A[row,col] = 1
+                    it_col +=1  
+                    
+                    
+                Z = line['m']*0.001*np.array(self.line_codes_lib[line['code']]['Z'])
+                Y = np.array(self.line_codes_lib[line['code']]['Y'])
+     
+                Z_line_list += [Z,line['m']*0.001*np.linalg.inv(Y/2),line['m']*0.001*np.linalg.inv(Y/2)]   # Line code to list of Z lines
+                
+                
         ### shunt elements       
         for shunt in shunts:
             node_j_str = str(shunt['bus_nodes'][0])
@@ -545,11 +605,13 @@ class grid(object):
         self.node_1_sorter = node_1_sorter
         self.node_2_sorter = node_2_sorter
         self.node_3_sorter = node_3_sorter
-        flog.close()        
+        flog.close() 
+        
+        self.set_pf()
 
 
 
-    def pf(self):
+    def set_pf(self):
         
         N_i = self.N_nodes_i
         N_v = self.N_nodes_v 
@@ -608,8 +670,12 @@ class grid(object):
             self.gfeed_currents = np.array([[0]])
             self.gfeed_powers = np.array([[0]])            
             self.gfeed_i_abcn = np.array([[0]])            
-           
+
+
+        yii = LUstruct(self.Y_ii)[0]
+            
         dt_pf = np.dtype([
+                  ('pf_solver',np.int32),
                   ('Y_vv',np.complex128,(N_v,N_v)),('Y_iv',np.complex128,(N_i,N_v)),
                   ('inv_Y_ii',np.complex128,(N_i,N_i)),('Y_ii',np.complex128,(N_i,N_i)),
                   ('I_node',np.complex128,(N_v+N_i,1)),('V_node',np.complex128,(N_v+N_i,1)),
@@ -619,11 +685,14 @@ class grid(object):
                   ('N_pq_1pn',np.int32),('pq_1pn_int',np.int32,self.pq_1pn_int.shape),('pq_1pn',np.complex128,self.pq_1pn.shape),('pq_1pn_0',np.complex128,self.pq_1pn.shape),
                   ('N_pq_3p',np.int32),('pq_3p_int',np.int32,self.pq_3p_int.shape),('pq_3p',np.complex128,self.pq_3p.shape),('pq_3p_0',np.complex128,self.pq_3p.shape),
                   ('N_pq_3pn',np.int32),('pq_3pn_int',np.int32,self.pq_3pn_int.shape),('pq_3pn',np.complex128,self.pq_3pn.shape),('pq_3pn_0',np.complex128,self.pq_3pn.shape),
-                  ('N_nodes_v',np.int32),('N_nodes_i',np.int32),('iters',np.int32),('N_nz_nodes',np.int32)] )
-    
+                  ('N_nodes_v',np.int32),('N_nodes_i',np.int32),('iters',np.int32),('N_nz_nodes',np.int32),
+                  ('L_indptr',np.int32,yii['L_indptr'].shape), ('L_indices',np.int32,yii['L_indices'].shape), ('L_data',np.complex128,yii['L_data'].shape),
+                  ('U_indptr',np.int32,yii['U_indptr'].shape), ('U_indices',np.int32,yii['U_indices'].shape), ('U_data',np.complex128,yii['U_data'].shape),
+                  ('perm_r',np.int32, yii['perm_r'].shape),('perm_c',np.int32, yii['perm_c'].shape)] )    
         
         
         params_pf = np.rec.array([(
+                                self.pf_solver,
                                 self.Y_vv,self.Y_iv,
                                 self.inv_Y_ii,self.Y_ii.toarray(), 
                                 self.I_node,self.V_node,
@@ -632,13 +701,19 @@ class grid(object):
                                 self.N_pq_1pn, self.pq_1pn_int,self.pq_1pn,np.copy(self.pq_1pn),
                                 self.N_pq_3p, self.pq_3p_int,self.pq_3p,np.copy(self.pq_3p),
                                 self.N_pq_3pn, self.pq_3pn_int,self.pq_3pn,np.copy(self.pq_3pn),
-                                self.N_nodes_v,self.N_nodes_i,0,self.N_nz_nodes)],dtype=dt_pf)  
-                  
-        V_node,I_node = pf_eval(params_pf) 
+                                self.N_nodes_v,self.N_nodes_i,0,self.N_nz_nodes,
+                                yii['L_indptr'], yii['L_indices'], yii['L_data'],
+                                yii['U_indptr'], yii['U_indices'], yii['U_data'],    
+                                yii['perm_r'],yii['perm_c'])],
+                                dtype=dt_pf)
+        self.params_pf = params_pf 
+            
+    def pf(self):                  
+        V_node,I_node = pf_eval(self.params_pf) 
 
         self.V_node = V_node
         self.I_node = I_node 
-        self.params_pf = params_pf 
+
         
     def read_loads_shapes(self,json_file):        
         self.json_file = json_file
@@ -651,15 +726,44 @@ class grid(object):
         N_loads = 0
         for load in self.loads:
             shape_id = load['shape']
-            ts_list += [self.load_shapes[shape_id]['t_s']]
-            shapes_list += [self.load_shapes[shape_id]['shape']]
-            N_times = len(self.load_shapes[shape_id]['shape'])
-            N_loads += 1                
-        dtype = np.dtype([('time',np.float64,(N_loads,N_times)),
-                          ('shapes',np.float64,(N_loads,N_times)),
+            
+            if 'csv_file' in self.load_shapes[shape_id]:
+                fname = self.load_shapes[shape_id]['csv_file']
+                skiprows = self.load_shapes[shape_id]['header_rows']
+                usecol = a2n(self.load_shapes[shape_id]['t_s_column'])
+                t_s = np.loadtxt(fname,skiprows=skiprows,delimiter=',',usecols=usecol)
+                ts_list += [t_s]
+                usecol = a2n(self.load_shapes[shape_id]['shape_column'])
+                shape = np.loadtxt(fname, skiprows=skiprows,delimiter=',', usecols=usecol)                
+                shapes_list += [shape]       
+                N_times = len(shape)
+            else:
+                ts_list += [np.array(self.load_shapes[shape_id]['t_s'])]
+                shapes_list += [np.array(self.load_shapes[shape_id]['shape'])]
+                N_times = len(self.load_shapes[shape_id]['shape'])
+            
+            N_loads += 1   
+
+        N_times_max = 0
+        for item in ts_list:
+            if len(item) > N_times_max: N_times_max = len(item)
+
+        ts_array = np.zeros((N_times_max,N_loads))
+        shapes_array = np.zeros((N_times_max,N_loads)) 
+        
+        itcol = 0
+        for item_t_s,item_load in zip(ts_list,shapes_list):
+            idx = N_times_max - len(item_t_s)
+            ts_array[idx:,itcol] = item_t_s
+            shapes_array[idx:,itcol] = item_load
+            itcol += 1
+    
+        dtype = np.dtype([('time',np.float64,(N_times_max,N_loads)),
+                          ('shapes',np.float64,(N_times_max,N_loads)),
                           ('N_loads',np.int32), ('N_times',np.int32)])
-        self.params_lshapes = np.rec.array([(np.array(ts_list),np.array(shapes_list),
-                                       N_loads, N_times)],dtype=dtype) 
+        self.params_lshapes = np.rec.array([(ts_array,
+                                             shapes_array,
+                                       N_loads, N_times_max)],dtype=dtype) 
        
     def read_perturbations(self):
         
@@ -712,8 +816,7 @@ class grid(object):
             N_nodes = self.N_nodes
             N_steps =  self.N_steps
             N_outs = int(N_steps*Dt/Dt_out)
-            
-            
+                   
             dt_run = np.dtype([('N_steps', 'int32'),
                                ('Dt',np.float64),
                                ('Dt_out',np.float64),
@@ -728,8 +831,7 @@ class grid(object):
                                ('perturbations_times', np.float64, (self.N_perturbations,1)),
                                ('perturbations_cplx', np.complex128,(self.N_perturbations,4)),
                                ])  
-            
-            
+               
             params_run = np.rec.array([(N_steps,
                                         Dt,
                                         Dt_out,
@@ -748,10 +850,30 @@ class grid(object):
             self.params_run = params_run
             
             run_eval(params_run,self.params_pf,params_vsc,params_secondary)
-            
-#            params_run[0].out_cplx_i = params_run[0].out_cplx_i[0:params_run[0].N_outs,:]
-            
-                
+                        
+    def snapshot(self,t, units='s'):     
+        set_load_factor(t,self.params_pf,self.params_lshapes,ig=0)
+        V_node,I_node = pf_eval(self.params_pf) 
+
+        self.V_node = V_node
+        self.I_node = I_node 
+
+    def timeserie(self,t_ini,t_end,Dt, units='s'):  
+        N_cpu = 8
+        jobs = []
+        for i in range(8):
+            p = multiprocessing.Process(target=time_serie,args=(t_ini,t_end,Dt,self.params_pf,self.params_lshapes))
+            jobs.append(p)
+            p.start()
+        self.jobs = jobs
+ 
+
+#        self.T = T
+#        self.Iters = Iters
+#        self.V_nodes = V_nodes
+#        self.I_nodes = I_nodes 
+        
+
     def get_v(self):
         '''
 		Compute phase-neutral and phase-phase voltages from power flow solution and put values 
@@ -973,7 +1095,12 @@ class grid(object):
         v_bn = ['{:2.2f}'.format(float(item['v_bn'])) for item in self.buses]
         v_cn = ['{:2.2f}'.format(float(item['v_cn'])) for item in self.buses]
         v_ng = ['{:2.2f}'.format(float(item['v_ng'])) for item in self.buses]
-
+        sqrt3=np.sqrt(3)
+        v_an_pu = ['{:2.4f}'.format(float(item['v_an'])/float(item['U_kV'])/1000.0*sqrt3) for item in self.buses]
+        v_bn_pu = ['{:2.4f}'.format(float(item['v_bn'])/float(item['U_kV'])/1000.0*sqrt3) for item in self.buses]
+        v_cn_pu = ['{:2.4f}'.format(float(item['v_cn'])/float(item['U_kV'])/1000.0*sqrt3) for item in self.buses]
+        v_ng_pu = ['{:2.4f}'.format(float(item['v_ng'])/float(item['U_kV'])/1000.0*sqrt3) for item in self.buses]
+        
         deg_an = ['{:2.2f}'.format(float(item['deg_an'])) for item in self.buses]
         deg_bn = ['{:2.2f}'.format(float(item['deg_bn'])) for item in self.buses]
         deg_cn = ['{:2.2f}'.format(float(item['deg_cn'])) for item in self.buses]
@@ -981,6 +1108,7 @@ class grid(object):
         v_ab = [item['v_ab'] for item in self.buses]
         v_bc = [item['v_bc'] for item in self.buses]
         v_ca = [item['v_ca'] for item in self.buses]
+        
         p_a = ['{:2.2f}'.format(float(item['p_a']/1000)) for item in self.buses]
         p_b = ['{:2.2f}'.format(float(item['p_b']/1000)) for item in self.buses]
         p_c = ['{:2.2f}'.format(float(item['p_c']/1000)) for item in self.buses]
@@ -991,16 +1119,17 @@ class grid(object):
         q_abc = ['{:2.2f}'.format(float((item['q_a'] +item['q_b']+item['q_c'])/1000)) for item in self.buses]
         s_radio = []
         s_color = []
+        
         for item in self.buses:
             p_total = item['p_a'] + item['p_b'] + item['p_c']
             q_total = item['q_a'] + item['q_b'] + item['q_c']            
             s_total = np.abs(p_total + 1j*q_total)
             scale = self.s_radio_scale
             s_scaled = abs(np.sqrt(s_total))*scale
-            if s_scaled<10:
-                s_scaled = 10
-            if s_scaled>100.0:
-                s_scaled = 100.0
+            if s_scaled<self.s_radio_min :
+                s_scaled = self.s_radio_min 
+            if s_scaled>self.s_radio_max:
+                s_scaled = self.s_radio_max
             s_radio += [s_scaled]
             if p_total>0.0:
                 s_color += ['red']
@@ -1012,6 +1141,7 @@ class grid(object):
                 
         self.bus_data = dict(x=x, y=y, bus_id=bus_id,
                              v_an=v_an, v_bn=v_bn, v_cn=v_cn, v_ng=v_ng, 
+                             v_an_pu=v_an_pu, v_bn_pu=v_bn_pu, v_cn_pu=v_cn_pu, 
                              deg_an=deg_an, deg_bn=deg_bn, deg_cn=deg_cn, 
                              deg_ng=deg_ng,v_ab=v_ab,v_bc=v_bc,v_ca=v_ca,
                              p_a=p_a,p_b=p_b,p_c=p_c,
@@ -1068,7 +1198,113 @@ class grid(object):
         self.line_data = dict(x_s=x_s, y_s=y_s, line_id=line_id,
                              i_a_m=i_a_m, i_b_m=i_b_m, i_c_m=i_c_m, i_n_m=i_n_m,
                              deg_a=deg_a, deg_b=deg_b, deg_c=deg_c, deg_n=deg_n)
+
+
+        
+        self.transformer_tooltip = '''
+            <div>
+            line id = @trafo_id  
+            <table border="5">
+                <tr >
+                    <td>I<sub>1a</sub> =  @i_1a_m &ang; @deg_1a </td>
+                    <td>I<sub>2a</sub> =  @i_2a_m &ang; @deg_2a </td>
+                </tr>
+                <tr>
+                    <td >I<sub>1b</sub> =  @i_1b_m &ang; @deg_1b </td>
+                    <td >I<sub>2b</sub> =  @i_2b_m &ang; @deg_2b </td>
+                </tr>
+                <tr>
+                    <td >I<sub>1c</sub> =  @i_1c_m &ang; @deg_1c </td>
+                    <td >I<sub>2c</sub> =  @i_2c_m &ang; @deg_2c </td>
+                </tr>
+                <tr>
+                    <td >I<sub>1n</sub> =  @i_1n_m &ang; @deg_1n </td>
+                    <td >I<sub>2n</sub> =  @i_2n_m &ang; @deg_2n </td>
+                </tr>
+            </table>            
+            </div>
+            '''
+            
+        bus_id_to_x = dict(zip(bus_id,x))
+        bus_id_to_y = dict(zip(bus_id,y))
+        
+        x_j = [bus_id_to_x[item['bus_j']] for item in self.transformers]
+        y_j = [bus_id_to_y[item['bus_j']] for item in self.transformers]
+        x_k = [bus_id_to_x[item['bus_k']] for item in self.transformers]
+        y_k = [bus_id_to_y[item['bus_k']] for item in self.transformers]
+        
+        x_s = []
+        y_s = []
+        for line in self.transformers:
+            x_s += [[ bus_id_to_x[line['bus_j']] , bus_id_to_x[line['bus_k']]]]
+            y_s += [[ bus_id_to_y[line['bus_j']] , bus_id_to_y[line['bus_k']]]]
+            
+        i_1a_m = [item['i_1a_m'] for item in self.transformers]
+        i_1b_m = [item['i_1b_m'] for item in self.transformers]
+        i_1c_m = [item['i_1c_m'] for item in self.transformers]
+        i_1n_m = [item['i_1n_m'] for item in self.transformers]
+
+        i_2a_m = [item['i_2a_m'] for item in self.transformers]
+        i_2b_m = [item['i_2b_m'] for item in self.transformers]
+        i_2c_m = [item['i_2c_m'] for item in self.transformers]
+        i_2n_m = [item['i_2n_m'] for item in self.transformers]
+        
+        deg_1a = [item['deg_1a'] for item in self.transformers]
+        deg_1b = [item['deg_1b'] for item in self.transformers]
+        deg_1c = [item['deg_1c'] for item in self.transformers]
+        deg_1n = [item['deg_1n'] for item in self.transformers]    
+        
+        deg_2a = [item['deg_2a'] for item in self.transformers]
+        deg_2b = [item['deg_2b'] for item in self.transformers]
+        deg_2c = [item['deg_2c'] for item in self.transformers]
+        deg_2n = [item['deg_2n'] for item in self.transformers]  
+        
+        trafo_id = ['{:s}-{:s}'.format(item['bus_j'],item['bus_k']) for item in self.transformers]
+#        self.line_data = dict(x_j=x_j, x_k=x_k, y_j=y_j, y_k=y_k, line_id=line_id,
+#                             i_a_m=i_a_m)
+        self.transformer_data = dict(x_s=x_s, y_s=y_s, trafo_id=trafo_id,
+                                     i_1a_m=i_1a_m, i_1b_m=i_1b_m, i_1c_m=i_1c_m, i_1n_m=i_1n_m,
+                                     deg_1a=deg_1a, deg_1b=deg_1b, deg_1c=deg_1c, deg_1n=deg_1n,
+                                     i_2a_m=i_2a_m, i_2b_m=i_2b_m, i_2c_m=i_2c_m, i_2n_m=i_2n_m,
+                                     deg_2a=deg_2a, deg_2b=deg_2b, deg_2c=deg_2c, deg_2n=deg_2n)
+        
         return self.bus_data
+
+
+def LUstruct(A_sp):
+    LU_sp = sla.splu(sparse.csc_matrix(A_sp))
+    L_sp = LU_sp.L
+    U_sp = LU_sp.U
+
+    N = LU_sp.shape[0]
+    Pr = sparse.lil_matrix((N, N))
+    Pr[LU_sp.perm_r, np.arange(N)] = 1
+    Pc = sparse.lil_matrix((N, N))
+    Pc[np.arange(N), LU_sp.perm_c] = 1
+    
+    L_csr = sparse.csr_matrix(L_sp)
+    U_csr = sparse.csr_matrix(U_sp)
+    perm_r = (Pr @ LU_sp.perm_r @ Pr.T).astype(np.int32)
+    
+    struct = np.rec.array([(L_csr.indptr,
+                            L_csr.indices,
+                            L_csr.data,
+                            U_csr.indptr,
+                            U_csr.indices,
+                            U_csr.data,
+                            perm_r,
+                            LU_sp.perm_c)],
+                   dtype=[
+                         ('L_indptr',np.int32,L_csr.indptr.shape),
+                         ('L_indices',np.int32,L_csr.indices.shape),
+                         ('L_data',np.complex128,L_csr.data.shape),
+                         ('U_indptr',np.int32,U_csr.indptr.shape),
+                         ('U_indices',np.int32,U_csr.indices.shape),
+                         ('U_data',np.complex128,U_csr.data.shape),
+                         ('perm_r',np.int32, LU_sp.perm_r.shape),
+                         ('perm_c',np.int32, LU_sp.perm_c.shape)                         
+                     ])
+    return struct
 
 
 def diag_2d_inv(Z_line_list):
@@ -1146,6 +1382,16 @@ def inv_splu(A_sparse):
     lu = sla.splu(A_sparse)
     return lu.solve(np.eye(N,dtype=np.complex128))
     #return np.linalg.inv(A_sparse.toarray())
+
+def n2a(n,b=string.ascii_uppercase):
+   d, m = divmod(n,len(b))
+   return n2a(d-1,b)+b[m] if d else b[m]
+
+def a2n(column):
+    num_column = 0
+    for it in range(len(column)):
+        num_column += ord(column[it])-65+26*it
+    return num_column
 
 def trafo_yprim(S_n,U_1n,U_2n,Z_cc,connection='Dyg11'):
     '''

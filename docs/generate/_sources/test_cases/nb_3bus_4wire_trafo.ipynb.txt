@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "code",
-   "execution_count": 17,
+   "execution_count": 1,
    "metadata": {},
    "outputs": [
     {
@@ -11,7 +11,7 @@
        "\n",
        "    <div class=\"bk-root\">\n",
        "        <a href=\"https://bokeh.pydata.org\" target=\"_blank\" class=\"bk-logo bk-logo-small bk-logo-notebook\"></a>\n",
-       "        <span id=\"fe51ec03-12d8-40da-bd85-7615c8ed6cfb\">Loading BokehJS ...</span>\n",
+       "        <span id=\"e373c0d9-cf7d-4ca1-97a3-d096497005db\">Loading BokehJS ...</span>\n",
        "    </div>"
       ]
      },
@@ -59,7 +59,7 @@
        "\n",
        "  function display_loaded() {\n",
        "    if (root.Bokeh !== undefined) {\n",
-       "      var el = document.getElementById(\"fe51ec03-12d8-40da-bd85-7615c8ed6cfb\");\n",
+       "      var el = document.getElementById(\"e373c0d9-cf7d-4ca1-97a3-d096497005db\");\n",
        "      if (el != null) {\n",
        "        el.textContent = \"BokehJS \" + Bokeh.version + \" successfully loaded.\";\n",
        "      }\n",
@@ -109,9 +109,9 @@
        "      console.log(\"Bokeh: injecting script tag for BokehJS library: \", url);\n",
        "      document.getElementsByTagName(\"head\")[0].appendChild(s);\n",
        "    }\n",
-       "  };var element = document.getElementById(\"fe51ec03-12d8-40da-bd85-7615c8ed6cfb\");\n",
+       "  };var element = document.getElementById(\"e373c0d9-cf7d-4ca1-97a3-d096497005db\");\n",
        "  if (element == null) {\n",
-       "    console.log(\"Bokeh: ERROR: autoload.js configured with elementid 'fe51ec03-12d8-40da-bd85-7615c8ed6cfb' but no matching script tag was found. \")\n",
+       "    console.log(\"Bokeh: ERROR: autoload.js configured with elementid 'e373c0d9-cf7d-4ca1-97a3-d096497005db' but no matching script tag was found. \")\n",
        "    return false;\n",
        "  }\n",
        "\n",
@@ -128,7 +128,7 @@
        "    \n",
        "    function(Bokeh) {\n",
        "      \n",
-       "      document.getElementById(\"fe51ec03-12d8-40da-bd85-7615c8ed6cfb\").textContent = \"BokehJS is loading...\";\n",
+       "      document.getElementById(\"e373c0d9-cf7d-4ca1-97a3-d096497005db\").textContent = \"BokehJS is loading...\";\n",
        "    },\n",
        "    function(Bokeh) {\n",
        "      console.log(\"Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-0.12.7.min.css\");\n",
@@ -153,7 +153,7 @@
        "      console.log(\"Bokeh: BokehJS failed to load within specified timeout.\");\n",
        "      root._bokeh_failed_load = true;\n",
        "    } else if (force !== true) {\n",
-       "      var cell = $(document.getElementById(\"fe51ec03-12d8-40da-bd85-7615c8ed6cfb\")).parents('.cell').data().cell;\n",
+       "      var cell = $(document.getElementById(\"e373c0d9-cf7d-4ca1-97a3-d096497005db\")).parents('.cell').data().cell;\n",
        "      cell.output_area.append_execute_result(NB_LOAD_WARNING)\n",
        "    }\n",
        "\n",
@@ -182,40 +182,9 @@
     "\n",
     "from bokeh.io import output_notebook, show\n",
     "from bokeh.plotting import figure\n",
-    "from bokeh.layouts import gridplot\n",
-    "from bokeh.models import ColumnDataSource, HoverTool, CustomJS\n",
+    "from bokeh.models import ColumnDataSource, HoverTool\n",
     "from bokeh.io import push_notebook\n",
-    "from ipywidgets import interact\n",
     "output_notebook()"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 18,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "import pydgrid"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 19,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "'0.1.7'"
-      ]
-     },
-     "execution_count": 19,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "pydgrid.__version__"
    ]
   },
   {
@@ -229,19 +198,63 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "### Data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data = {\n",
+    "\"transformers\":[\n",
+    "        {\"bus_j\": \"Bus_0\",  \"bus_k\": \"Bus_1\",  \"S_n_kVA\": 150.0, \"U_1_kV\":20.0, \"U_2_kV\":0.4,\n",
+    "        \"R_cc_pu\": 0.01, \"X_cc_pu\":0.04, \"connection\": \"Dyn11\", \n",
+    "        \"conductors_1\": 3, \"conductors_2\": 4}\n",
+    "        ],\n",
+    "\"lines\":[\n",
+    "        {\"bus_j\": \"Bus_1\",  \"bus_k\": \"Bus_2\",  \"code\": \"UG1\", \"m\": 200.0}\n",
+    "        ],\n",
+    "\"buses\":[\n",
+    "        {\"bus\": \"Bus_0\",  \"pos_x\": 0,  \"pos_y\": 0, \"units\": \"m\", \"U_kV\":20.0},\n",
+    "        {\"bus\": \"Bus_1\",  \"pos_x\":10,  \"pos_y\": 0, \"units\": \"m\", \"U_kV\":0.4},\n",
+    "        {\"bus\": \"Bus_2\",  \"pos_x\":200, \"pos_y\": 0, \"units\": \"m\", \"U_kV\":0.4}\n",
+    "        ],\n",
+    "\"grid_formers\":[\n",
+    "        {\"bus\": \"Bus_0\",\n",
+    "        \"bus_nodes\": [1, 2, 3], \"deg\": [0, -120, -240], \n",
+    "        \"kV\": [11.547, 11.547, 11.547]}\n",
+    "        ],\n",
+    "\"grid_feeders\":[{\"bus\": \"Bus_2\",\"bus_nodes\": [1, 2, 3, 4],\n",
+    "                \"kW\": [0, 0, 0], \"kvar\": [0,0,0],\n",
+    "                \"kA\": [0.5,0.5,0.5], \"phi_deg\":[30, 30, 30]}\n",
+    "                ],\n",
+    "\"shunts\":[\n",
+    "        {\"bus\": \"Bus_1\" , \"R\": 0.0001, \"X\": 0.0, \"bus_nodes\": [4,0]},\n",
+    "        {\"bus\": \"Bus_2\" , \"R\": 0.0001, \"X\": 0.0, \"bus_nodes\": [4,0]}\n",
+    "        ]\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "### Execute power flow "
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
+   "execution_count": 3,
    "metadata": {},
    "outputs": [],
    "source": [
     "sys1 = grid()\n",
-    "sys1.read('sys_3bus_4wire_trafo.json')  # Load data\n",
-    "sys1.pf()\n",
-    "sys1.pf()         \n",
+    "sys1.read(data)  # Load data\n",
+    "\n",
+    "sys1.pf()  # solve power flow\n",
+    "        \n",
     "sys1.get_v()      # post process voltages\n",
     "sys1.get_i()      # post process currents"
    ]
@@ -255,7 +268,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 21,
+   "execution_count": 4,
    "metadata": {},
    "outputs": [
     {
@@ -264,7 +277,7 @@
        "\n",
        "\n",
        "    <div class=\"bk-root\">\n",
-       "        <div class=\"bk-plotdiv\" id=\"de5d747f-90af-4814-9ab3-207f8ba04867\"></div>\n",
+       "        <div class=\"bk-plotdiv\" id=\"dda60240-c6fd-47ce-b044-031b9d82b5c1\"></div>\n",
        "    </div>\n",
        "<script type=\"text/javascript\">\n",
        "  \n",
@@ -305,7 +318,7 @@
        "  \n",
        "    function display_loaded() {\n",
        "      if (root.Bokeh !== undefined) {\n",
-       "        var el = document.getElementById(\"de5d747f-90af-4814-9ab3-207f8ba04867\");\n",
+       "        var el = document.getElementById(\"dda60240-c6fd-47ce-b044-031b9d82b5c1\");\n",
        "        if (el != null) {\n",
        "          el.textContent = \"BokehJS \" + Bokeh.version + \" successfully loaded.\";\n",
        "        }\n",
@@ -355,9 +368,9 @@
        "        console.log(\"Bokeh: injecting script tag for BokehJS library: \", url);\n",
        "        document.getElementsByTagName(\"head\")[0].appendChild(s);\n",
        "      }\n",
-       "    };var element = document.getElementById(\"de5d747f-90af-4814-9ab3-207f8ba04867\");\n",
+       "    };var element = document.getElementById(\"dda60240-c6fd-47ce-b044-031b9d82b5c1\");\n",
        "    if (element == null) {\n",
-       "      console.log(\"Bokeh: ERROR: autoload.js configured with elementid 'de5d747f-90af-4814-9ab3-207f8ba04867' but no matching script tag was found. \")\n",
+       "      console.log(\"Bokeh: ERROR: autoload.js configured with elementid 'dda60240-c6fd-47ce-b044-031b9d82b5c1' but no matching script tag was found. \")\n",
        "      return false;\n",
        "    }\n",
        "  \n",
@@ -367,8 +380,8 @@
        "      function(Bokeh) {\n",
        "        (function() {\n",
        "          var fn = function() {\n",
-       "            var docs_json = {\"f4a56514-aff7-4c30-bbb7-6e287b6c9823\":{\"roots\":{\"references\":[{\"attributes\":{\"callback\":null,\"column_names\":[\"x_s\",\"y_s\",\"line_id\",\"i_a_m\",\"i_b_m\",\"i_c_m\",\"i_n_m\",\"deg_a\",\"deg_b\",\"deg_c\",\"deg_n\"],\"data\":{\"deg_a\":[54.64984887934491],\"deg_b\":[-65.35015112065496],\"deg_c\":[174.64984887934517],\"deg_n\":[-153.434948822922],\"i_a_m\":[500.00000000000006],\"i_b_m\":[499.9999999999985],\"i_c_m\":[500.0000000000004],\"i_n_m\":[5.084229945850415e-13],\"line_id\":[\"Bus_1-Bus_2\"],\"x_s\":[[10,200]],\"y_s\":[[0,0]]}},\"id\":\"7153ac6c-90d3-4a4e-8eb2-6bdc5ed5d76f\",\"type\":\"ColumnDataSource\"},{\"attributes\":{\"plot\":null,\"text\":\"3 bus 4 wire system with transformer\"},\"id\":\"8f25362d-18d7-496e-a221-bfbe0b87e6bb\",\"type\":\"Title\"},{\"attributes\":{},\"id\":\"318c7801-3f29-490a-9818-afcf52a532fa\",\"type\":\"SaveTool\"},{\"attributes\":{\"plot\":{\"id\":\"ea837f7f-aa0c-4d4b-a183-8d3c808f1363\",\"subtype\":\"Figure\",\"type\":\"Plot\"},\"ticker\":{\"id\":\"4a975611-4641-45dc-9b02-ce185b3b9887\",\"type\":\"BasicTicker\"}},\"id\":\"de571fcd-41e2-4c20-a086-e45a1222b0ae\",\"type\":\"Grid\"},{\"attributes\":{\"formatter\":{\"id\":\"1da23953-5893-432f-9fdf-b8e8635bdd2d\",\"type\":\"BasicTickFormatter\"},\"plot\":{\"id\":\"ea837f7f-aa0c-4d4b-a183-8d3c808f1363\",\"subtype\":\"Figure\",\"type\":\"Plot\"},\"ticker\":{\"id\":\"bcbc5a80-6652-43b7-ade1-e7d3457b05ac\",\"type\":\"BasicTicker\"}},\"id\":\"f5f734b9-c1ab-472c-a912-d81d4e29afba\",\"type\":\"LinearAxis\"},{\"attributes\":{\"line_alpha\":{\"value\":0.5},\"line_color\":{\"value\":\"red\"},\"line_width\":{\"value\":5},\"xs\":{\"field\":\"x_s\"},\"ys\":{\"field\":\"y_s\"}},\"id\":\"60026915-66cd-4ce9-9314-a35f3f463b37\",\"type\":\"MultiLine\"},{\"attributes\":{\"formatter\":{\"id\":\"ff58c401-e278-4d05-bba8-0a84fb0bc8dc\",\"type\":\"BasicTickFormatter\"},\"plot\":{\"id\":\"ea837f7f-aa0c-4d4b-a183-8d3c808f1363\",\"subtype\":\"Figure\",\"type\":\"Plot\"},\"ticker\":{\"id\":\"4a975611-4641-45dc-9b02-ce185b3b9887\",\"type\":\"BasicTicker\"}},\"id\":\"1e0c3ee8-db34-48b7-817d-8b67eb5bc2f1\",\"type\":\"LinearAxis\"},{\"attributes\":{},\"id\":\"1b4df283-cc25-4077-adcd-a72fede5a3f4\",\"type\":\"WheelZoomTool\"},{\"attributes\":{},\"id\":\"e79b79d9-e685-481e-a7b4-ef47d77682e3\",\"type\":\"ResetTool\"},{\"attributes\":{\"source\":{\"id\":\"95fd272e-32cf-47b2-b058-67dce963a26c\",\"type\":\"ColumnDataSource\"}},\"id\":\"89eee1c6-baa7-465c-a7f3-b0d5be0dae5b\",\"type\":\"CDSView\"},{\"attributes\":{\"data_source\":{\"id\":\"95fd272e-32cf-47b2-b058-67dce963a26c\",\"type\":\"ColumnDataSource\"},\"glyph\":{\"id\":\"7031eae6-8359-4d25-9122-f675ee036a1a\",\"type\":\"Circle\"},\"hover_glyph\":null,\"muted_glyph\":null,\"nonselection_glyph\":{\"id\":\"ae5fa41a-d9da-47d2-bfa1-3dd02e09582a\",\"type\":\"Circle\"},\"selection_glyph\":null,\"view\":{\"id\":\"89eee1c6-baa7-465c-a7f3-b0d5be0dae5b\",\"type\":\"CDSView\"}},\"id\":\"e4ecc997-331a-46b2-84b3-8c804a0b171d\",\"type\":\"GlyphRenderer\"},{\"attributes\":{},\"id\":\"48f71267-d432-4170-afb9-827d4a56db65\",\"type\":\"PanTool\"},{\"attributes\":{},\"id\":\"3ec4112b-ba65-4f18-a32f-87cf5d720fc9\",\"type\":\"HelpTool\"},{\"attributes\":{},\"id\":\"1da23953-5893-432f-9fdf-b8e8635bdd2d\",\"type\":\"BasicTickFormatter\"},{\"attributes\":{},\"id\":\"4a975611-4641-45dc-9b02-ce185b3b9887\",\"type\":\"BasicTicker\"},{\"attributes\":{},\"id\":\"ff58c401-e278-4d05-bba8-0a84fb0bc8dc\",\"type\":\"BasicTickFormatter\"},{\"attributes\":{\"callback\":null,\"renderers\":[{\"id\":\"e4ecc997-331a-46b2-84b3-8c804a0b171d\",\"type\":\"GlyphRenderer\"}],\"tooltips\":\"\\n            <div>\\n            bus_id = @bus_id \\n            <table border=\\\"1\\\">\\n                <tr>\\n                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a </td>\\n                </tr>\\n                      <tr>\\n                      <td> </td> <td>v<sub>ab</sub>= @v_ab V</td>\\n                      </tr>\\n                <tr>\\n                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b </td>\\n                </tr>\\n                      <tr>\\n                      <td> </td><td>v<sub>bc</sub>= @v_bc V</td>\\n                      </tr>\\n                <tr>\\n                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c </td>\\n                </tr> \\n                    <tr>\\n                     <td> </td> <td>v<sub>ca</sub>= @v_ca V</td>\\n                    </tr>\\n               <tr>\\n                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc </td>\\n              </tr>\\n            </table>\\n            </div>\\n            \"},\"id\":\"bc31331c-9045-4130-b837-b54399701069\",\"type\":\"HoverTool\"},{\"attributes\":{},\"id\":\"bcbc5a80-6652-43b7-ade1-e7d3457b05ac\",\"type\":\"BasicTicker\"},{\"attributes\":{\"source\":{\"id\":\"7153ac6c-90d3-4a4e-8eb2-6bdc5ed5d76f\",\"type\":\"ColumnDataSource\"}},\"id\":\"d0902ed5-f90b-43c0-9412-45629de44de2\",\"type\":\"CDSView\"},{\"attributes\":{\"callback\":null},\"id\":\"60e685d5-9c82-418a-b066-f8b509322459\",\"type\":\"DataRange1d\"},{\"attributes\":{\"callback\":null},\"id\":\"a5e22330-d3b4-4057-b7af-da02a85587f1\",\"type\":\"DataRange1d\"},{\"attributes\":{\"dimension\":1,\"plot\":{\"id\":\"ea837f7f-aa0c-4d4b-a183-8d3c808f1363\",\"subtype\":\"Figure\",\"type\":\"Plot\"},\"ticker\":{\"id\":\"bcbc5a80-6652-43b7-ade1-e7d3457b05ac\",\"type\":\"BasicTicker\"}},\"id\":\"96fe882e-1fbf-4d11-8832-edd76e177f62\",\"type\":\"Grid\"},{\"attributes\":{\"below\":[{\"id\":\"1e0c3ee8-db34-48b7-817d-8b67eb5bc2f1\",\"type\":\"LinearAxis\"}],\"left\":[{\"id\":\"f5f734b9-c1ab-472c-a912-d81d4e29afba\",\"type\":\"LinearAxis\"}],\"plot_height\":200,\"renderers\":[{\"id\":\"1e0c3ee8-db34-48b7-817d-8b67eb5bc2f1\",\"type\":\"LinearAxis\"},{\"id\":\"de571fcd-41e2-4c20-a086-e45a1222b0ae\",\"type\":\"Grid\"},{\"id\":\"f5f734b9-c1ab-472c-a912-d81d4e29afba\",\"type\":\"LinearAxis\"},{\"id\":\"96fe882e-1fbf-4d11-8832-edd76e177f62\",\"type\":\"Grid\"},{\"id\":\"b20501f5-60f9-47e9-afd5-f71a92a05968\",\"type\":\"BoxAnnotation\"},{\"id\":\"3237d5cc-4bb4-4a1e-934b-88fd67e8b151\",\"type\":\"GlyphRenderer\"},{\"id\":\"e4ecc997-331a-46b2-84b3-8c804a0b171d\",\"type\":\"GlyphRenderer\"}],\"title\":{\"id\":\"8f25362d-18d7-496e-a221-bfbe0b87e6bb\",\"type\":\"Title\"},\"toolbar\":{\"id\":\"060f62c0-cdcc-4005-b5c5-de66b28a54f1\",\"type\":\"Toolbar\"},\"x_range\":{\"id\":\"a5e22330-d3b4-4057-b7af-da02a85587f1\",\"type\":\"DataRange1d\"},\"x_scale\":{\"id\":\"a6cb6023-7971-4c36-974e-c43e97929bda\",\"type\":\"LinearScale\"},\"y_range\":{\"id\":\"60e685d5-9c82-418a-b066-f8b509322459\",\"type\":\"DataRange1d\"},\"y_scale\":{\"id\":\"2ad33e10-570d-44ce-aba1-60227e659367\",\"type\":\"LinearScale\"}},\"id\":\"ea837f7f-aa0c-4d4b-a183-8d3c808f1363\",\"subtype\":\"Figure\",\"type\":\"Plot\"},{\"attributes\":{\"callback\":null,\"renderers\":[{\"id\":\"3237d5cc-4bb4-4a1e-934b-88fd67e8b151\",\"type\":\"GlyphRenderer\"}],\"tooltips\":\"\\n            <div>\\n            line id = @line_id \\n            <table border=\\\"1\\\">\\n                <tr>\\n                <td>I<sub>a</sub> =  @i_a_m &ang; @deg_a </td>\\n                </tr>\\n                <tr>\\n                <td>I<sub>b</sub> =  @i_b_m &ang; @deg_b </td>\\n                </tr>\\n                <tr>\\n                <td>I<sub>c</sub> =  @i_c_m &ang; @deg_c </td>\\n                </tr>\\n                <tr>\\n                <td>I<sub>n</sub> =  @i_n_m &ang; @deg_n </td>\\n                </tr>\\n            </table>            \\n            </div>\\n            \"},\"id\":\"c458a022-b10b-44b8-a384-bbfef9cf04bf\",\"type\":\"HoverTool\"},{\"attributes\":{\"bottom_units\":\"screen\",\"fill_alpha\":{\"value\":0.5},\"fill_color\":{\"value\":\"lightgrey\"},\"left_units\":\"screen\",\"level\":\"overlay\",\"line_alpha\":{\"value\":1.0},\"line_color\":{\"value\":\"black\"},\"line_dash\":[4,4],\"line_width\":{\"value\":2},\"plot\":null,\"render_mode\":\"css\",\"right_units\":\"screen\",\"top_units\":\"screen\"},\"id\":\"b20501f5-60f9-47e9-afd5-f71a92a05968\",\"type\":\"BoxAnnotation\"},{\"attributes\":{\"active_drag\":\"auto\",\"active_inspect\":\"auto\",\"active_scroll\":\"auto\",\"active_tap\":\"auto\",\"tools\":[{\"id\":\"48f71267-d432-4170-afb9-827d4a56db65\",\"type\":\"PanTool\"},{\"id\":\"1b4df283-cc25-4077-adcd-a72fede5a3f4\",\"type\":\"WheelZoomTool\"},{\"id\":\"b18555f8-2ff4-48ec-bf9c-cac1c4a356f9\",\"type\":\"BoxZoomTool\"},{\"id\":\"318c7801-3f29-490a-9818-afcf52a532fa\",\"type\":\"SaveTool\"},{\"id\":\"e79b79d9-e685-481e-a7b4-ef47d77682e3\",\"type\":\"ResetTool\"},{\"id\":\"3ec4112b-ba65-4f18-a32f-87cf5d720fc9\",\"type\":\"HelpTool\"},{\"id\":\"c458a022-b10b-44b8-a384-bbfef9cf04bf\",\"type\":\"HoverTool\"},{\"id\":\"bc31331c-9045-4130-b837-b54399701069\",\"type\":\"HoverTool\"}]},\"id\":\"060f62c0-cdcc-4005-b5c5-de66b28a54f1\",\"type\":\"Toolbar\"},{\"attributes\":{},\"id\":\"2ad33e10-570d-44ce-aba1-60227e659367\",\"type\":\"LinearScale\"},{\"attributes\":{\"line_alpha\":{\"value\":0.1},\"line_color\":{\"value\":\"#1f77b4\"},\"line_width\":{\"value\":5},\"xs\":{\"field\":\"x_s\"},\"ys\":{\"field\":\"y_s\"}},\"id\":\"6efdfc96-0e9d-443a-ad5a-dc88325926fb\",\"type\":\"MultiLine\"},{\"attributes\":{\"data_source\":{\"id\":\"7153ac6c-90d3-4a4e-8eb2-6bdc5ed5d76f\",\"type\":\"ColumnDataSource\"},\"glyph\":{\"id\":\"60026915-66cd-4ce9-9314-a35f3f463b37\",\"type\":\"MultiLine\"},\"hover_glyph\":null,\"muted_glyph\":null,\"nonselection_glyph\":{\"id\":\"6efdfc96-0e9d-443a-ad5a-dc88325926fb\",\"type\":\"MultiLine\"},\"selection_glyph\":null,\"view\":{\"id\":\"d0902ed5-f90b-43c0-9412-45629de44de2\",\"type\":\"CDSView\"}},\"id\":\"3237d5cc-4bb4-4a1e-934b-88fd67e8b151\",\"type\":\"GlyphRenderer\"},{\"attributes\":{\"callback\":null,\"column_names\":[\"x\",\"y\",\"bus_id\",\"v_an\",\"v_bn\",\"v_cn\",\"v_ng\",\"deg_an\",\"deg_bn\",\"deg_cn\",\"deg_ng\",\"v_ab\",\"v_bc\",\"v_ca\",\"p_a\",\"p_b\",\"p_c\",\"q_a\",\"q_b\",\"q_c\",\"p_abc\",\"q_abc\",\"s_radio\",\"s_color\"],\"data\":{\"bus_id\":[\"Bus_0\",\"Bus_1\",\"Bus_2\"],\"deg_an\":[\"0.00\",\"-31.66\",\"-35.35\"],\"deg_bn\":[\"-120.00\",\"-151.66\",\"-155.35\"],\"deg_cn\":[\"120.00\",\"88.34\",\"84.65\"],\"deg_ng\":[\"0.00\",\"-143.13\",\"-44.79\"],\"p_a\":[\"10.77\",\"0.00\",\"0.00\"],\"p_abc\":[\"32.30\",\"0.00\",\"0.00\"],\"p_b\":[\"10.77\",\"-0.00\",\"0.00\"],\"p_c\":[\"10.77\",\"0.00\",\"0.00\"],\"q_a\":[\"-114.97\",\"-0.00\",\"129.70\"],\"q_abc\":[\"-344.90\",\"0.00\",\"389.10\"],\"q_b\":[\"-114.97\",\"0.00\",\"129.70\"],\"q_c\":[\"-114.97\",\"0.00\",\"129.70\"],\"s_color\":[\"red\",\"blue\",\"red\"],\"s_radio\":[10,10,10],\"v_ab\":[19999.99067499782,436.1112131313212,449.2891904378341],\"v_an\":[\"11547.00\",\"251.79\",\"259.40\"],\"v_bc\":[19999.990674997825,436.11121313132105,449.28919043783407],\"v_bn\":[\"11547.00\",\"251.79\",\"259.40\"],\"v_ca\":[19999.99067499783,436.11121313132105,449.289190437834],\"v_cn\":[\"11547.00\",\"251.79\",\"259.40\"],\"v_ng\":[\"0.00\",\"0.00\",\"0.00\"],\"x\":[0,10,200],\"y\":[0,0,0]}},\"id\":\"95fd272e-32cf-47b2-b058-67dce963a26c\",\"type\":\"ColumnDataSource\"},{\"attributes\":{\"fill_alpha\":{\"value\":0.5},\"fill_color\":{\"value\":\"navy\"},\"line_alpha\":{\"value\":0.5},\"line_color\":{\"value\":\"navy\"},\"size\":{\"units\":\"screen\",\"value\":15},\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"7031eae6-8359-4d25-9122-f675ee036a1a\",\"type\":\"Circle\"},{\"attributes\":{\"overlay\":{\"id\":\"b20501f5-60f9-47e9-afd5-f71a92a05968\",\"type\":\"BoxAnnotation\"}},\"id\":\"b18555f8-2ff4-48ec-bf9c-cac1c4a356f9\",\"type\":\"BoxZoomTool\"},{\"attributes\":{\"fill_alpha\":{\"value\":0.1},\"fill_color\":{\"value\":\"#1f77b4\"},\"line_alpha\":{\"value\":0.1},\"line_color\":{\"value\":\"#1f77b4\"},\"size\":{\"units\":\"screen\",\"value\":15},\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"ae5fa41a-d9da-47d2-bfa1-3dd02e09582a\",\"type\":\"Circle\"},{\"attributes\":{},\"id\":\"a6cb6023-7971-4c36-974e-c43e97929bda\",\"type\":\"LinearScale\"}],\"root_ids\":[\"ea837f7f-aa0c-4d4b-a183-8d3c808f1363\"]},\"title\":\"Bokeh Application\",\"version\":\"0.12.7\"}};\n",
-       "            var render_items = [{\"docid\":\"f4a56514-aff7-4c30-bbb7-6e287b6c9823\",\"elementid\":\"de5d747f-90af-4814-9ab3-207f8ba04867\",\"modelid\":\"ea837f7f-aa0c-4d4b-a183-8d3c808f1363\"}];\n",
+       "            var docs_json = {\"b702c0d1-6af4-49ec-a98e-6dec60c19f29\":{\"roots\":{\"references\":[{\"attributes\":{\"line_alpha\":{\"value\":0.1},\"line_color\":{\"value\":\"#1f77b4\"},\"line_width\":{\"value\":5},\"xs\":{\"field\":\"x_s\"},\"ys\":{\"field\":\"y_s\"}},\"id\":\"64d82f9a-fb44-4be4-a8ed-5ab71966890c\",\"type\":\"MultiLine\"},{\"attributes\":{},\"id\":\"1067803d-ec55-48d7-9304-1742721d9606\",\"type\":\"PanTool\"},{\"attributes\":{\"line_alpha\":{\"value\":0.5},\"line_color\":{\"value\":\"red\"},\"line_width\":{\"value\":5},\"xs\":{\"field\":\"x_s\"},\"ys\":{\"field\":\"y_s\"}},\"id\":\"d40b1035-6040-428f-b47c-2ad8ddc664b8\",\"type\":\"MultiLine\"},{\"attributes\":{},\"id\":\"2adba0ee-a342-4159-9ab6-e822a87a3d28\",\"type\":\"BasicTickFormatter\"},{\"attributes\":{},\"id\":\"42446f4c-c75c-4685-8c56-89834cea4674\",\"type\":\"WheelZoomTool\"},{\"attributes\":{\"overlay\":{\"id\":\"4328a163-abb1-40cc-8ecb-0c022752413c\",\"type\":\"BoxAnnotation\"}},\"id\":\"f690873f-21f2-43f2-9335-dccaf06e6ddb\",\"type\":\"BoxZoomTool\"},{\"attributes\":{},\"id\":\"f280bcef-7fe4-4557-8d48-98c5e75c3a60\",\"type\":\"SaveTool\"},{\"attributes\":{},\"id\":\"08549134-19cf-4b16-92c5-8c7330c93193\",\"type\":\"ResetTool\"},{\"attributes\":{},\"id\":\"5b4dc7c8-9732-4743-bec6-4017dfcdd5bd\",\"type\":\"HelpTool\"},{\"attributes\":{\"callback\":null,\"renderers\":[{\"id\":\"b2d814b2-3c86-4cbf-b175-69d25c6a882b\",\"type\":\"GlyphRenderer\"}],\"tooltips\":\"\\n            <div>\\n            bus_id = @bus_id \\n            <table border=\\\"1\\\">\\n                <tr>\\n                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a </td>\\n                </tr>\\n                      <tr>\\n                      <td> </td> <td>v<sub>ab</sub>= @v_ab V</td>\\n                      </tr>\\n                <tr>\\n                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b </td>\\n                </tr>\\n                      <tr>\\n                      <td> </td><td>v<sub>bc</sub>= @v_bc V</td>\\n                      </tr>\\n                <tr>\\n                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c </td>\\n                </tr> \\n                    <tr>\\n                     <td> </td> <td>v<sub>ca</sub>= @v_ca V</td>\\n                    </tr>\\n               <tr>\\n                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc </td>\\n              </tr>\\n            </table>\\n            </div>\\n            \"},\"id\":\"7c22d503-7177-4917-a2f3-0e41c93b9a18\",\"type\":\"HoverTool\"},{\"attributes\":{\"callback\":null,\"column_names\":[\"x\",\"y\",\"bus_id\",\"v_an\",\"v_bn\",\"v_cn\",\"v_ng\",\"deg_an\",\"deg_bn\",\"deg_cn\",\"deg_ng\",\"v_ab\",\"v_bc\",\"v_ca\",\"p_a\",\"p_b\",\"p_c\",\"q_a\",\"q_b\",\"q_c\",\"p_abc\",\"q_abc\",\"s_radio\",\"s_color\"],\"data\":{\"bus_id\":[\"Bus_0\",\"Bus_1\",\"Bus_2\"],\"deg_an\":[\"0.00\",\"-24.88\",\"-20.49\"],\"deg_bn\":[\"-120.00\",\"-144.87\",\"-140.83\"],\"deg_cn\":[\"120.00\",\"95.16\",\"98.41\"],\"deg_ng\":[\"0.00\",\"-87.08\",\"92.92\"],\"p_a\":[\"-89.46\",\"0.00\",\"101.74\"],\"p_abc\":[\"-269.10\",\"0.00\",\"301.41\"],\"p_b\":[\"-90.35\",\"-0.00\",\"99.99\"],\"p_c\":[\"-89.29\",\"0.00\",\"99.69\"],\"q_a\":[\"73.32\",\"-0.00\",\"-58.74\"],\"q_abc\":[\"218.13\",\"0.00\",\"-174.02\"],\"q_b\":[\"72.61\",\"0.00\",\"-57.73\"],\"q_c\":[\"72.19\",\"0.00\",\"-57.56\"],\"s_color\":[\"green\",\"blue\",\"red\"],\"s_radio\":[10,10,10],\"v_ab\":[19999.99067499782,385.24087176236895,404.1437879343518],\"v_an\":[\"11547.00\",\"222.37\",\"234.96\"],\"v_bc\":[19999.990674997825,385.55935539882563,400.8756254986167],\"v_bn\":[\"11547.00\",\"222.49\",\"230.91\"],\"v_ca\":[19999.99067499783,385.57373912605533,400.6089760532399],\"v_cn\":[\"11547.00\",\"222.77\",\"230.22\"],\"v_ng\":[\"0.00\",\"0.00\",\"0.00\"],\"x\":[0,10,200],\"y\":[0,0,0]}},\"id\":\"ee9630d2-8c9c-44c3-a5b4-f1c797d7a92f\",\"type\":\"ColumnDataSource\"},{\"attributes\":{\"data_source\":{\"id\":\"6d915563-1e66-4daa-9b2c-875a8de179d7\",\"type\":\"ColumnDataSource\"},\"glyph\":{\"id\":\"d40b1035-6040-428f-b47c-2ad8ddc664b8\",\"type\":\"MultiLine\"},\"hover_glyph\":null,\"muted_glyph\":null,\"nonselection_glyph\":{\"id\":\"64d82f9a-fb44-4be4-a8ed-5ab71966890c\",\"type\":\"MultiLine\"},\"selection_glyph\":null,\"view\":{\"id\":\"8762f9f3-be9b-4904-8051-b712e9484d3c\",\"type\":\"CDSView\"}},\"id\":\"2ca47ff4-c06c-43e3-a83c-3cde3dc1f8de\",\"type\":\"GlyphRenderer\"},{\"attributes\":{\"callback\":null,\"renderers\":[{\"id\":\"2ca47ff4-c06c-43e3-a83c-3cde3dc1f8de\",\"type\":\"GlyphRenderer\"}],\"tooltips\":\"\\n            <div>\\n            line id = @line_id \\n            <table border=\\\"1\\\">\\n                <tr>\\n                <td>I<sub>a</sub> =  @i_a_m &ang; @deg_a </td>\\n                </tr>\\n                <tr>\\n                <td>I<sub>b</sub> =  @i_b_m &ang; @deg_b </td>\\n                </tr>\\n                <tr>\\n                <td>I<sub>c</sub> =  @i_c_m &ang; @deg_c </td>\\n                </tr>\\n                <tr>\\n                <td>I<sub>n</sub> =  @i_n_m &ang; @deg_n </td>\\n                </tr>\\n            </table>            \\n            </div>\\n            \"},\"id\":\"6a16e989-a54e-43bc-adac-9f84f51f9068\",\"type\":\"HoverTool\"},{\"attributes\":{\"callback\":null,\"column_names\":[\"x_s\",\"y_s\",\"line_id\",\"i_a_m\",\"i_b_m\",\"i_c_m\",\"i_n_m\",\"deg_a\",\"deg_b\",\"deg_c\",\"deg_n\"],\"data\":{\"deg_a\":[-170.4911950530415],\"deg_b\":[69.16795537382151],\"deg_c\":[-51.59423685855887],\"deg_n\":[79.22082633079766],\"i_a_m\":[500.00000000000006],\"i_b_m\":[500.00000000000045],\"i_c_m\":[500.00000000000057],\"i_n_m\":[21.356696006799822],\"line_id\":[\"Bus_1-Bus_2\"],\"x_s\":[[10,200]],\"y_s\":[[0,0]]}},\"id\":\"6d915563-1e66-4daa-9b2c-875a8de179d7\",\"type\":\"ColumnDataSource\"},{\"attributes\":{\"plot\":null,\"text\":\"3 bus 4 wire system with transformer\"},\"id\":\"28585d4b-aea5-4437-937e-ddf9de0cdf73\",\"type\":\"Title\"},{\"attributes\":{\"below\":[{\"id\":\"3ddbf43c-8e90-464d-b16c-ad5ba5495bb1\",\"type\":\"LinearAxis\"}],\"left\":[{\"id\":\"83e91f9d-4962-4a62-b113-a7bcf8b4e40a\",\"type\":\"LinearAxis\"}],\"plot_height\":400,\"renderers\":[{\"id\":\"3ddbf43c-8e90-464d-b16c-ad5ba5495bb1\",\"type\":\"LinearAxis\"},{\"id\":\"cb40d40f-5796-4c96-8fde-eb5fe813ef38\",\"type\":\"Grid\"},{\"id\":\"83e91f9d-4962-4a62-b113-a7bcf8b4e40a\",\"type\":\"LinearAxis\"},{\"id\":\"667ee06d-3806-490a-a347-aa364404515a\",\"type\":\"Grid\"},{\"id\":\"4328a163-abb1-40cc-8ecb-0c022752413c\",\"type\":\"BoxAnnotation\"},{\"id\":\"2ca47ff4-c06c-43e3-a83c-3cde3dc1f8de\",\"type\":\"GlyphRenderer\"},{\"id\":\"b2d814b2-3c86-4cbf-b175-69d25c6a882b\",\"type\":\"GlyphRenderer\"}],\"title\":{\"id\":\"28585d4b-aea5-4437-937e-ddf9de0cdf73\",\"type\":\"Title\"},\"toolbar\":{\"id\":\"6a59db5b-179d-4668-9043-5d6c9ca348fa\",\"type\":\"Toolbar\"},\"x_range\":{\"id\":\"197672a7-f884-4a40-a415-7db32f8efaea\",\"type\":\"DataRange1d\"},\"x_scale\":{\"id\":\"dd1f47c7-527f-4c9c-afd1-cf37c7016f26\",\"type\":\"LinearScale\"},\"y_range\":{\"id\":\"70d9340c-18f0-4c78-989e-f6b1785f8c13\",\"type\":\"DataRange1d\"},\"y_scale\":{\"id\":\"b64b99a4-1db5-4ff2-bb72-f775384b9647\",\"type\":\"LinearScale\"}},\"id\":\"b0aad5eb-df20-43e1-8810-84d7c2f329ba\",\"subtype\":\"Figure\",\"type\":\"Plot\"},{\"attributes\":{},\"id\":\"ae921e23-f34d-4512-9564-a3ee878c7f09\",\"type\":\"BasicTickFormatter\"},{\"attributes\":{\"callback\":null},\"id\":\"197672a7-f884-4a40-a415-7db32f8efaea\",\"type\":\"DataRange1d\"},{\"attributes\":{\"fill_alpha\":{\"value\":0.1},\"fill_color\":{\"value\":\"#1f77b4\"},\"line_alpha\":{\"value\":0.1},\"line_color\":{\"value\":\"#1f77b4\"},\"size\":{\"units\":\"screen\",\"value\":15},\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"707d2359-09bc-457b-84e9-386356b7a373\",\"type\":\"Circle\"},{\"attributes\":{\"data_source\":{\"id\":\"ee9630d2-8c9c-44c3-a5b4-f1c797d7a92f\",\"type\":\"ColumnDataSource\"},\"glyph\":{\"id\":\"ec1d4014-bead-4c15-a3e3-cb064f533b4d\",\"type\":\"Circle\"},\"hover_glyph\":null,\"muted_glyph\":null,\"nonselection_glyph\":{\"id\":\"707d2359-09bc-457b-84e9-386356b7a373\",\"type\":\"Circle\"},\"selection_glyph\":null,\"view\":{\"id\":\"fccb8d68-3046-4fca-a22a-8c3627b17a37\",\"type\":\"CDSView\"}},\"id\":\"b2d814b2-3c86-4cbf-b175-69d25c6a882b\",\"type\":\"GlyphRenderer\"},{\"attributes\":{\"active_drag\":\"auto\",\"active_inspect\":\"auto\",\"active_scroll\":\"auto\",\"active_tap\":\"auto\",\"tools\":[{\"id\":\"1067803d-ec55-48d7-9304-1742721d9606\",\"type\":\"PanTool\"},{\"id\":\"42446f4c-c75c-4685-8c56-89834cea4674\",\"type\":\"WheelZoomTool\"},{\"id\":\"f690873f-21f2-43f2-9335-dccaf06e6ddb\",\"type\":\"BoxZoomTool\"},{\"id\":\"f280bcef-7fe4-4557-8d48-98c5e75c3a60\",\"type\":\"SaveTool\"},{\"id\":\"08549134-19cf-4b16-92c5-8c7330c93193\",\"type\":\"ResetTool\"},{\"id\":\"5b4dc7c8-9732-4743-bec6-4017dfcdd5bd\",\"type\":\"HelpTool\"},{\"id\":\"6a16e989-a54e-43bc-adac-9f84f51f9068\",\"type\":\"HoverTool\"},{\"id\":\"7c22d503-7177-4917-a2f3-0e41c93b9a18\",\"type\":\"HoverTool\"}]},\"id\":\"6a59db5b-179d-4668-9043-5d6c9ca348fa\",\"type\":\"Toolbar\"},{\"attributes\":{\"source\":{\"id\":\"ee9630d2-8c9c-44c3-a5b4-f1c797d7a92f\",\"type\":\"ColumnDataSource\"}},\"id\":\"fccb8d68-3046-4fca-a22a-8c3627b17a37\",\"type\":\"CDSView\"},{\"attributes\":{\"fill_alpha\":{\"value\":0.5},\"fill_color\":{\"value\":\"navy\"},\"line_alpha\":{\"value\":0.5},\"line_color\":{\"value\":\"navy\"},\"size\":{\"units\":\"screen\",\"value\":15},\"x\":{\"field\":\"x\"},\"y\":{\"field\":\"y\"}},\"id\":\"ec1d4014-bead-4c15-a3e3-cb064f533b4d\",\"type\":\"Circle\"},{\"attributes\":{},\"id\":\"dd1f47c7-527f-4c9c-afd1-cf37c7016f26\",\"type\":\"LinearScale\"},{\"attributes\":{\"callback\":null},\"id\":\"70d9340c-18f0-4c78-989e-f6b1785f8c13\",\"type\":\"DataRange1d\"},{\"attributes\":{},\"id\":\"b64b99a4-1db5-4ff2-bb72-f775384b9647\",\"type\":\"LinearScale\"},{\"attributes\":{\"source\":{\"id\":\"6d915563-1e66-4daa-9b2c-875a8de179d7\",\"type\":\"ColumnDataSource\"}},\"id\":\"8762f9f3-be9b-4904-8051-b712e9484d3c\",\"type\":\"CDSView\"},{\"attributes\":{\"formatter\":{\"id\":\"2adba0ee-a342-4159-9ab6-e822a87a3d28\",\"type\":\"BasicTickFormatter\"},\"plot\":{\"id\":\"b0aad5eb-df20-43e1-8810-84d7c2f329ba\",\"subtype\":\"Figure\",\"type\":\"Plot\"},\"ticker\":{\"id\":\"d7b0858e-031e-4d26-8dd5-78ad06d996c5\",\"type\":\"BasicTicker\"}},\"id\":\"3ddbf43c-8e90-464d-b16c-ad5ba5495bb1\",\"type\":\"LinearAxis\"},{\"attributes\":{},\"id\":\"d7b0858e-031e-4d26-8dd5-78ad06d996c5\",\"type\":\"BasicTicker\"},{\"attributes\":{\"plot\":{\"id\":\"b0aad5eb-df20-43e1-8810-84d7c2f329ba\",\"subtype\":\"Figure\",\"type\":\"Plot\"},\"ticker\":{\"id\":\"d7b0858e-031e-4d26-8dd5-78ad06d996c5\",\"type\":\"BasicTicker\"}},\"id\":\"cb40d40f-5796-4c96-8fde-eb5fe813ef38\",\"type\":\"Grid\"},{\"attributes\":{\"formatter\":{\"id\":\"ae921e23-f34d-4512-9564-a3ee878c7f09\",\"type\":\"BasicTickFormatter\"},\"plot\":{\"id\":\"b0aad5eb-df20-43e1-8810-84d7c2f329ba\",\"subtype\":\"Figure\",\"type\":\"Plot\"},\"ticker\":{\"id\":\"0a5dbfdd-2aab-4b06-8753-9f5ffeb15317\",\"type\":\"BasicTicker\"}},\"id\":\"83e91f9d-4962-4a62-b113-a7bcf8b4e40a\",\"type\":\"LinearAxis\"},{\"attributes\":{},\"id\":\"0a5dbfdd-2aab-4b06-8753-9f5ffeb15317\",\"type\":\"BasicTicker\"},{\"attributes\":{\"dimension\":1,\"plot\":{\"id\":\"b0aad5eb-df20-43e1-8810-84d7c2f329ba\",\"subtype\":\"Figure\",\"type\":\"Plot\"},\"ticker\":{\"id\":\"0a5dbfdd-2aab-4b06-8753-9f5ffeb15317\",\"type\":\"BasicTicker\"}},\"id\":\"667ee06d-3806-490a-a347-aa364404515a\",\"type\":\"Grid\"},{\"attributes\":{\"bottom_units\":\"screen\",\"fill_alpha\":{\"value\":0.5},\"fill_color\":{\"value\":\"lightgrey\"},\"left_units\":\"screen\",\"level\":\"overlay\",\"line_alpha\":{\"value\":1.0},\"line_color\":{\"value\":\"black\"},\"line_dash\":[4,4],\"line_width\":{\"value\":2},\"plot\":null,\"render_mode\":\"css\",\"right_units\":\"screen\",\"top_units\":\"screen\"},\"id\":\"4328a163-abb1-40cc-8ecb-0c022752413c\",\"type\":\"BoxAnnotation\"}],\"root_ids\":[\"b0aad5eb-df20-43e1-8810-84d7c2f329ba\"]},\"title\":\"Bokeh Application\",\"version\":\"0.12.7\"}};\n",
+       "            var render_items = [{\"docid\":\"b702c0d1-6af4-49ec-a98e-6dec60c19f29\",\"elementid\":\"dda60240-c6fd-47ce-b044-031b9d82b5c1\",\"modelid\":\"b0aad5eb-df20-43e1-8810-84d7c2f329ba\"}];\n",
        "            \n",
        "            Bokeh.embed.embed_items(docs_json, render_items);\n",
        "          };\n",
@@ -393,7 +406,7 @@
        "        console.log(\"Bokeh: BokehJS failed to load within specified timeout.\");\n",
        "        root._bokeh_failed_load = true;\n",
        "      } else if (force !== true) {\n",
-       "        var cell = $(document.getElementById(\"de5d747f-90af-4814-9ab3-207f8ba04867\")).parents('.cell').data().cell;\n",
+       "        var cell = $(document.getElementById(\"dda60240-c6fd-47ce-b044-031b9d82b5c1\")).parents('.cell').data().cell;\n",
        "        cell.output_area.append_execute_result(NB_LOAD_WARNING)\n",
        "      }\n",
        "  \n",
@@ -419,8 +432,8 @@
    "source": [
     "sys1.bokeh_tools()\n",
     "\n",
-    "p = figure(width=600, height=200,\n",
-    "           title='3 bus 4 wire system with transformer') #, x_range=[-200,200], y_range=[-350, 50])\n",
+    "p = figure(width=600, height=400,\n",
+    "           title='3 bus 4 wire system with transformer') \n",
     "\n",
     "# lines:\n",
     "source = ColumnDataSource(sys1.line_data)\n",
@@ -444,7 +457,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 22,
+   "execution_count": 5,
    "metadata": {},
    "outputs": [
     {
@@ -462,31 +475,119 @@
        "  'conductors_1': 3,\n",
        "  'conductors_2': 4,\n",
        "  'connection': 'Dyn11',\n",
-       "  'deg_1a': 84.649848879345072,\n",
-       "  'deg_1b': -35.35015112065512,\n",
-       "  'deg_1c': -155.35015112065494,\n",
-       "  'deg_1n': 90.0,\n",
-       "  'deg_2a': -125.3501511206549,\n",
-       "  'deg_2b': 114.64984887934516,\n",
-       "  'deg_2c': -5.3501511206549273,\n",
-       "  'deg_2n': -33.690067525979785,\n",
-       "  'i_1a_m': 10.000000000000014,\n",
-       "  'i_1b_m': 9.9999999999999751,\n",
-       "  'i_1c_m': 9.9999999999999556,\n",
-       "  'i_1n_m': 2.1316282072803006e-14,\n",
-       "  'i_2a_m': 499.99999999999989,\n",
-       "  'i_2b_m': 500.00000000000097,\n",
-       "  'i_2c_m': 499.99999999999932,\n",
-       "  'i_2n_m': 1.6396148910025609e-12}]"
+       "  'deg_1a': -140.66161983960993,\n",
+       "  'deg_1b': 98.786859257631548,\n",
+       "  'deg_1c': -21.042715955800332,\n",
+       "  'deg_1n': -45.0,\n",
+       "  'deg_2a': 9.5088049469581009,\n",
+       "  'deg_2b': -110.83204462617836,\n",
+       "  'deg_2c': 128.40576314144127,\n",
+       "  'deg_2n': -123.50833870600022,\n",
+       "  'i_1a_m': 10.017128868882283,\n",
+       "  'i_1b_m': 10.038180285096967,\n",
+       "  'i_1c_m': 9.9439626728354042,\n",
+       "  'i_1n_m': 2.0097183471152322e-14,\n",
+       "  'i_2a_m': 499.99999999999898,\n",
+       "  'i_2b_m': 500.00000000000051,\n",
+       "  'i_2c_m': 500.00000000000153,\n",
+       "  'i_2n_m': 8.5171074987647515}]"
       ]
      },
-     "execution_count": 22,
+     "execution_count": 5,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
     "sys1.transformers"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[{'N_nodes': 3,\n",
+       "  'U_kV': 20.0,\n",
+       "  'bus': 'Bus_0',\n",
+       "  'deg_an': 0.0,\n",
+       "  'deg_bn': -119.99999999999999,\n",
+       "  'deg_cn': 120.00000000000004,\n",
+       "  'deg_ng': 0.0,\n",
+       "  'p_a': -89459.289373142223,\n",
+       "  'p_b': -90350.395089131969,\n",
+       "  'p_c': -89288.029556916779,\n",
+       "  'pos_x': 0,\n",
+       "  'pos_y': 0,\n",
+       "  'q_a': 73321.705556141067,\n",
+       "  'q_b': 72609.4716291394,\n",
+       "  'q_c': 72193.868405135727,\n",
+       "  'units': 'm',\n",
+       "  'v_ab': 19999.990674997822,\n",
+       "  'v_an': 11547.0,\n",
+       "  'v_bc': 19999.990674997825,\n",
+       "  'v_bn': 11547.0,\n",
+       "  'v_ca': 19999.990674997829,\n",
+       "  'v_cn': 11547.0,\n",
+       "  'v_ng': 0.0},\n",
+       " {'N_nodes': 4,\n",
+       "  'U_kV': 0.4,\n",
+       "  'bus': 'Bus_1',\n",
+       "  'deg_an': -24.878059416047435,\n",
+       "  'deg_bn': -144.86643812443396,\n",
+       "  'deg_cn': 95.158821252150531,\n",
+       "  'deg_ng': -87.080736055349604,\n",
+       "  'p_a': 0.0,\n",
+       "  'p_b': -0.0,\n",
+       "  'p_c': 0.0,\n",
+       "  'pos_x': 10,\n",
+       "  'pos_y': 0,\n",
+       "  'q_a': -0.0,\n",
+       "  'q_b': 0.0,\n",
+       "  'q_c': 0.0,\n",
+       "  'units': 'm',\n",
+       "  'v_ab': 385.24087176236895,\n",
+       "  'v_an': 222.37054785270075,\n",
+       "  'v_bc': 385.55935539882563,\n",
+       "  'v_bn': 222.49333844845916,\n",
+       "  'v_ca': 385.57373912605533,\n",
+       "  'v_cn': 222.76890552568096,\n",
+       "  'v_ng': 0.001389628583262216},\n",
+       " {'N_nodes': 4,\n",
+       "  'U_kV': 0.4,\n",
+       "  'bus': 'Bus_2',\n",
+       "  'deg_an': -20.491506028093543,\n",
+       "  'deg_bn': -140.8317665471059,\n",
+       "  'deg_cn': 98.405796207263322,\n",
+       "  'deg_ng': 92.919263944654915,\n",
+       "  'p_a': 101738.97664512786,\n",
+       "  'p_b': 99985.431273666647,\n",
+       "  'p_c': 99690.015082239814,\n",
+       "  'pos_x': 200,\n",
+       "  'pos_y': 0,\n",
+       "  'q_a': -58739.761811738979,\n",
+       "  'q_b': -57725.968637596197,\n",
+       "  'q_c': -57555.98033413857,\n",
+       "  'units': 'm',\n",
+       "  'v_ab': 404.14378793435179,\n",
+       "  'v_an': 234.95683847462453,\n",
+       "  'v_bc': 400.87562549861673,\n",
+       "  'v_bn': 230.90581562299252,\n",
+       "  'v_ca': 400.60897605323993,\n",
+       "  'v_cn': 230.22415146392393,\n",
+       "  'v_ng': 0.0013896285832620042}]"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sys1.buses"
    ]
   },
   {

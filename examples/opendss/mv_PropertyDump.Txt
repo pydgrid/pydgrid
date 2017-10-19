@@ -31,7 +31,7 @@ New Vsource.source
 ~ Daily=
 ~ Duty=
 ~ spectrum=defaultvsource
-~ basefreq=50
+~ basefreq=60
 ~ enabled=true
 ~ like=
 
@@ -69,7 +69,7 @@ New Line.line_b1b2
 ~ faultrate=0.1
 ~ pctperm=20
 ~ repair=3
-~ basefreq=50
+~ basefreq=60
 ~ enabled=true
 ~ like=
 
@@ -114,7 +114,7 @@ New Load.load_b2
 ~ puXharm=0
 ~ XRharm=6
 ~ spectrum=defaultload
-~ basefreq=50
+~ basefreq=60
 ~ enabled=true
 ~ like=
 
@@ -261,7 +261,7 @@ Set Random=Gaussian
 Set hour=0
 Set sec=0
 Set year=0
-Set frequency=50
+Set frequency=60
 Set stepsize=0.001
 Set number=100
 Set circuit=mv
@@ -293,7 +293,7 @@ Set voltagebases=(     20.00)
 Set algorithm=normal
 Set Trapezoidal=no
 Set genmult=1
-Set Basefrequency=50
+Set Basefrequency=60
 Set harmonics=(ALL)
 Set maxcontroliter=10
 
