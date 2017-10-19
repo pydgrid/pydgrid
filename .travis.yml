@@ -12,6 +12,7 @@ branches:
 
 install:
   - pip install numpy  # Required
+  - pip install numba  # Required
   - pip install .  # Test installation correctness
   - pip install .[dev]  # Test development dependencies
 
