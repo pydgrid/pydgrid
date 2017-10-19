@@ -12,8 +12,9 @@ branches:
 
 install:
   - pip install numpy  # Required
-  - pip install numba  # Required
+  - pip install scipy  # Required
   - pip install matplotlib  # Required
+  - pip install numba  # Required
   - pip install bokeh  # Required
   - pip install .  # Test installation correctness
   - pip install .[dev]  # Test development dependencies
