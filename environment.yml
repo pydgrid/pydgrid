@@ -13,3 +13,4 @@ dependencies:
   - ipykernel
   - requests
   - pandas
+  - sphinx_rtd_theme
