@@ -3,8 +3,18 @@
 # This is not a problem because Python will be installed through conda
 
 language: python
-sudo: false
 
 branches:
   only:
     - master
+
+script:
+  - python setup.py test -vv  # Test against installed code
+  - sphinx-build -vW -b html docs/source _HTMLTest  # Test docs build
+
+after_success:
+  # Uninstall to test coverage against sources
+  - pip uninstall pydgrid -y
+  - pip install -e .
+
+sudo: false
