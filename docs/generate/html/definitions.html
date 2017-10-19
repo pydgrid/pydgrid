@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
@@ -9,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; pydgrid 1 documentation</title>
+  <title>Definiciones &mdash; pydgrid 1 documentation</title>
   
 
   
@@ -34,9 +33,11 @@
 
   
         <link rel="index" title="Index"
-              href="#"/>
+              href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="pydgrid 1 documentation" href="index.html"/> 
+    <link rel="top" title="pydgrid 1 documentation" href="index.html"/>
+        <link rel="next" title="Elements" href="elements.html"/>
+        <link rel="prev" title="Welcome to pydgrid&#39;s documentation!" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -90,8 +91,15 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="definitions.html">Definiciones</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Definiciones</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#buses-y-nodos">Buses y nodos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#orden-de-los-nodos">Orden de los nodos</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ejemplo">Ejemplo</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="elements.html">Elements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="jupyter_notebooks.html">Jupyter Notebooks</a></li>
 </ul>
@@ -138,12 +146,14 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Index</li>
+      <li>Definiciones</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
+            <a href="_sources/definitions.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
     
@@ -155,11 +165,63 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
 
-<h1 id="index">Index</h1>
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
 
-<div class="genindex-jumpbox">
- 
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="definiciones">
+<h1>Definiciones<a class="headerlink" href="#definiciones" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="buses-y-nodos">
+<h2>Buses y nodos<a class="headerlink" href="#buses-y-nodos" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="orden-de-los-nodos">
+<h2>Orden de los nodos<a class="headerlink" href="#orden-de-los-nodos" title="Permalink to this headline">¶</a></h2>
+<p>El orden de los nodos en los vectores <code class="docutils literal"><span class="pre">V_node</span></code> y <code class="docutils literal"><span class="pre">I_node</span></code>  es el siguiente:</p>
+<ul class="simple">
+<li>nodos con fuentes de tensión</li>
+<li>nodos con cargas (corrientes conocidas)</li>
+<li>nodos de transición (corrientes nulas)</li>
+</ul>
+<p>A su vez cada uno de estos bloques se ordenan según orden de aparición en el archivo <code class="docutils literal"><span class="pre">.json</span></code></p>
+<div class="section" id="ejemplo">
+<h3>Ejemplo<a class="headerlink" href="#ejemplo" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/orden_nodos.png" src="_images/orden_nodos.png" />
+<p>V_known tiene los nodos con fuentes de tensión
+V_unknown tiene los demás (nodos de corrientes conocidas, cargas y transición)</p>
+<p>V_sorted está ordenada de manera tal que los nodos que pertenecen al mismo bus estén juntos y en orden.
+A su vez el orden de los buses está según <code class="docutils literal"><span class="pre">buses</span></code> del <code class="docutils literal"><span class="pre">.json</span></code></p>
+</div>
+</div>
 </div>
 
 
@@ -169,6 +231,15 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="elements.html" class="btn btn-neutral float-right" title="Elements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to pydgrid&#39;s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
