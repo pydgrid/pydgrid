@@ -14,10 +14,9 @@ install:
   - pip install numpy  # Required
   - pip install .  # Test installation correctness
   - pip install .[dev]  # Test development dependencies
-  
+
 script:
   - python setup.py test -vv  # Test against installed code
-  - sphinx-build -vW -b html docs/source _HTMLTest  # Test docs build
 
 after_success:
   # Uninstall to test coverage against sources
