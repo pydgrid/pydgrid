@@ -20,7 +20,7 @@ install:
 
 
 script:
-  - python setup.py test -vv  # Test against installed code
+  - pytest  # Test against installed code
 
 after_success:
   # Uninstall to test coverage against sources
