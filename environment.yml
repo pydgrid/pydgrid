@@ -15,5 +15,5 @@ dependencies:
   - pandas
   - sphinx
   - sphinx_rtd_theme
-  - pip
+  - pip:
     - pydgrid
