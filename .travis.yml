@@ -17,7 +17,7 @@ install:
   - pip install numba  # Required
   - pip install bokeh  # Required
   - pip install .  # Test installation correctness
-  - pip install .[dev]  # Test development dependencies
+
 
 script:
   - python setup.py test -vv  # Test against installed code

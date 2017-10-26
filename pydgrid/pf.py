@@ -131,13 +131,15 @@ def pf_eval(params,ig=0,max_iter=50):
                 
    
     
-        I_aux = ( I_known - Y_iv @ V_known)    
+        I_aux = ( I_known - Y_iv @ V_known)  
+
         if pf_solver == 1:
             V_unknown = inv_Y_ii[:,0:N_nz_nodes] @ I_aux[0:N_nz_nodes,:]
         if pf_solver == 2:            
             V_unknown = lu_sparse_solve(params,I_aux)
-        if pf_solver == 3:  # not working          
-            V_unknown = lu_sparse_solve2(params,I_aux,N_nz_nodes)
+#        if pf_solver == 3:  # not working          
+#            V_unknown = lu_sparse_solve2(params,I_aux,N_nz_nodes)
+           
         #V_unknown = inv_Y_ii  @ I_aux 
         #V_unknown = np.linalg.solve(Y_ii, I_known - Y_iv @ V_known)
         

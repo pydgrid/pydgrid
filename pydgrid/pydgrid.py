@@ -708,7 +708,8 @@ class grid(object):
                                 dtype=dt_pf)
         self.params_pf = params_pf 
             
-    def pf(self):                  
+    def pf(self):      
+        self.params_pf.pf_solver = self.pf_solver
         V_node,I_node = pf_eval(self.params_pf) 
 
         self.V_node = V_node

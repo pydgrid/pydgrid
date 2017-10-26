@@ -1,2 +1,2 @@
-Transformers read in: 0.000 sYs calc 0.742
-inv_Y_ii 0.700
+Transformers read in: 0.000 sYs calc 0.661
+inv_Y_ii 0.571

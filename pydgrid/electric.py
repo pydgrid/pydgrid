@@ -404,7 +404,107 @@ def bess_pq_profile(t,it,ctrl_mode,mode,params):
     
     
     
+#@numba.jit(nopython=True,parallel=True, nogil=True)
+def sm_ord4_eval(t,mode,params,params_pf,params_simu):
+    '''
+    
+    Parameters
+    ----------
 
+
+    mode: int
+        0: ini, 1:der, 2:out
+ 
+        
+    '''
+
+    alpha = np.exp(2.0/3*np.pi*1j)
+    A_0a =  np.array([[1, 1, 1],
+                      [1, alpha**2, alpha],
+                      [1, alpha, alpha**2]])
+
+    A_a0 = 1/3* np.array([[1, 1, 1],
+                          [1, alpha, alpha**2],
+                          [1, alpha**2, alpha]])
+            
+    struct = params         
+    N = len(params) # total number of bess_vsc_feeder
+    for it in numba.prange(N):
+        ix_0 = params[it].ix_0
+        nodes = params[it].bus_nodes
+        N_conductors = params[it].N_conductors
+        v_abcn = params_pf[0].V_node[nodes,:]
+        i_abcn = params[it].i_abcn
+        gfeed_idx = params[it].gfeed_idx    
+        ctrl_mode = params[it].ctrl_mode    
+    
+        R_s = struct[it]['R_s']
+        X_d,X_q = struct[it]['X_d'],struct[it]['X_q']
+        X1d,X1q,X_l = struct[it]['X1d'],struct[it]['X1q'],struct[it]['X_l']
+    
+# %% initialization    
+        if mode == 0:  # ini
+            i_abcn_0 = np.zeros((4,1), dtype=np.complex128)
+
+            S_ref = params_pf[0].gfeed_powers[gfeed_idx,0:3]            
+            I_ref = params_pf[0].gfeed_currents[gfeed_idx]*np.exp(1j*np.angle(v_abcn[:,0]))
+
+            I_abc_0 =   np.conjugate(S_ref[:,0:3]/v_abcn[0:3,0]).T # + I_ref 
+            I_n = -np.sum(I_abc_0)       
+            V_abc_0 = v_abcn[0:3,:] 
+            
+            I_012 = A_a0 @ I_abc_0
+            V_012 = A_a0 @ V_abc_0
+            print(I_012.shape)
+            I_zero = I_012[0,0] 
+            V_zero = V_012[0,0]             
+            I_pos = I_012[1,0] 
+            V_pos = V_012[1,0] 
+            I_neg = I_012[2,0] 
+            V_neg = V_012[2,0] 
+            
+            # positive sequence initialization
+            E = V_pos + (R_s + 1j*(X_q-X_l))*I_pos
+            delta = np.angle(E)
+            
+            v_dq = V_pos*np.exp(-1j*(delta-np.pi/2)) 
+            i_dq = I_pos*np.exp(-1j*(delta-np.pi/2))
+            
+            v_d,v_q = v_dq.real,v_dq.imag
+            i_d,i_q = i_dq.real,i_dq.imag
+            
+            e1q = v_q + R_s*i_q + (X1d-X_l)*i_d
+            e1d = v_d + R_s*i_d - (X1q-X_l)*i_q
+
+    
+            delta_0 = delta
+            omega_0 = 1.0
+            e1q_0 = e1q
+            e1d_0 = e1d
+            
+            e_fd_0 = e1q + (X_d - X1d)*i_d
+            p_e = (v_q + R_s * i_q) * i_q + (v_d + R_s*i_d) * i_d
+            p_m_0 = p_e
+            
+            params_simu[0].x[ix_0+0,0] = delta_0
+            params_simu[0].x[ix_0+1,0] = omega_0            
+            params_simu[0].x[ix_0+2,0] = e1q_0
+            params_simu[0].x[ix_0+3,0] = e1d_0
+            
+            params[it].p_m  = p_m_0
+            params[it].e_fd = e_fd_0
+
+    
+ 
+# %% derivatives    
+        if mode == 1:  # der
+            pass
+            
+            
+# %% out
+        if mode == 3: # out
+            pass
+        
 
 def thermal_vsc(params):
     '''

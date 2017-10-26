@@ -7,7 +7,9 @@ Jupyter Notebooks
 =================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
-   test_cases/nb_3bus_4wire_trafo.ipynb
+   jupyter_notebooks/kersting_ex_6.1.ipynb
+   jupyter_notebooks/nb_3bus_4wire_trafo.ipynb
+   jupyter_notebooks/nb_n1_f1_load_shapes.ipynb
