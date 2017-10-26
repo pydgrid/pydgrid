@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Definiciones &mdash; pydgrid 1 documentation</title>
+  <title>Definitions &mdash; pydgrid 1 documentation</title>
   
 
   
@@ -92,12 +92,13 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Definiciones</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#buses-y-nodos">Buses y nodos</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#orden-de-los-nodos">Orden de los nodos</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#ejemplo">Ejemplo</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Definitions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#buses-and-nodes">Buses and Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nodes-order">Nodes order</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#buses-results-voltages">Buses results voltages</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="elements.html">Elements</a></li>
@@ -146,7 +147,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Definiciones</li>
+      <li>Definitions</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -199,28 +200,32 @@
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="definiciones">
-<h1>Definiciones<a class="headerlink" href="#definiciones" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="buses-y-nodos">
-<h2>Buses y nodos<a class="headerlink" href="#buses-y-nodos" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="definitions">
+<h1>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="buses-and-nodes">
+<h2>Buses and Nodes<a class="headerlink" href="#buses-and-nodes" title="Permalink to this headline">¶</a></h2>
+<p>to_do</p>
 </div>
-<div class="section" id="orden-de-los-nodos">
-<h2>Orden de los nodos<a class="headerlink" href="#orden-de-los-nodos" title="Permalink to this headline">¶</a></h2>
-<p>El orden de los nodos en los vectores <code class="docutils literal"><span class="pre">V_node</span></code> y <code class="docutils literal"><span class="pre">I_node</span></code>  es el siguiente:</p>
+<div class="section" id="nodes-order">
+<h2>Nodes order<a class="headerlink" href="#nodes-order" title="Permalink to this headline">¶</a></h2>
+<p>The nodes order in the voltages and currents vectors <code class="docutils literal"><span class="pre">V_node</span></code> and <code class="docutils literal"><span class="pre">I_node</span></code>  is as follows:</p>
 <ul class="simple">
-<li>nodos con fuentes de tensión</li>
-<li>nodos con cargas (corrientes conocidas)</li>
-<li>nodos de transición (corrientes nulas)</li>
+<li>nodes with grid formers (known voltages)</li>
+<li>nodes with loads or greed feeders (known currents)</li>
+<li>transition nodes (zeros current injections)</li>
 </ul>
-<p>A su vez cada uno de estos bloques se ordenan según orden de aparición en el archivo <code class="docutils literal"><span class="pre">.json</span></code></p>
-<div class="section" id="ejemplo">
-<h3>Ejemplo<a class="headerlink" href="#ejemplo" title="Permalink to this headline">¶</a></h3>
-<img alt="_images/orden_nodos.png" src="_images/orden_nodos.png" />
-<p>V_known tiene los nodos con fuentes de tensión
-V_unknown tiene los demás (nodos de corrientes conocidas, cargas y transición)</p>
-<p>V_sorted está ordenada de manera tal que los nodos que pertenecen al mismo bus estén juntos y en orden.
-A su vez el orden de los buses está según <code class="docutils literal"><span class="pre">buses</span></code> del <code class="docutils literal"><span class="pre">.json</span></code></p>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/buses_nodes.png" src="_images/buses_nodes.png" />
+<p>V_known has the nodes with grid formers sources
+V_unknown has the rest of the nodes</p>
+<p>V_sorted ...
+Buses order is as defined in the key <code class="docutils literal"><span class="pre">buses</span></code> of the <code class="docutils literal"><span class="pre">.json</span></code> file or data dictionary.</p>
 </div>
+</div>
+<div class="section" id="buses-results-voltages">
+<h2>Buses results voltages<a class="headerlink" href="#buses-results-voltages" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/voltages.png" src="_images/voltages.png" />
 </div>
 </div>
 

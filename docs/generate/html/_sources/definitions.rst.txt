@@ -1,33 +1,33 @@
-Definiciones
+Definitions
 ============
 
-Buses y nodos
--------------
+Buses and Nodes
+---------------
+
+to_do
+
+Nodes order
+-----------
 
 
+The nodes order in the voltages and currents vectors ``V_node`` and ``I_node``  is as follows:
 
+* nodes with grid formers (known voltages)
+* nodes with loads or greed feeders (known currents)
+* transition nodes (zeros current injections)
 
-Orden de los nodos
-------------------
-
-
-El orden de los nodos en los vectores ``V_node`` y ``I_node``  es el siguiente:
-
-* nodos con fuentes de tensión
-* nodos con cargas (corrientes conocidas)
-* nodos de transición (corrientes nulas)
-
-A su vez cada uno de estos bloques se ordenan según orden de aparición en el archivo ``.json``
-
-
-Ejemplo
+Example
 '''''''
 
-.. image:: orden_nodos.png
+.. image:: ./png/buses_nodes.png
 
-V_known tiene los nodos con fuentes de tensión
-V_unknown tiene los demás (nodos de corrientes conocidas, cargas y transición)
+V_known has the nodes with grid formers sources
+V_unknown has the rest of the nodes
 
-V_sorted está ordenada de manera tal que los nodos que pertenecen al mismo bus estén juntos y en orden.
-A su vez el orden de los buses está según ``buses`` del ``.json``
+V_sorted ...
+Buses order is as defined in the key ``buses`` of the ``.json`` file or data dictionary.
 
+Buses results voltages
+----------------------
+
+.. image:: ./png/voltages.png
