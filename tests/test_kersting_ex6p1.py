@@ -8,7 +8,7 @@ Created on Sat Sep  9 23:22:02 2017
 
 from pydgrid.pydgrid import grid
 from pydgrid.pf import pf_eval,time_serie
-from pydgrid.electric import bess_vsc_feeder, bess_vsc_feeder_eval
+from pydgrid.electric import bess_vsc, bess_vsc_eval
 from pydgrid.simu import simu, f_eval, ini_eval, run_eval
 import matplotlib.pyplot as plt
 import numpy as np

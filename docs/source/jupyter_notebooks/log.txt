@@ -1,2 +1,4 @@
-Transformers read in: 0.000 sYs calc 0.762
-inv_Y_ii 0.688
+1 transformer to read 
+Transformer Dyg11_3w read  
+Transformers read in: 0.000 sYs calc 0.698
+inv_Y_ii 0.582

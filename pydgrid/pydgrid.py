@@ -89,7 +89,19 @@ class grid(object):
 
 
 
-    def read(self,data_input):      
+    def read(self,data_input): 
+        debug = True
+        
+        alpha = np.exp(2.0/3*np.pi*1j)
+        A_0a =  np.array([[1, 1, 1],
+                          [1, alpha**2, alpha],
+                          [1, alpha, alpha**2]])
+    
+        A_a0 = 1/3* np.array([[1, 1, 1],
+                              [1, alpha, alpha**2],
+                              [1, alpha**2, alpha]])
+                  
+                  
         
         if type(data_input) == str:
             json_file = data_input
@@ -117,6 +129,7 @@ class grid(object):
         else:
             transformers = []
             self.transformers = transformers
+        if debug==True: flog.write('{:d} transformer to read \n'.format(len(transformers)))
             
         if 'line_codes' in data:
             line_codes_data = data['line_codes']
@@ -133,11 +146,20 @@ class grid(object):
             self.grid_feeders = grid_feeders
         else:
             grid_feeders = []   
+
+        if 'lines' in data:
+            lines = data['lines']
+            self.lines = lines
+        else:
+            lines = []   
             
-        lines = data['lines']
+        if 'grid_formers' in data:
+            grid_formers = data['grid_formers']
+            self.grid_formers = grid_formers
+        else:
+            grid_formers = []          
         
         
-        grid_formers = data['grid_formers']
         buses = data['buses']
 
         if 'shunts' in data:
@@ -146,7 +168,12 @@ class grid(object):
         else:
             shunts = []
             
-        
+        if 'groundings' in data:
+            groundings = data['groundings']
+            self.groundings = groundings
+        else:
+            groundings = []
+            
         self.lines = lines
         self.buses = buses
         
@@ -161,24 +188,65 @@ class grid(object):
         N_nz_nodes = 0  # number on non zero current nodes
         
         
-        ## Known voltages
+        ## Grid formers (known voltages)
         V_known_list = []
+        N_gformers = 0
+        gformer_nodes_list = []
+        gformer_bus_nodes_list = []
+        gformer_voltages_list = []
+        gformer_id_list = []
+        gformer_v_abcn_list = []
+        gformer_i_abcn_list = []
+        
         for grid_former in grid_formers:
             grid_former_nodes = []
+            gformer_nodes = np.zeros((4,), dtype=np.int32)
+            gformer_bus_nodes = np.zeros((4,), dtype=np.int32) # every grid former considers 4 nodes per bus here
+            gformer_voltages = np.zeros((4,), dtype=np.complex128) # every grid former considers 4 nodes per bus here
+            gformer_v_abcn = np.zeros((4,), dtype=np.complex128) # every grid former considers 4 nodes per bus here
+            gformer_i_abcn = np.zeros((4,), dtype=np.complex128) # every grid former considers 4 nodes per bus here
             if not 'bus_nodes' in grid_former:   # if nodes are not declared, default nodes are created
                 grid_former.update({'bus_nodes': list(range(1,N_nodes_default+1))})
+            inode = 0
             for item in  grid_former['bus_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
                 node = '{:s}.{:s}'.format(grid_former['bus'], str(item))
                 if not node in nodes: 
                     nodes +=[node]
                 grid_former_nodes += [N_v_known]
+                gformer_nodes[inode] = N_v_known
                 N_v_known += 1
+                gformer_bus_nodes[inode] = item
+                inode += 1
+            inode = 0
             for volt,ang in  zip(grid_former['kV'],grid_former['deg']): # known voltages list is created 
-                V_known_list += [1000.0*volt*np.exp(1j*np.deg2rad(ang))]
+                v = 1000.0*volt*np.exp(1j*np.deg2rad(ang))
+                V_known_list += [v]
+                gformer_voltages[inode] = v
+                inode += 1
             grid_formers_nodes += [grid_former_nodes]    # global nodes for each vsources update  
+            N_gformers += 1
+            if "id" in grid_former:       
+                gformer_id_list += [grid_former["id"]]
+            else:
+                gformer_id_list += ['{:s}.{:s}'.format('gformer',grid_former['bus'])]
+            gformer_nodes_list += [gformer_nodes]
+            gformer_bus_nodes_list += [gformer_bus_nodes]
+            gformer_voltages_list += [gformer_voltages]
+            gformer_v_abcn_list += [gformer_v_abcn]
+            gformer_i_abcn_list += [gformer_i_abcn]
         V_known = np.array(V_known_list).reshape(len(V_known_list),1) # known voltages list numpy array
         self.grid_formers_nodes = grid_formers_nodes
+        self.N_gformers = N_gformers     
+        self.gformer_nodes = np.array(gformer_nodes_list)
+        self.gformer_bus_nodes = np.array(gformer_bus_nodes_list)
+        self.gformer_voltages = np.array(gformer_voltages_list)
+        self.gformer_i_abcn    = np.array(gformer_i_abcn_list)
+        self.gformer_v_abcn    = np.array(gformer_v_abcn_list)
+        self.gformer_id    = gformer_id_list
 
+
+                  
+                  
         N_nz_nodes += N_v_known
         
         ## Known currents
@@ -274,13 +342,15 @@ class grid(object):
 
         ### Grid feeders
         N_gfeeds = 0 
+        gfeed_nodes_list = []
         gfeed_bus_nodes_list = []
         gfeed_currents_list = []
         gfeed_powers_list = []
         gfeed_id_list = []
         gfeed_i_abcn_list = []
         for grid_feeder in grid_feeders:
-            N_gfeeds += 1    
+            N_gfeeds += 1   
+            gfeed_nodes = np.zeros((4,), dtype=np.int32) # every grid feeder considers 4 nodes per bus here
             gfeed_bus_nodes = np.zeros((4,), dtype=np.int32) # every grid feeder considers 4 nodes per bus here
             gfeed_currents = np.zeros((4,), dtype=np.complex128) # every grid feeder considers 4 nodes per bus here
             gfeed_powers = np.zeros((4,), dtype=np.complex128) # every grid feeder considers 4 nodes per bus here
@@ -295,9 +365,17 @@ class grid(object):
                 it_node_i += 1
             if 'kW' in grid_feeder:
                 gf_it = 0
-                for kW,kvar in zip(grid_feeder['kW'],grid_feeder['kvar']):              
-                    gfeed_powers[gf_it] = 1000.0*(kW+1j*kvar)
-                    gf_it += 1
+                if type(grid_feeder['kW']) == float:
+                    for i in range(3):
+                        kW = grid_feeder['kW']
+                        kvar = grid_feeder['kvar']
+                        gfeed_powers[gf_it] = 1000.0*(kW+1j*kvar)/3
+                        gf_it += 1
+                else:                     
+        
+                    for kW,kvar in zip(grid_feeder['kW'],grid_feeder['kvar']):              
+                        gfeed_powers[gf_it] = 1000.0*(kW+1j*kvar)
+                        gf_it += 1
             if 'kA' in grid_feeder:
                 gf_it = 0
                 for kA,phi_deg in zip(grid_feeder['kA'],grid_feeder['phi_deg']):              
@@ -326,15 +404,18 @@ class grid(object):
         ### Transformers to nodes
         t_0 = time.time()
         for trafo in transformers:
-            if trafo['connection'] == 'Dyn11':
+            flog.write('Transformer {:s} read  \n'.format(trafo['connection']))
+            
+            if  'conductors_1' in trafo:
                 N_nodes_primary_default = trafo['conductors_1']
-                N_nodes_secondary_default = trafo['conductors_2']
-                N_trafo_nodes = N_nodes_primary_default+N_nodes_secondary_default
+            if  'conductors_2' in trafo:
+                N_nodes_secondary_default = trafo['conductors_2']   
+            if  'conductors_j' in trafo:
+                N_nodes_primary_default = trafo['conductors_j']
+            if  'conductors_k' in trafo:
+                N_nodes_secondary_default = trafo['conductors_k'] 
                 
-            if trafo['connection'] == 'Dyg11_3w':
-                N_nodes_primary_default = trafo['conductors_1']
-                N_nodes_secondary_default = trafo['conductors_2']
-                N_trafo_nodes = N_nodes_primary_default+N_nodes_secondary_default
+            N_trafo_nodes = N_nodes_primary_default+N_nodes_secondary_default
                 
             A_n_cols += N_trafo_nodes
             if not 'bus_j_nodes' in trafo:   # if nodes are not declared, default nodes are created
@@ -356,11 +437,25 @@ class grid(object):
         for line in lines:
             line['type'] = 'z'
             line_code = line['code']
+            
             if not line_code in self.line_codes_lib:
-                R = np.array(data['line_codes'][line_code]['R'])
-                X = np.array(data['line_codes'][line_code]['X'])
-                Z = R + 1j*X
-                self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
+                line_data = data['line_codes'][line_code]
+                if 'X1' in line_data:
+                    Z_1 = line_data['R1'] + 1j*line_data['X1']
+                    Z_2 = Z_1
+                    if 'X0' in line_data:
+                        Z_0 = line_data['R0'] + 1j*line_data['X0'] 
+                    else:
+                        Z_0 = 3*Z_1
+                    Z_012 = np.array([[Z_0,0,0],[0,Z_1,0],[0,0,Z_2]])
+                    Z = A_a0 @ Z_012 @ A_0a
+                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
+                
+                if 'X' in line_data:
+                    R = np.array(data['line_codes'][line_code]['R'])
+                    X = np.array(data['line_codes'][line_code]['X'])
+                    Z = R + 1j*X
+                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
                 
                 if 'B_mu' in data['line_codes'][line_code]:
                     Y = 1j*np.array(data['line_codes'][line_code]['B_mu'])*1e-6
@@ -388,13 +483,16 @@ class grid(object):
 
         N_nodes = len(nodes)
 
-        ### Groundings (no new nodes, only aditionals columns in A matriz)
+        ### Shunts (no new nodes, only aditionals columns in A matriz)
         for shunt in shunts:
             A_n_cols += 1        
         
-        
+        ### Groundings (no new nodes, only aditionals columns in A matriz)
+        for grounding in groundings:
+            A_n_cols += grounding['conductors']       
+       
         ## Y primitive
-        A = np.zeros((N_nodes,A_n_cols)) # incidence matrix (dense)
+        #A = np.zeros((N_nodes,A_n_cols)) # incidence matrix (dense)
         A_sp = sparse.lil_matrix((N_nodes, A_n_cols), dtype=np.float32) # incidence matrix (sparse)
         it_col = 0  # column in incidence matrix
         
@@ -404,12 +502,18 @@ class grid(object):
         Y_trafos_prims =  []
         for trafo in transformers:
             S_n = trafo['S_n_kVA']*1000.0
-            U_1n = trafo['U_1_kV']*1000.0
-            U_2n = trafo['U_2_kV']*1000.0
+            if 'U_1_kV' in trafo:
+                U_jn = trafo['U_1_kV']*1000.0
+            if 'U_2_kV' in trafo:
+                U_kn = trafo['U_2_kV']*1000.0
+            if 'U_j_kV' in trafo:
+                U_jn = trafo['U_j_kV']*1000.0
+            if 'U_k_kV' in trafo:
+                U_kn = trafo['U_k_kV']*1000.0
             Z_cc_pu = trafo['R_cc_pu'] +1j*trafo['X_cc_pu']
             connection = trafo['connection']
             
-            Y_trafo_prim = trafo_yprim(S_n,U_1n,U_2n,Z_cc_pu,connection=connection)
+            Y_trafo_prim = trafo_yprim(S_n,U_jn,U_kn,Z_cc_pu,connection=connection)
             Y_trafos_prims +=  [Y_trafo_prim]
 
             for item in  trafo['bus_j_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
@@ -417,7 +521,7 @@ class grid(object):
                 row = nodes.index(node_j)
                 col = it_col
                 A_sp[row,col] = 1
-                A[row,col] = 1
+                #A[row,col] = 1
                 it_col +=1  
     
             for item in  trafo['bus_k_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
@@ -425,7 +529,7 @@ class grid(object):
                 row = nodes.index(node_k)
                 col = it_col
                 A_sp[row,col] = 1
-                A[row,col] = 1
+                #A[row,col] = 1
                 it_col +=1 
  
         Y_trafos_primitive = diag_2d(Y_trafos_prims)        # dense
@@ -441,7 +545,7 @@ class grid(object):
                     row = nodes.index(node_j)
                     col = it_col
                     A_sp[row,col] = 1
-                    A[row,col] = 1
+                    #A[row,col] = 1
                     #it_col +=1   
         
                 #for item in  line['bus_k_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
@@ -449,7 +553,7 @@ class grid(object):
                     row = nodes.index(node_k)
                     col = it_col
                     A_sp[row,col] = -1
-                    A[row,col] = -1
+                    #A[row,col] = -1
                     it_col +=1   
                 Z = line['m']*0.001*np.array(self.line_codes_lib[line['code']]['Z'])
                 Z_line_list += [line['m']*0.001*np.array(self.line_codes_lib[line['code']]['Z'])]   # Line code to list of Z lines
@@ -460,7 +564,7 @@ class grid(object):
                     row = nodes.index(node_j)
                     col = it_col
                     A_sp[row,col] = 1
-                    A[row,col] = 1
+                    #A[row,col] = 1
                     #it_col +=1   
         
                 #for item in  line['bus_k_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
@@ -468,7 +572,7 @@ class grid(object):
                     row = nodes.index(node_k)
                     col = it_col
                     A_sp[row,col] = -1
-                    A[row,col] = -1
+                    #A[row,col] = -1
                     it_col +=1   
 
                 for item in  line['bus_j_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
@@ -476,7 +580,7 @@ class grid(object):
                     row = nodes.index(node_j)
                     col = it_col
                     A_sp[row,col] = 1
-                    A[row,col] = 1
+                    #A[row,col] = 1
                     it_col +=1  
 
                 for item in  line['bus_k_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
@@ -484,7 +588,7 @@ class grid(object):
                     row = nodes.index(node_k)
                     col = it_col
                     A_sp[row,col] = 1
-                    A[row,col] = 1
+                    #A[row,col] = 1
                     it_col +=1  
                     
                     
@@ -511,6 +615,35 @@ class grid(object):
             it_col +=1  
             Z_line_list += [np.array(shunt['R'] + 1j*shunt['X']).reshape((1,1))]   # Line code to list of Z lines
                 
+        ### grounding elements       
+        for grounding in groundings:
+            N_conductors = grounding['conductors']
+            for it in [1,2,3]:
+                node_j = '{:s}.{:s}'.format(grounding['bus'], str(it))
+                row_j = nodes.index(node_j)           
+                col = it_col
+                A_sp[row_j,col] = 1
+                it_col +=1
+                
+            Z_gnd = grounding['Z_gnd']
+            Y_gnd = 1.0/Z_gnd 
+            Z_m = 1/1000.0e3
+            Y_full = -Y_gnd/3+Y_gnd
+            Y_gnd1 = Y_gnd
+            Y_gnd2 = Y_gnd*3
+            Y_abcn = np.array([[  Y_full+Z_m,  Y_full,  Y_full, -Y_gnd1],
+                               [  Y_full,  Y_full+Z_m,  Y_full, -Y_gnd1],
+                               [  Y_full,  Y_full,  Y_full+Z_m, -Y_gnd1],
+                               [ -Y_gnd1, -Y_gnd1, -Y_gnd1,  Y_gnd2]])
+            Y_pp = Y_abcn[0:3,0:3]
+            Y_pn = Y_abcn[0:3,3:4]
+            Y_np = Y_abcn[3:4,0:3]
+            Y_nn = Y_abcn[3:4,3:4]
+            Y_abc = Y_pp - Y_pn @ np.linalg.inv(Y_nn) @ Y_np
+            Z_abc = np.linalg.inv(Y_abc)
+            Z_line_list += [Z_abc] 
+ 
+
                 
         Y_lines_primitive = diag_2d_inv(Z_line_list)        # dense
         Y_lines_primitive = diag_2dsparse_inv(Z_line_list)  # sparse
@@ -532,11 +665,11 @@ class grid(object):
         if N_trafos_len>0:
             Y_primitive_sp[0:N_trafos_len,0:N_trafos_len] = Y_trafos_primitive
 
-        A_v = A[0:N_v_known,:]   
+        A_v = A_sp[0:N_v_known,:].toarray()
         N_nodes_i = N_nodes-N_v_known
         A_i = A_sp[N_v_known:(N_v_known+N_nodes_i),:] 
 
-        self.A = A
+        self.A = A_sp
         self.nodes = nodes
         self.N_nodes = len(nodes)
         self.N_nodes_i = N_nodes_i
@@ -679,6 +812,8 @@ class grid(object):
                   ('Y_vv',np.complex128,(N_v,N_v)),('Y_iv',np.complex128,(N_i,N_v)),
                   ('inv_Y_ii',np.complex128,(N_i,N_i)),('Y_ii',np.complex128,(N_i,N_i)),
                   ('I_node',np.complex128,(N_v+N_i,1)),('V_node',np.complex128,(N_v+N_i,1)),
+                  ('N_gformers',np.int32),('gformer_nodes',np.int32,self.gformer_nodes.shape),('gformers_bus_nodes',np.int32,self.gformer_bus_nodes.shape),
+                  ('gform_voltages',np.complex128,self.gformer_voltages.shape),('gform_v_abcn',np.complex128,self.gformer_v_abcn.shape), ('gform_i_abcn',np.complex128,self.gformer_i_abcn.shape),
                   ('N_gfeeds',np.int32),('gfeed_bus_nodes',np.int32,self.gfeed_bus_nodes.shape),
                   ('gfeed_currents',np.complex128,self.gfeed_currents.shape),('gfeed_powers',np.complex128,self.gfeed_powers.shape),('gfeed_i_abcn',np.complex128,self.gfeed_i_abcn.shape),                  
                   ('N_pq_1p',np.int32),('pq_1p_int',np.int32,self.pq_1p_int.shape),('pq_1p',np.complex128,self.pq_1p.shape),('pq_1p_0',np.complex128,self.pq_1p.shape),                  
@@ -689,13 +824,14 @@ class grid(object):
                   ('L_indptr',np.int32,yii['L_indptr'].shape), ('L_indices',np.int32,yii['L_indices'].shape), ('L_data',np.complex128,yii['L_data'].shape),
                   ('U_indptr',np.int32,yii['U_indptr'].shape), ('U_indices',np.int32,yii['U_indices'].shape), ('U_data',np.complex128,yii['U_data'].shape),
                   ('perm_r',np.int32, yii['perm_r'].shape),('perm_c',np.int32, yii['perm_c'].shape)] )    
-        
-        
+
+
         params_pf = np.rec.array([(
                                 self.pf_solver,
                                 self.Y_vv,self.Y_iv,
                                 self.inv_Y_ii,self.Y_ii.toarray(), 
                                 self.I_node,self.V_node,
+                                self.N_gformers, self.gformer_nodes, self.gformer_bus_nodes, self.gformer_voltages, self.gformer_v_abcn, self.gformer_i_abcn,
                                 self.N_gfeeds, self.gfeed_bus_nodes,self.gfeed_currents,self.gfeed_powers,self.gfeed_i_abcn,
                                 self.N_pq_1p, self.pq_1p_int,self.pq_1p,np.copy(self.pq_1p),
                                 self.N_pq_1pn, self.pq_1pn_int,self.pq_1pn,np.copy(self.pq_1pn),
@@ -985,9 +1121,15 @@ class grid(object):
                 
         it_single_line = 0
         for trafo in self.transformers:
-
-            cond_1 = trafo['conductors_1'] 
-            cond_2 = trafo['conductors_2']   
+            
+            if 'conductors_j' in trafo: 
+                cond_1 = trafo['conductors_j']
+            else:
+                cond_1 = trafo['conductors_1']
+            if 'conductors_k' in trafo: 
+                cond_2 = trafo['conductors_k']
+            else:
+                cond_2 = trafo['conductors_2']  
             
             I_1a = (I_lines[it_single_line,0])
             I_1b = (I_lines[it_single_line+1,0])
@@ -1403,9 +1545,9 @@ def trafo_yprim(S_n,U_1n,U_2n,Z_cc,connection='Dyg11'):
     '''
 
     if connection=='Dyn1':
-        z_a = Z_cc*1.0**2/S_n*3
-        z_b = Z_cc*1.0**2/S_n*3
-        z_c = Z_cc*1.0**2/S_n*3
+        z_a = Z_cc*1.0**2/S_n
+        z_b = Z_cc*1.0**2/S_n
+        z_c = Z_cc*1.0**2/S_n
         U_1 = U_1n
         U_2 = U_2n/np.sqrt(3)
         Z_B = np.array([[z_a, 0.0, 0.0],
@@ -1449,9 +1591,9 @@ def trafo_yprim(S_n,U_1n,U_2n,Z_cc,connection='Dyg11'):
 
 
     if connection=='Dyn5':
-        z_a = Z_cc*1.0**2/S_n*3
-        z_b = Z_cc*1.0**2/S_n*3
-        z_c = Z_cc*1.0**2/S_n*3
+        z_a = Z_cc*1.0**2/S_n
+        z_b = Z_cc*1.0**2/S_n
+        z_c = Z_cc*1.0**2/S_n
         U_1 = U_1n
         U_2 = U_2n/np.sqrt(3)
         Z_B = np.array([[z_a, 0.0, 0.0],
@@ -1539,11 +1681,222 @@ def trafo_yprim(S_n,U_1n,U_2n,Z_cc,connection='Dyg11'):
         A_trafo[6,6] = 1.0
         A_trafo[6,10] = 1.0
 
+
+    if connection=='Ygd5_3w':
+        z_a = Z_cc*1.0**2/S_n
+        z_b = Z_cc*1.0**2/S_n
+        z_c = Z_cc*1.0**2/S_n
+        U_1 = U_1n #
+        U_2 = U_2n*np.sqrt(3)
+        Z_B = np.array([[z_a, 0.0, 0.0],
+                        [0.0, z_b, 0.0],
+                        [0.0, 0.0, z_c],])                             
+        N_a = np.array([[ 1/U_1,     0],
+                         [-1/U_1,     0],
+                         [     0, 1/U_2],
+                         [     0,-1/U_2]])           
+        N_row_a = np.hstack((N_a,np.zeros((4,4))))
+        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
+        N_row_c = np.hstack((np.zeros((4,4)),N_a))
         
-    if connection=='Dyg11_3w':
+        N = np.vstack((N_row_a,N_row_b,N_row_c))
+
+        B = np.array([[ 1, 0, 0],
+                      [-1, 0, 0],
+                      [ 0, 1, 0],
+                      [ 0,-1, 0],
+                      [ 0, 0, 1],
+                      [ 0, 0,-1]])
+    
+        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
+        Y_w = N @ Y_1 @ N.T
+        A_trafo = np.zeros((6,12))
+
+        A_trafo[0,0] = 1.0
+        A_trafo[1,4] = 1.0
+        A_trafo[2,8] = 1.0
+        
+        A_trafo[3,3]  = 1.0
+        A_trafo[3,6]  = 1.0
+        A_trafo[4,7]  = 1.0
+        A_trafo[4,10] = 1.0
+        A_trafo[5,2]  = 1.0
+        A_trafo[5,11] = 1.0
+
+    if connection=='Ygd1_3w':
+        z_a = Z_cc*1.0**2/S_n
+        z_b = Z_cc*1.0**2/S_n
+        z_c = Z_cc*1.0**2/S_n
+        U_1 = U_1n #
+        U_2 = U_2n*np.sqrt(3)
+        Z_B = np.array([[z_a, 0.0, 0.0],
+                        [0.0, z_b, 0.0],
+                        [0.0, 0.0, z_c],])                             
+        N_a = np.array([[ 1/U_1,     0],
+                         [-1/U_1,     0],
+                         [     0, 1/U_2],
+                         [     0,-1/U_2]])           
+        N_row_a = np.hstack((N_a,np.zeros((4,4))))
+        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
+        N_row_c = np.hstack((np.zeros((4,4)),N_a))
+        
+        N = np.vstack((N_row_a,N_row_b,N_row_c))
+
+        B = np.array([[ 1, 0, 0],
+                      [-1, 0, 0],
+                      [ 0, 1, 0],
+                      [ 0,-1, 0],
+                      [ 0, 0, 1],
+                      [ 0, 0,-1]])
+    
+        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
+        Y_w = N @ Y_1 @ N.T
+        A_trafo = np.zeros((6,12))
+
+        A_trafo[0,0] = 1.0
+        A_trafo[1,4] = 1.0
+        A_trafo[2,8] = 1.0
+        
+        A_trafo[3,2]  = 1.0
+        A_trafo[3,11]  = 1.0
+        A_trafo[4,3]  = 1.0
+        A_trafo[4,6] = 1.0
+        A_trafo[5,7]  = 1.0
+        A_trafo[5,10] = 1.0
+
+    if connection=='Ygd11_3w':
+        z_a = Z_cc*1.0**2/S_n
+        z_b = Z_cc*1.0**2/S_n
+        z_c = Z_cc*1.0**2/S_n
+        U_1 = U_1n #
+        U_2 = U_2n*np.sqrt(3)
+        Z_B = np.array([[z_a, 0.0, 0.0],
+                        [0.0, z_b, 0.0],
+                        [0.0, 0.0, z_c],])                             
+        N_a = np.array([[ 1/U_1,     0],
+                         [-1/U_1,     0],
+                         [     0, 1/U_2],
+                         [     0,-1/U_2]])           
+        N_row_a = np.hstack((N_a,np.zeros((4,4))))
+        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
+        N_row_c = np.hstack((np.zeros((4,4)),N_a))
+        
+        N = np.vstack((N_row_a,N_row_b,N_row_c))
+
+        B = np.array([[ 1, 0, 0],
+                      [-1, 0, 0],
+                      [ 0, 1, 0],
+                      [ 0,-1, 0],
+                      [ 0, 0, 1],
+                      [ 0, 0,-1]])
+    
+        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
+        Y_w = N @ Y_1 @ N.T
+        A_trafo = np.zeros((6,12))
+
+        A_trafo[0,1] = 1.0
+        A_trafo[1,5] = 1.0
+        A_trafo[2,9] = 1.0
+        
+        A_trafo[3,3]  = 1.0
+        A_trafo[3,6]  = 1.0
+        A_trafo[4,7]  = 1.0
+        A_trafo[4,10] = 1.0
+        A_trafo[5,2]  = 1.0
+        A_trafo[5,11] = 1.0
+
+    if connection=='ZigZag':
         z_a = Z_cc*1.0**2/S_n*3
         z_b = Z_cc*1.0**2/S_n*3
         z_c = Z_cc*1.0**2/S_n*3
+        U_1 = U_1n #
+        U_2 = U_2n
+        Z_B = np.array([[z_a, 0.0, 0.0],
+                        [0.0, z_b, 0.0],
+                        [0.0, 0.0, z_c],])                             
+
+
+        
+        N = np.zeros((12,6))
+        N[0,0] =  1.0/U_1
+        N[1,0] = -1.0/U_1
+        N[6,0] = -1.0/U_1
+        N[7,0] =  1.0/U_1
+
+        N[4,2]  =  1.0/U_1
+        N[5,2]  = -1.0/U_1
+        N[10,2] = -1.0/U_1
+        N[11,2] =  1.0/U_1
+
+        N[8,4] =  1.0/U_1
+        N[9,4] = -1.0/U_1
+        N[2,4] = -1.0/U_1
+        N[3,4] =  1.0/U_1
+        
+        
+        N[2,1] =  1.0/U_2
+        N[3,1] = -1.0/U_2
+    
+        N[6,3] =  1.0/U_2
+        N[7,3] = -1.0/U_2  
+
+        N[10,5] =  1.0/U_2
+        N[11,5] = -1.0/U_2 
+        
+        #          0  1  2  3  4  5
+        # 0 Iw1a   1                   Ia1 0
+        # 1 Iw2a  -1                   Ia2 1
+        # 2 Iw3a      2                Ib1 2
+        # 3 Iw4a     -2                Ib2 3
+        # 4 Iw1b         1             Ic1 4
+        # 5 Iw2b        -1             Ic2 5
+        # 6 Iw3b            2
+        # 7 Iw4b           -2
+        # 8 Iw1c               1
+        # 9 Iw2c              -1
+        #10 Iw3c                  2
+        #11 Iw4c                 -2
+        
+        #          0  1  2  3  4  5
+        # 0 Iw1a   1                   Ia1 0
+        # 1 Iw2a  -1                   Ia2 1
+        # 2 Iw3a      2       -1       Ib1 2
+        # 3 Iw4a     -2       -1       Ib2 3
+        # 4 Iw1b         1             Ic1 4
+        # 5 Iw2b        -1             Ic2 5
+        # 6 Iw3b  -1        2
+        # 7 Iw4b  -1       -2
+        # 8 Iw1c               1 
+        # 9 Iw2c              -1
+        #10 Iw3c        -1        2
+        #11 Iw4c        -1       -2
+        
+        
+        B = np.array([[ 1, 0, 0],
+                      [-1, 0, 0],
+                      [ 0, 1, 0],
+                      [ 0,-1, 0],
+                      [ 0, 0, 1],
+                      [ 0, 0,-1]])
+    
+        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
+        Y_w = N @ Y_1 @ N.T
+        A_trafo = np.zeros((7,12))
+
+        A_trafo[0,0] = 1.0
+        A_trafo[1,4] = 1.0
+        A_trafo[2,8] = 1.0         
+        
+        A_trafo[6,3]  = 1.0
+        A_trafo[6,7]  = 1.0
+        A_trafo[6,11] = 1.0
+        
+
+        
+    if connection=='Dyg11_3w':
+        z_a = Z_cc*1.0**2/S_n
+        z_b = Z_cc*1.0**2/S_n
+        z_c = Z_cc*1.0**2/S_n
         U_1 = U_1n
         U_2 = U_2n/np.sqrt(3)
         Z_B = np.array([[z_a, 0.0, 0.0],
@@ -1570,21 +1923,62 @@ def trafo_yprim(S_n,U_1n,U_2n,Z_cc,connection='Dyg11'):
         Y_w = N @ Y_1 @ N.T
         A_trafo = np.zeros((6,12))
 
-        A_trafo[0,0] = 1.0
-        A_trafo[0,9] = 1.0
-        A_trafo[1,1] = 1.0
-        A_trafo[1,4] = 1.0
-        A_trafo[2,5] = 1.0
-        A_trafo[2,8] = 1.0
+        A_trafo[0,1] = 1.0
+        A_trafo[0,4] = 1.0
+        A_trafo[1,5] = 1.0
+        A_trafo[1,8] = 1.0
+        A_trafo[2,0] = 1.0
+        A_trafo[2,9] = 1.0
 
-        A_trafo[3,2]  = 1.0
-        A_trafo[4,6]  = 1.0
-        A_trafo[5,10] = 1.0
-                
+        A_trafo[3,3] = 1.0
+        A_trafo[4,7] = 1.0
+        A_trafo[5,11] = 1.0
+        
+#    if connection=='Dyg11_3w':
+#        z_a = Z_cc*1.0**2/S_n
+#        z_b = Z_cc*1.0**2/S_n
+#        z_c = Z_cc*1.0**2/S_n
+#        U_1 = U_1n/np.sqrt(3)
+#        U_2 = U_2n
+#        Z_B = np.array([[z_a, 0.0, 0.0],
+#                        [0.0, z_b, 0.0],
+#                        [0.0, 0.0, z_c],])                             
+#        N_a = np.array([[ 1/U_1,     0],
+#                         [-1/U_1,     0],
+#                         [     0, 1/U_2],
+#                         [     0,-1/U_2]])           
+#        N_row_a = np.hstack((N_a,np.zeros((4,4))))
+#        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
+#        N_row_c = np.hstack((np.zeros((4,4)),N_a))
+#        
+#        N = np.vstack((N_row_a,N_row_b,N_row_c))
+#
+#        B = np.array([[ 1, 0, 0],
+#                      [-1, 0, 0],
+#                      [ 0, 1, 0],
+#                      [ 0,-1, 0],
+#                      [ 0, 0, 1],
+#                      [ 0, 0,-1]])
+#    
+#        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
+#        Y_w = N @ Y_1 @ N.T
+#        A_trafo = np.zeros((6,12))
+#
+#        A_trafo[0,1] = 1.0
+#        A_trafo[0,4] = 1.0
+#        A_trafo[1,5] = 1.0
+#        A_trafo[1,8] = 1.0
+#        A_trafo[2,0] = 1.0
+#        A_trafo[2,9] = 1.0
+#
+#        A_trafo[3,3] = 1.0
+#        A_trafo[4,7] = 1.0
+#        A_trafo[5,11] = 1.0
+               
     if connection=='Ynd11':
-        z_a = Z_cc*1.0**2/S_n*3
-        z_b = Z_cc*1.0**2/S_n*3
-        z_c = Z_cc*1.0**2/S_n*3
+        z_a = Z_cc*1.0**2/S_n
+        z_b = Z_cc*1.0**2/S_n
+        z_c = Z_cc*1.0**2/S_n
         U_1 = U_1n/np.sqrt(3)
         U_2 = U_2n
         Z_B = np.array([[z_a, 0.0, 0.0],

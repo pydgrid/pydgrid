@@ -21,7 +21,7 @@ sys1.pf() 0.5933837890625
 
 
 @numba.jit(nopython=True, cache=True,nogil=True)
-def pf_eval(params,ig=0,max_iter=50):
+def pf_eval(params,ig=0,max_iter=100):
     '''
     
     
@@ -65,6 +65,7 @@ def pf_eval(params,ig=0,max_iter=50):
     Y_vi =  Y_iv.T
     V_unknown_0 = V_unknown
     
+
     #print(np.abs(V_unknown))
     for iteration in range(max_iter):
         
@@ -115,19 +116,16 @@ def pf_eval(params,ig=0,max_iter=50):
 
             for it in range(gfeed_bus_nodes.shape[0]):
                
-                V_abc = V_unknown[gfeed_bus_nodes[it][0:3],0]
-                
+                V_abc   = V_unknown[gfeed_bus_nodes[it][0:3],0]
                 S_abc_gf = gfeed_powers[it,0:3]
 #                print(S_abc_gf)
                 I_abc_pq = np.conj(S_abc_gf/V_abc)
                 I_abc_ir = gfeed_currents[it,0:3]*np.exp(1j*np.angle(V_abc))
                 
-                I_abc = I_abc_pq + I_abc_ir + gfeed_i_abcn[it,0:3]
+                I_abc_gfeed = I_abc_pq + I_abc_ir + gfeed_i_abcn[it,0:3]
                 
-#                print(abs(I_abc))
-               
-                I_known[gfeed_bus_nodes[it][0:3],0] += I_abc
-                I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc) + gfeed_i_abcn[it,3]
+                I_known[gfeed_bus_nodes[it][0:3],0] += I_abc_gfeed
+                I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc_gfeed) + gfeed_i_abcn[it,3]
                 
    
     
@@ -142,8 +140,10 @@ def pf_eval(params,ig=0,max_iter=50):
            
         #V_unknown = inv_Y_ii  @ I_aux 
         #V_unknown = np.linalg.solve(Y_ii, I_known - Y_iv @ V_known)
-        
-        if np.linalg.norm(V_unknown - V_unknown_0,np.inf) <1.0e-10: break
+        V_unknown_m = np.abs(V_unknown)
+        V_unknown_0_m = np.abs(V_unknown_0)
+        error = np.linalg.norm((V_unknown_m - V_unknown_0_m)/V_unknown_0_m,np.inf)
+        if error <1.0e-6: break
         V_unknown_0 = V_unknown
 
     I_unknown =Y_vv @ V_known + Y_vi @ V_unknown
