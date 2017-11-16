@@ -14,9 +14,8 @@ Transformers are modeled as [Dugan].
 .. code:: python
 
 	"transformers":[
-			{"bus_j": "Bus_0",  "bus_k": "Bus_1",  "S_n_kVA": 150.0, "U_1_kV":20.0, "U_2_kV":0.4,
-			"R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": "Dyn11",
-			"conductors_1": 3, "conductors_2": 4}
+                    {"bus_j": "Bus_0",  "bus_k": "Bus_1",  "S_n_kVA": 2500.0, "U_1_kV":20, "U_2_kV":0.69,
+                     "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": "Dyg11_3w",   "conductors_1": 3, "conductors_2": 3},
 			],
 
 where:

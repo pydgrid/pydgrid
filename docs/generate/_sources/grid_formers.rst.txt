@@ -12,11 +12,11 @@ Grid formers are considered as fix voltage sources in the power flow calculation
 
 .. code:: python
    
-   "grid_feeders":[{"bus": "Bus_0","bus_nodes": [1, 2, 3], "mode": "PQ"
-	                "kVA": [11.547, 11.547, 11.547], "fp": [0.9,0.9,0.9], 
-			        "kA": [20,10,5], "phi_deg":[0, 0, 0]}
-				  ]
-
+    "grid_formers":[
+                     {"bus": "Bus_1",
+                      "bus_nodes": [1, 2, 3], "deg": [0, -120, -240],
+                      "kV": [0.23094, 0.23094, 0.23094]}
+                   ]
 
 where:
 

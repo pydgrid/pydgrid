@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Grid formers &mdash; pydgrid 1 documentation</title>
+  <title>Grid formers &mdash; pydgrid 0.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="pydgrid 1 documentation" href="index.html"/>
+    <link rel="top" title="pydgrid 0.2 documentation" href="index.html"/>
         <link rel="up" title="Elements" href="elements.html"/>
         <link rel="next" title="Loads" href="loads.html"/>
         <link rel="prev" title="Transformers" href="transformers.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -93,6 +93,7 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="definitions.html">Definitions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="elements.html">Elements</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="buses.html">Buses</a></li>
@@ -207,10 +208,11 @@
 <div class="section" id="grid-formers">
 <h1>Grid formers<a class="headerlink" href="#grid-formers" title="Permalink to this headline">¶</a></h1>
 <p>Grid formers are considered as fix voltage sources in the power flow calculation.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;grid_feeders&quot;</span><span class="p">:[{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_0&quot;</span><span class="p">,</span><span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;PQ&quot;</span>
-                     <span class="s2">&quot;kVA&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">11.547</span><span class="p">,</span> <span class="mf">11.547</span><span class="p">,</span> <span class="mf">11.547</span><span class="p">],</span> <span class="s2">&quot;fp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span><span class="mf">0.9</span><span class="p">,</span><span class="mf">0.9</span><span class="p">],</span>
-                             <span class="s2">&quot;kA&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="s2">&quot;phi_deg&quot;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]}</span>
-                               <span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;grid_formers&quot;</span><span class="p">:[</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_1&quot;</span><span class="p">,</span>
+                  <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;deg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mi">240</span><span class="p">],</span>
+                  <span class="s2">&quot;kV&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.23094</span><span class="p">,</span> <span class="mf">0.23094</span><span class="p">,</span> <span class="mf">0.23094</span><span class="p">]}</span>
+               <span class="p">]</span>
 </pre></div>
 </div>
 <p>where:</p>
@@ -266,7 +268,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1',
+            VERSION:'0.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
