@@ -22,7 +22,7 @@ The `source code`_ is hosted on GitHub, and all
 contributions and feedback are more than welcome. You can test pydgrid in your
 browser using binder, a cloud Jupyter notebook server:
 
-.. image:: https://mybinder.org/badge.svg 
+.. image:: https://mybinder.org/badge.svg
 	:target: https://mybinder.org/v2/gh/pydgrid/pydgrid/master
 
 
@@ -33,11 +33,11 @@ browser using binder, a cloud Jupyter notebook server:
    :maxdepth: 2
    :caption: Contents:
 
-   getting_started	
+   getting_started
+   user_guide
    definitions
    elements
    jupyter_notebooks
-
 
 
 
