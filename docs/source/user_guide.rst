@@ -124,4 +124,4 @@ In the case of using jupyter notebook results can be visualized with a bokeh plo
 An on-line working jupyter notebook with the same example can be obtained here:
 
 .. image:: https://mybinder.org/badge.svg
-   	:target: https://mybinder.org/v2/gh/pydgrid/pydgrid/master/examples/tutorial/Example 1.ipynb
+   	:target: https://hub.mybinder.org/user/pydgrid-pydgrid-ixo2jmtz/notebooks/examples/tutorial/Example%201.ipynb
