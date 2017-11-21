@@ -6,7 +6,7 @@ Created on Sat Sep  9 23:22:02 2017
 @author: jmmauricio
 """
 
-from pydgrid.pydgrid import grid
+from pydgrid import grid
 from pydgrid.pf import pf_eval,time_serie
 from pydgrid.electric import bess_vsc, bess_vsc_eval
 from pydgrid.simu import simu, f_eval, ini_eval, run_eval
@@ -39,15 +39,15 @@ def test_line_sequence_z():
         		}
         		}
         }
-    
+
     # pydgrid calculation
     sys1 = grid()
     sys1.read(data)  # Load data
     sys1.pf_solver = 1
-    sys1.pf()  # solve power flow    
+    sys1.pf()  # solve power flow
     sys1.get_v()      # post process voltages
     sys1.get_i()      # post process currents
-    I_12_pydgrid = sys1.lines[0]['i_a_m']    
+    I_12_pydgrid = sys1.lines[0]['i_a_m']
 
     # positive sequence "manual" calculation
     V_1_m = sys1.buses[0]['v_an']
@@ -63,7 +63,7 @@ def test_line_sequence_z():
 
     # comparison
     error = I_12_manual - I_12_pydgrid
-    
+
     assert abs(error)<0.001
 #    phases = ['v_an','v_bn','v_cn']
 #    for bus in sys1.buses:
@@ -95,15 +95,15 @@ def test_pr_mt_h():
         		}
         		}
         }
-    
+
     # pydgrid calculation
     sys1 = grid()
     sys1.read(data)  # Load data
     sys1.pf_solver = 1
-    sys1.pf()  # solve power flow    
+    sys1.pf()  # solve power flow
     sys1.get_v()      # post process voltages
     sys1.get_i()      # post process currents
-#    I_12_pydgrid = sys1.lines[0]['i_a_m']    
+#    I_12_pydgrid = sys1.lines[0]['i_a_m']
 #
 #    # positive sequence "manual" calculation
     V_1_m = sys1.buses[0]['v_an']
@@ -112,10 +112,10 @@ def test_pr_mt_h():
     DV = V_1_m - V_2_m
     DU_pydgrid = np.sqrt(3)*DV
     DU_catalog = 24.41
-    
+
     # comparison
     error = DU_pydgrid - DU_catalog
-    
+
     assert abs(error)<0.001
 #    phases = ['v_an','v_bn','v_cn']
 #    for bus in sys1.buses:
@@ -124,6 +124,6 @@ def test_pr_mt_h():
 
 
 if __name__ == "__main__":
-    
+
 #    test_line_sequence_z()
     test_pr_mt_h()

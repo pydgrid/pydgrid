@@ -46,7 +46,7 @@ For the proposed system example the following elemnts from pydgrid should be con
 
 .. code-block:: python
 
-    data = {     
+    data = {
             "buses":[
                      {"bus": "B1",  "pos_x":   0, "pos_y":   0, "units": "m", "U_kV":20.0},
                      {"bus": "B2",  "pos_x":  10, "pos_y":   0, "units": "m", "U_kV":0.4},
@@ -62,15 +62,17 @@ For the proposed system example the following elemnts from pydgrid should be con
                              "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": "Dyn11",   "conductors_j": 3, "conductors_k": 4},
                            ],
             "lines":[
-                     {"bus_j": "B2",  "bus_k": "B3",  "code": "UG1", "m": 100.0},
+                     {"bus_j": "B2",  "bus_k": "B3",  "code": "lv_cu_150", "m": 100.0},
                     ],
             "loads":[
                      {"bus": "B3" , "kVA": 300.0, "pf": 0.85,"type":"3P+N"}
                     ],
             "shunts":[
-              {"bus": "B2" , "R": 0.001, "X": 0.0, "bus_nodes": [4,0]}
-                     ]
-
+                     {"bus": "B2" , "R": 0.001, "X": 0.0, "bus_nodes": [4,0]}
+                     ],
+            "line_codes":
+                {"lv_cu_150":  {"Rph":0.167,"Xph":0.08, "Rn":0.167, "Xn": 0.08}
+                }
            }
 
 Generate a grid instance
@@ -86,7 +88,6 @@ Read grid parameters
 .. code-block:: python
 
     grid_1 = grid(data)
-
 
 
 Execute power flow
@@ -109,35 +110,18 @@ Post process results
 Plot results
 ------------
 
+In the case of using jupyter notebook results can be visualized with a bokeh plot that includes hover tools.
+
 .. code-block:: python
 
-    from bokeh.io import output_notebook, show
-    from bokeh.plotting import figure
-    from bokeh.models import ColumnDataSource, HoverTool
-    from bokeh.io import push_notebook
-    from bokeh.resources import INLINE
-    output_notebook(INLINE)
-
-    p = figure(width=600, height=400,
-               title='3 bus 4 wire system with transformer')
-
-    # trafos:
-    source = ColumnDataSource(grid_1.transformer_data)
-    trafo = p.multi_line(source=source, xs='x_s', ys='y_s', color="green", alpha=0.5, line_width=5)
-
-    # lines:
-    source = ColumnDataSource(grid_1.line_data)
-    lin = p.multi_line(source=source, xs='x_s', ys='y_s', color="red", alpha=0.5, line_width=5)
-
-    # buses:
-    source = ColumnDataSource(grid_1.bus_data)
-    cr = p.circle(source=source, x='x', y='y', size=15, color="navy", alpha=0.5)
-
-    p.add_tools(HoverTool(renderers=[trafo], tooltips=grid_1.transformer_tooltip))
-    p.add_tools(HoverTool(renderers=[lin], tooltips=grid_1.line_tooltip))
-    p.add_tools(HoverTool(renderers=[cr], tooltips=grid_1.bus_tooltip))
-    show(p)
+    plot_results(grid_1)
 
 
-.. image:: ./png/bokeh_plot.png
-   :width: 600 px
+.. raw:: html
+   :file: html/example1.html
+
+
+An on-line working jupyter notebook with the same example can be obtained here:
+
+.. image:: https://mybinder.org/badge.svg
+   	:target: https://mybinder.org/v2/gh/pydgrid/pydgrid/master/examples/tutorial/Example 1.ipynb

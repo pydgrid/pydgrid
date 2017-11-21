@@ -6,7 +6,7 @@ Created on Sat Sep  9 23:22:02 2017
 @author: jmmauricio
 """
 
-from pydgrid.pydgrid import grid
+from pydgrid import grid
 from pydgrid.pf import pf_eval,time_serie
 from pydgrid.electric import bess_vsc, bess_vsc_eval,sm_ord4_eval
 from pydgrid.simu import simu, f_eval, ini_eval, run_eval
@@ -15,12 +15,12 @@ import numpy as np
 import time
 
 def d2np(d):
-    
+
     names = []
     numbers = ()
     dtypes = []
     for item in d:
-        names += item   
+        names += item
         if type(d[item]) == float:
             numbers += (d[item],)
             dtypes += [(item,float)]
@@ -91,19 +91,19 @@ def to_do():
     gfeed_idx = np.array([0]),
     i_abcn = np.zeros((4,1), np.complex128)
     )
-            
-            
+
+
     alpha = np.exp(2.0/3*np.pi*1j)
     A_0a =  np.array([[1, 1, 1],
                       [1, alpha**2, alpha],
                       [1, alpha, alpha**2]])
-    
+
     A_a0 = 1/3* np.array([[1, 1, 1],
                           [1, alpha, alpha**2],
                           [1, alpha**2, alpha]])
-    
+
     params = d2np(d)
-    
+
     S = 0.9+1j*0.436
     V_m = 1.0
     theta = np.deg2rad(28.34)
@@ -119,32 +119,32 @@ def to_do():
     v_abcn = np.zeros((4,1),np.complex128)
     i_abcn[0:3,:] = I_abc
     v_abcn[0:3,:] = V_abc
-    
+
     gfeed_powers = np.ones((1,4),np.complex128)*S
     gfeed_currents = np.zeros((1,4),np.complex128)
-    
+
     d_pf =dict(
-    gfeed_powers = gfeed_powers,           
+    gfeed_powers = gfeed_powers,
     gfeed_currents = gfeed_currents,
     i_abcn = i_abcn,
     v_abcn = v_abcn,
-    V_node = v_abcn 
+    V_node = v_abcn
     )
-    
+
     params_pf = d2np(d_pf)
-    
-    
+
+
     d_simu =dict(
     x = np.zeros((4,1))+0.0
     )
-    
+
     params_simu = d2np(d_simu)
-    
-    
+
+
     mode = 0
     t = 0.0
     sm_ord4_eval(t,mode,params,params_pf,params_simu)
-    
+
     print(params_simu.x)
     print('e_fd',params.e_fd)
     print('p_m',params.p_m)
@@ -153,11 +153,11 @@ def to_do():
 #    sys1.read('./examples/kersting_ex6p1.json')  # Load data
 #    sys1.pf_solver = 1
 #    sys1.pf()  # solve power flow
-#    
+#
 #    sys1.get_v()      # post process voltages
 #    sys1.get_i()      # post process currents
 #
-#    expected_results = {'v_ab': 12469.993267073232,'v_an': 7199.5507766249302, 
+#    expected_results = {'v_ab': 12469.993267073232,'v_an': 7199.5507766249302,
 #                        'v_bc': 12469.99825654443,'v_bn': 7199.5575295511126,
 #                        'v_ca': 12469.991908615197,  'v_cn': 7199.55569880254723,
 #                        'deg_an': -3.3473807241894507e-05,'deg_bn': -120.00002841365294,'deg_cn': 119.99996507934871,'deg_ng': 0.0,
@@ -168,7 +168,7 @@ def to_do():
 #        if abs(den)<0.001:
 #            den = 0.001
 #        relative_error = (sys1.buses[1][item] - expected_results[item])/den
-#        
+#
 #        assert abs(relative_error)<0.001
 #
 #def test_solver2():
@@ -176,11 +176,11 @@ def to_do():
 #    sys1.read('./examples/kersting_ex6p1.json')  # Load data
 #    sys1.pf_solver = 2
 #    sys1.pf()  # solve power flow
-#    
+#
 #    sys1.get_v()      # post process voltages
 #    sys1.get_i()      # post process currents
 #
-#    expected_results = {'v_ab': 12469.993267073232,'v_an': 7199.5507766249302, 
+#    expected_results = {'v_ab': 12469.993267073232,'v_an': 7199.5507766249302,
 #                        'v_bc': 12469.99825654443,'v_bn': 7199.5575295511126,
 #                        'v_ca': 12469.991908615197,  'v_cn': 7199.55569880254723,
 #                        'deg_an': -3.3473807241894507e-05,'deg_bn': -120.00002841365294,'deg_cn': 119.99996507934871,'deg_ng': 0.0,
@@ -191,20 +191,19 @@ def to_do():
 #        if abs(den)<0.001:
 #            den = 0.001
 #        relative_error = (sys1.buses[1][item] - expected_results[item])/den
-#        
+#
 #        assert abs(relative_error)<0.001
-        
+
 
 
 #    Phases = ['an','bn','cn']
 #    for bus in sys1.buses:
 #        for ph in Phases:
 #            print('V_{:s}_n = {:2.2f}|{:2.2f}º V'.format(ph,bus['v_'+ph],bus['deg_'+ph]))
-#    
+#
 #    Phases = ['a','b','c']
 #    for line in sys1.lines:
 #        for ph in Phases:
 #            print('I_{:s}_n = {:2.2f}|{:2.2f}º A'.format(ph,line['i_'+ph+'_m'],line['deg_'+ph]))
-#            
 #
-    
+#

@@ -30,6 +30,7 @@ class grid(object):
     
     def __init__(self):
         
+        self.Freq = 50.0
         self.s_radio_scale = 0.01
         self.s_radio_max = 20
         self.s_radio_min = 1
@@ -435,12 +436,30 @@ class grid(object):
                 
         ### Lines to nodes
         for line in lines:
+            ''' data type:
+                * global_library: GLOBAL
+                * user
+                    - line without shunt, R1 and X1: ZR1X1
+                    - line with shunt, R1, X1, C1: PIR1X1C1                    
+                    - line without shunt, primitives: ZRX
+                    - line with shunt, primitives: PIRXC   
+            '''
             line['type'] = 'z'
             line_code = line['code']
-            
-            if not line_code in self.line_codes_lib:
+            data_type='ZR1X1'
+            if line_code in self.line_codes_lib: data_type='GLOBAL'
+            if not  data_type=='GLOBAL':
                 line_data = data['line_codes'][line_code]
-                if 'X1' in line_data:
+                if 'X1' in line_data:  data_type='ZR1X1'
+                if 'C_1_muF' in line_data:  data_type='PIR1X1C1'
+                if 'R' in line_data:  data_type='ZRX'  
+                if 'X' in line_data:  data_type='ZRX'      
+                if 'B_mu' in line_data:  data_type='PIRXC'  
+                if 'Rph' in line_data:  data_type='ZRphXph'
+                if 'Rn' in line_data:  data_type='ZRphXphRnXn'  
+                
+                if data_type=='ZR1X1':
+                    line['type'] = 'z'
                     Z_1 = line_data['R1'] + 1j*line_data['X1']
                     Z_2 = Z_1
                     if 'X0' in line_data:
@@ -450,18 +469,63 @@ class grid(object):
                     Z_012 = np.array([[Z_0,0,0],[0,Z_1,0],[0,0,Z_2]])
                     Z = A_a0 @ Z_012 @ A_0a
                     self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
-                
-                if 'X' in line_data:
+                    
+                if data_type=='PIR1X1C1':
+                    line['type'] = 'pi'
+                    Z_1 = line_data['R1'] + 1j*line_data['X1']
+                    Z_2 = Z_1
+                    if 'X0' in line_data:
+                        Z_0 = line_data['R0'] + 1j*line_data['X0'] 
+                    else:
+                        Z_0 = 3*Z_1
+                    Z_012 = np.array([[Z_0,0,0],[0,Z_1,0],[0,0,Z_2]])
+                    Z = A_a0 @ Z_012 @ A_0a
+                    
+                    B_1 = 2*np.pi*self.Freq*line_data['C_1_muF']*1e-6
+                    B_2 = B_1
+                    if 'C_0_muF' in line_data:
+                        B_0 =  2*np.pi*self.Freq*line_data['C_0_muF']*1e-6
+                    else:
+                        B_0 =  3.0*B_1                  
+
+                    Y_012 = np.array([[B_0,0,0],[0,B_1,0],[0,0,B_2]])
+                    Y = A_a0 @ Y_012 @ A_0a
+                    
+                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
+                    self.line_codes_lib[line_code].update({'Y':Y.tolist()})
+
+                if data_type=='ZRX':
+                    line['type'] = 'z'
                     R = np.array(data['line_codes'][line_code]['R'])
                     X = np.array(data['line_codes'][line_code]['X'])
                     Z = R + 1j*X
                     self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
-                
-                if 'B_mu' in data['line_codes'][line_code]:
+
+                if data_type=='PIRXC':
+                    line['type'] = 'pi'
+                    R = np.array(data['line_codes'][line_code]['R'])
+                    X = np.array(data['line_codes'][line_code]['X'])
+                    Z = R + 1j*X
+                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
+                    
                     Y = 1j*np.array(data['line_codes'][line_code]['B_mu'])*1e-6
                     self.line_codes_lib[line_code].update({'Y':Y.tolist()})
-                    line['type'] = 'pi'
                     
+
+                if data_type == 'ZRphXphRnXn':
+                    line['type'] = 'z'
+                    R_ph = np.array(data['line_codes'][line_code]['Rph'])
+                    X_ph = np.array(data['line_codes'][line_code]['Xph'])
+                    R_n = np.array(data['line_codes'][line_code]['Rn'])
+                    X_n = np.array(data['line_codes'][line_code]['Xn'])
+                    Z = np.zeros((4,4),dtype=np.complex128)
+                    Z[0,0] = R_ph+1j*X_ph
+                    Z[1,1] = R_ph+1j*X_ph
+                    Z[2,2] = R_ph+1j*X_ph
+                    Z[3,3] = R_n+1j*X_n
+                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
+
+                      
                 
             N_conductors = len(self.line_codes_lib[line['code']]['Z'])
             if line['type'] == 'z':

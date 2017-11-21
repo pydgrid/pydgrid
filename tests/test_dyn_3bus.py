@@ -6,7 +6,7 @@ Created on Sat Sep  9 23:22:02 2017
 @author: jmmauricio
 """
 
-from pydgrid.pydgrid import grid
+from pydgrid import grid
 from pydgrid.pf import pf_eval,time_serie
 from pydgrid.electric import bess_vsc, bess_vsc_eval
 from pydgrid.simu import simu, f_eval, ini_eval, run_eval
@@ -58,11 +58,11 @@ def test_dyn_bess():
                 {"id":"gfeeder.Bus_2","source_mode":"grid_feeder","ctrl_mode":3,"s_n_kVA":50.0,"V_dc":800.0,
                 "soc_max_kWh":1.0,"soc_ini_kWh":0.5},
                 {"id":"gfeeder.Bus_3","source_mode":"grid_feeder","ctrl_mode":3,"s_n_kVA":50.0,"V_dc":800.0,
-                "soc_max_kWh":1.0,"soc_ini_kWh":0.5},            
+                "soc_max_kWh":1.0,"soc_ini_kWh":0.5},
                 {"id":"gformer.Bus_4","source_mode":"grid_former","ctrl_mode":3,"s_n_kVA":50.0,"V_dc":800.0,
                 "soc_max_kWh":1.0,"soc_ini_kWh":0.5}]
     }
-            
+
     sys1 = grid()
     sys1.read(data)  # Load data
     #gfeed_powers = np.copy(sys1.params_pf['gfeed_powers'])
@@ -70,18 +70,18 @@ def test_dyn_bess():
     sys1.pf_solver = 1
     #sys1.pf()  # solve power flow
     #print(sys1.params_pf['iters'] )
-    
+
     #sys1.params_pf['gfeed_powers'] = gfeed_powers
-    
+
     sys1.pf()  # solve power flow
     sys1.get_v()      # post process voltages
     sys1.get_i()      # post process currents
-    
-    
+
+
     simu1 = simu(data,sys1)
     simu1.Dt = 0.1
     ini_eval(0.0,sys1.params_pf,simu1.params_simu,simu1.params_bess_vsc)
-    
+
     T,V_nodes,I_nodes,X = run_eval(100,sys1.params_pf,simu1.params_simu,simu1.params_bess_vsc)
     assert abs(T[-1,0]-99.9)<0.01
 
