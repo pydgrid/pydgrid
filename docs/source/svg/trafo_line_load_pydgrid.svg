@@ -10,7 +10,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="309.99997"
-   height="99.533356"
+   height="129.22003"
    id="svg83918"
    version="1.1"
    inkscape:version="0.92.1 r15371"
@@ -22,9 +22,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="174.82364"
-     inkscape:cy="21.594433"
+     inkscape:zoom="2"
+     inkscape:cx="158.54876"
+     inkscape:cy="54.360949"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -42,7 +42,7 @@
      inkscape:object-nodes="false"
      inkscape:snap-others="false">
     <inkscape:grid
-       originy="24.533365"
+       originy="38.553353"
        originx="99.999995"
        id="grid5974"
        type="xygrid" />
@@ -282,6 +282,36 @@
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
          id="path6077-6-11" />
     </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="Arrow2Mend-7-9-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path6077-6-1-2" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="Arrow2Mend-7-9-6-1"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path6077-6-1-2-2" />
+    </marker>
   </defs>
   <metadata
      id="metadata83923">
@@ -299,7 +329,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-59.637164,-248.5353)">
+     transform="translate(-59.637164,-232.86862)">
     <path
        style="fill:none;stroke:#000000;stroke-width:2.66666675;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 143.63716,288.53529 v 30"
@@ -310,17 +340,6 @@
        d="m 234.63716,288.03529 v 31"
        id="path4612-5-3-0-0-2-1"
        inkscape:connector-curvature="0" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Latin Modern Sans';-inkscape-font-specification:'Latin Modern Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="218.63194"
-       y="256.63947"
-       id="text10225"><tspan
-         sodipodi:role="line"
-         id="tspan10223"
-         x="218.63194"
-         y="256.63947"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.66666698px;font-family:monospace;-inkscape-font-specification:monospace">buses</tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:2.66666675;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 304.63716,288.03529 v 31"
@@ -335,7 +354,7 @@
     <path
        inkscape:connector-curvature="0"
        id="path6048-3-0"
-       d="m 229.63716,263.53528 5,20"
+       d="m 234.58691,258.93909 0.0503,24.59619"
        style="fill:none;stroke:#000000;stroke-width:1.33333337;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Mend-7-9)"
        sodipodi:nodetypes="cc" />
     <path
@@ -421,18 +440,66 @@
        id="rect10511-7-3"
        width="59.333313"
        height="25"
-       x="206.41385"
-       y="322.73532" />
+       x="164.97052"
+       y="333.86862" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Latin Modern Sans';-inkscape-font-specification:'Latin Modern Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="218.18134"
-       y="339.78864"
+       x="176.73801"
+       y="350.92194"
        id="text10515-0-6"><tspan
          sodipodi:role="line"
          id="tspan10513-7-7"
-         x="218.18134"
-         y="339.78864"
+         x="176.73801"
+         y="350.92194"
          style="font-size:13.33333302px">shunts</tspan></text>
+    <rect
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.66666669;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none"
+       id="rect10511-7-3-3"
+       width="59.333313"
+       height="25"
+       x="204.97052"
+       y="233.20195" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Latin Modern Sans';-inkscape-font-specification:'Latin Modern Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="219.28166"
+       y="250.25528"
+       id="text10515-0-6-6"><tspan
+         sodipodi:role="line"
+         id="tspan10513-7-7-7"
+         x="219.28166"
+         y="250.25528"
+         style="font-size:13.33333302px">buses</tspan></text>
+    <rect
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.66666675;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none"
+       id="rect10511-7-7-5"
+       width="74.333336"
+       height="25"
+       x="258.69644"
+       y="336.75531" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16px;line-height:1.25;font-family:'Latin Modern Sans';-inkscape-font-specification:'Latin Modern Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       x="266.00903"
+       y="352.78864"
+       id="text10515-0-2-3"><tspan
+         sodipodi:role="line"
+         id="tspan10513-7-9-5"
+         x="266.00903"
+         y="352.78864"
+         style="font-size:13.33333302px">line_codes</tspan></text>
+    <path
+       inkscape:connector-curvature="0"
+       id="path6048-3-0-9"
+       d="m 294.58691,333.93909 -15.6997,-13.65381"
+       style="fill:none;stroke:#000000;stroke-width:1.33333337;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Mend-7-9-6)"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path6048-3-0-9-7"
+       d="m 201.83691,331.68909 24.5503,-11.65381"
+       style="fill:none;stroke:#000000;stroke-width:1.33333337;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Mend-7-9-6-1)"
+       sodipodi:nodetypes="cc" />
   </g>
 </svg>

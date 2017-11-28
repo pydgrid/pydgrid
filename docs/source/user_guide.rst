@@ -114,6 +114,7 @@ In the case of using jupyter notebook results can be visualized with a bokeh plo
 
 .. code-block:: python
 
+    from pydgrid.plot_bokeh import plot_results 
     plot_results(grid_1)
 
 
@@ -123,5 +124,5 @@ In the case of using jupyter notebook results can be visualized with a bokeh plo
 
 An on-line working jupyter notebook with the same example can be obtained here:
 
-.. image:: https://mybinder.org/badge.svg
-   	:target: https://hub.mybinder.org/user/pydgrid-pydgrid-ixo2jmtz/notebooks/examples/tutorial/Example%201.ipynb
+.. image:: https://mybinder.org/badge.svg 
+   :target: https://mybinder.org/v2/gh/pydgrid/pydgrid/master?filepath=%2Fexamples%2Ftutorial%2FExample%201.ipynb

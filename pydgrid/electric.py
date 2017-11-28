@@ -71,6 +71,9 @@ class bess_vsc(object):  # feed mode
             
             S_base = item['s_n_kVA']*1000.0
             V_dc  = item['V_dc']
+            L  = item['L']
+            R  = item['R']
+            C_ac  = item['C_ac']
             v_abcn_0 = np.zeros((4,1))
             i_abcn_0 = np.zeros((4,1))
             v_abcn = np.zeros((4,1))
@@ -112,7 +115,12 @@ class bess_vsc(object):  # feed mode
                               nodes,
                               bus_nodes,
                               S_base,
+                              L,
+                              R,
+                              C_ac,
                               V_dc,
+                              e_abcn,
+                              eta_abcn,
                               v_abcn_0,
                               i_abcn_0,
                               v_abcn,
@@ -145,7 +153,12 @@ class bess_vsc(object):  # feed mode
                       ('nodes',np.int32,(4,)),  #  bus_nodes_list
                       ('bus_nodes',np.int32,(4,)),  #  bus_nodes_list
                       ('S_base',np.float64),  # S_base_list
+                      ('L','float64'), # switch_list
+                      ('R','float64'), # switch_list
+                      ('C_ac','float64'), # switch_list
                       ('V_dc',np.float64), # V_dc_list
+                      ('e_abcn',np.complex128,(4,1)), # 
+                      ('eta_abcn',np.complex128,(4,1)), # 
                       ('v_abcn_0',np.complex128,(4,1)), # 
                       ('i_abcn_0',np.complex128,(4,1)), # 
                       ('v_abcn',np.complex128,(4,1)), # 
@@ -311,9 +324,10 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
     Parameters
     ----------
 
-
+    source_mode: int
+        0: grid_feeder, 1:grid_former
     mode: int
-        0: ini, 1:der, 2:out
+        0:power flow, 1: ini, 2:der, 3:discrete, 4:out
     ctrl_mode: int
         1:  grid former, fix_v + secondary
         3:  grid former, p-v, q-ang

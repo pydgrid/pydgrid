@@ -457,6 +457,7 @@ class grid(object):
                 if 'B_mu' in line_data:  data_type='PIRXC'  
                 if 'Rph' in line_data:  data_type='ZRphXph'
                 if 'Rn' in line_data:  data_type='ZRphXphRnXn'  
+                if 'rho_20_m' in line_data:  data_type='ZrhoX'  
                 
                 if data_type=='ZR1X1':
                     line['type'] = 'z'
@@ -525,7 +526,26 @@ class grid(object):
                     Z[3,3] = R_n+1j*X_n
                     self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
 
-                      
+                if data_type == 'ZrhoX':
+                    line['type'] = 'z'
+                    rho_20 = np.array(data['line_codes'][line_code]['rho_20_m'])*1000.0
+                    alpha = np.array(data['line_codes'][line_code]['alpha'])
+                    X_ph = np.array(data['line_codes'][line_code]['Xph'])
+                    T_deg = np.array(data['line_codes'][line_code]['T_deg'])
+                    section = np.array(data['line_codes'][line_code]['section'])
+                    
+                    R_ph_20  = rho_20/section  # resistamce per km at 20ºC
+                    DT = T_deg-20.0                      # temperature increment
+                    R_ph  = R_ph_20*(1.0+alpha*DT) # resistamce per km at  90ºC
+                    R_n = R_ph
+                    X_n = X_ph
+                    Z = np.zeros((4,4),dtype=np.complex128)
+                    Z[0,0] = R_ph+1j*X_ph
+                    Z[1,1] = R_ph+1j*X_ph
+                    Z[2,2] = R_ph+1j*X_ph
+                    Z[3,3] = R_n+1j*X_n
+                    
+                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})                      
                 
             N_conductors = len(self.line_codes_lib[line['code']]['Z'])
             if line['type'] == 'z':

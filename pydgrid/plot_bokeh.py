@@ -14,6 +14,7 @@ from bokeh.resources import INLINE
 output_notebook(INLINE)
 
 
+
 def plot_results(grid):
     grid.bokeh_tools()
     
