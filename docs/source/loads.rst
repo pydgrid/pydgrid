@@ -8,13 +8,10 @@ Loads
 
 Loads.
 
-
-
 .. image:: ./png/loads.png
    :width: 600 px
- 
 
- 
+
 .. code:: python
 
    "loads":[
@@ -28,10 +25,8 @@ where:
 * ``"bus"``: name of the bus
 * ``"bus_nodes"``: list of nodes where the load is connected
 * ``"type"``: available types are:
-	- ``"1P+N"``: single phase load connected between one phase and other or neutral 
-	- ``"IABC"``: 
-* ``"kVA"``: aparent power (kW)   
-* ``"pf"``: load power factor 
-
-
-
+  - ``"3P+N"``: three phase load with neutral
+  - ``"3P"``: three phase load without neutral
+  - ``"1P+N"``: single phase load connected between one phase and other or neutral
+* ``"kVA"``: aparent power (kW)
+* ``"pf"``: load power factor

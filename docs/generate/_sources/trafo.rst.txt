@@ -2,6 +2,4 @@ Transformadores
 ===============
 
 
-.. image:: trafo_Dy11.png
-
-
+.. image:: ./png/trafo_Dy11.png

@@ -1,0 +1,326 @@
+PSCAD 4.2.0
+
+Settings
+ {
+ Id = "1503160782.1503160782"
+ Author = "Ingelectus.Ingelectus"
+ Desc = ""
+ Arch = "windows"
+ Options = 32
+ Build = 18
+ Warn = 1
+ Check = 15
+ Libs = ""
+ Source = ""
+ RunInfo = 
+  {
+  Fin = 0.5
+  Step = 5e-005
+  Plot = 0.00025
+  Chat = 0.001
+  Brch = 0.0005
+  Lat = 100
+  Options = 0
+  Advanced = 4607
+  Debug = 0
+  StartFile = ""
+  OFile = "noname.out"
+  SFile = "noname.snp"
+  SnapTime = 0.3
+  Mruns = 10
+  Mrunfile = 0
+  StartType = 0
+  PlotType = 0
+  SnapType = 0
+  MrunType = "mrun"
+  }
+
+ }
+
+Definitions
+ {
+ Module("Main")
+  {
+  Desc = ""
+  FileDate = 0
+  Nodes = 
+   {
+   }
+
+  Graphics = 
+   {
+   Rectangle(-18,-18,18,18)
+   }
+
+
+  Page(A/A4,Landscape,16,[962,468],5)
+   {
+   -Wire-([180,126],0,0,-1)
+    {
+    Vertex="0,0;108,0"
+    }
+   0.xfmr-3p2w([360,162],0,0,-1)
+    {
+    Name = ""
+    Tmva = "0.63 [MVA]"
+    f = "60.0 [Hz]"
+    YD1 = "0"
+    YD2 = "1"
+    Lead = "1"
+    Xl = "0.04 [pu]"
+    Ideal = "0"
+    NLL = "0.0 [pu]"
+    CuL = "0.0 [pu]"
+    Tap = "0"
+    View = "0"
+    Dtls = "0"
+    V1 = "0.4 [kV]"
+    V2 = "20.0 [kV]"
+    Enab = "0"
+    Sat = "1"
+    Xair = "0.2 [pu]"
+    Tdc = "1.0 [s]"
+    Xknee = "1.25 [pu]"
+    Txk = "0.1 [s]"
+    Im1 = "1 [%]"
+    ILA1 = ""
+    ILB1 = ""
+    ILC1 = ""
+    IAB1 = ""
+    IBC1 = ""
+    ICA1 = ""
+    ILA2 = ""
+    ILB2 = ""
+    ILC2 = ""
+    IAB2 = ""
+    IBC2 = ""
+    ICA2 = ""
+    IMA = ""
+    IMB = ""
+    IMC = ""
+    FLXA = ""
+    FLXB = ""
+    FLXC = ""
+    IMAB = ""
+    IMBC = ""
+    IMCA = ""
+    FLXAB = ""
+    FLXBC = ""
+    FLXCA = ""
+    }
+   0.voltmetergnd([468,126],0,0,30)
+    {
+    Name = "v_a2"
+    }
+   0.datalabel([864,126],0,0,-1)
+    {
+    Name = "Vsource"
+    }
+   0.const([720,162],0,0,50)
+    {
+    Name = ""
+    Value = "0.57735026919"
+    }
+   0.datalabel([792,198],0,0,-1)
+    {
+    Name = "Fsource"
+    }
+   0.const([720,198],0,0,80)
+    {
+    Name = ""
+    Value = "60.0"
+    }
+   -Wire-([756,198],0,0,-1)
+    {
+    Vertex="0,0;36,0"
+    }
+   0.source_3([558,162],2,0,120)
+    {
+    Name = "Source 1"
+    Type = "6"
+    Grnd = "1"
+    View = "0"
+    Spec = "0"
+    VCtrl = "1"
+    FCtrl = "1"
+    Vm = "230.0 [kV]"
+    Tc = "0.05 [s]"
+    f = "60.0 [Hz]"
+    Ph = "0.0 [deg]"
+    Vbase = "34.50 [kV]"
+    Sbase = "100.0 [MVA]"
+    Vpu = "1.0 [pu]"
+    PhT = "0.0 [deg]"
+    Pinit = "0.0 [pu]"
+    Qinit = "0.0 [pu]"
+    R = "1.0 [ohm]"
+    Rs = "1.0 [ohm]"
+    Rp = "1.0 [ohm]"
+    Lp = "0.1 [H]"
+    R' = "1.0 [ohm]"
+    L = "0.1 [H]"
+    C = "1.0 [uF]"
+    L' = "0.1 [H]"
+    C' = "1.0 [uF]"
+    IA = ""
+    IB = ""
+    IC = ""
+    }
+   0.const([684,126],0,0,20)
+    {
+    Name = ""
+    Value = "20.0"
+    }
+   0.mult([756,126],0,0,100)
+    {
+    }
+   0.datalabel([558,234],0,0,-1)
+    {
+    Name = "Vsource"
+    }
+   0.datalabel([594,234],0,0,-1)
+    {
+    Name = "Fsource"
+    }
+   0.mult([828,126],0,0,110)
+    {
+    }
+   0.const([792,162],0,0,60)
+    {
+    Name = ""
+    Value = "1.41421356237"
+    }
+   0.datalabel([306,432],0,0,-1)
+    {
+    Name = "Vtrrms"
+    }
+   0.pgb([306,432],0,52406184,90)
+    {
+    Name = "<Untitled>"
+    Group = ""
+    Display = "0"
+    Scale = "1.0"
+    Units = ""
+    mrun = "0"
+    Pol = "0"
+    Min = "-2.0"
+    Max = "2.0"
+    }
+   0.datalabel([252,414],0,0,-1)
+    {
+    Name = "Vtrrms"
+    }
+   0.tfaultn([126,396],0,0,40)
+    {
+    TF = "0.2 [s]"
+    DF = "0.5 [s]"
+    }
+   -Plot-([792,252],0)
+    {
+    Title = "$(GROUP) : Graphs"
+    Draw = 1
+    Area = [0,0,0,0]
+    Posn = [792,252]
+    Icon = [-1,-1]
+    Extents = 0,0,576,288
+    XLabel = " "
+    AutoPan = "false,75"
+    Graph([0,0],[0,0,576,225],"y")
+     {
+     Options = 128
+     Units = ""
+     Curve(52406184,"<Untitled>",0,,,)
+     }
+    }
+   -Wire-([180,162],0,0,-1)
+    {
+    Vertex="0,0;108,0"
+    }
+   -Wire-([180,198],0,0,-1)
+    {
+    Vertex="0,0;108,0"
+    }
+   0.ammeter([522,126],2,0,50)
+    {
+    Name = "i_a2"
+    }
+   -Wire-([432,126],0,0,-1)
+    {
+    Vertex="0,0;54,0"
+    }
+   0.voltmetergnd([468,162],0,0,30)
+    {
+    Name = "v_b2"
+    }
+   0.ammeter([522,162],2,0,50)
+    {
+    Name = "i_b2"
+    }
+   -Wire-([432,162],0,0,-1)
+    {
+    Vertex="0,0;54,0"
+    }
+   0.voltmetergnd([468,198],0,0,30)
+    {
+    Name = "v_c2"
+    }
+   0.ammeter([522,198],2,0,50)
+    {
+    Name = "i_c2"
+    }
+   -Wire-([432,198],0,0,-1)
+    {
+    Vertex="0,0;54,0"
+    }
+   -Wire-([18,234],0,0,-1)
+    {
+    Vertex="0,0;306,0"
+    }
+   0.voltmetergnd([216,126],0,0,30)
+    {
+    Name = "v_a1"
+    }
+   0.voltmetergnd([216,162],0,0,30)
+    {
+    Name = "v_b1"
+    }
+   0.voltmetergnd([216,198],0,0,30)
+    {
+    Name = "v_c1"
+    }
+   0.voltmetergnd([216,234],0,0,30)
+    {
+    Name = "v_n1"
+    }
+   0.resistor([90,126],0,0,-1)
+    {
+    R = "1.0 [ohm]"
+    }
+   0.resistor([90,162],0,0,-1)
+    {
+    R = "1.0 [ohm]"
+    }
+   0.resistor([90,198],0,0,-1)
+    {
+    R = "1.0 [ohm]"
+    }
+   -Wire-([18,126],0,0,-1)
+    {
+    Vertex="0,0;72,0"
+    }
+   -Wire-([18,162],0,0,-1)
+    {
+    Vertex="0,0;72,0"
+    }
+   -Wire-([18,198],0,0,-1)
+    {
+    Vertex="0,0;72,0"
+    }
+   -Wire-([18,126],0,0,-1)
+    {
+    Vertex="0,0;0,108"
+    }
+   }
+  }
+ }
+

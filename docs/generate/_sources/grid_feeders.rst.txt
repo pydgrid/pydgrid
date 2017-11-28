@@ -11,19 +11,17 @@ Grid feeders are considered as fix power or current sources in the power flow ca
 
 
 .. code:: python
-   
-   "grid_feeders":[{"bus": "Bus_0","bus_nodes": [1, 2, 3], "mode": "PQ"
-	                "kVA": [11.547, 11.547, 11.547], "fp": [0.9,0.9,0.9], 
-			        "kA": [20,10,5], "phi_deg":[0, 0, 0]}
-				  ]
 
+       "grid_feeders":[{"bus": "Bus_2","bus_nodes": [1, 2, 3,4],
+                        "kW": [0.5,0.5,0.5], "kvar": [0,0,0],
+                        "kA": [0,0,0], "phi_deg":[30, 30, 30]}
+                      ]
+                      
 where:
 
 * ``"bus"``: name of the bus
 * ``"bus_nodes"``: list of nodes where the grid former source is connected
-* ``"mode"``: available modes are:
-	- ``"PQ"``: 
-	- ``"IABC"``: 
-* ``"kVA"``: phase-neutral RMS voltages list (kV)   
-* ``"deg"``: phase-neutral voltage angles list (deg)
-
+* ``"kW"``: active power for each phase
+* ``"kvar"``: reactive power for each phase
+* ``"kA"``: RMS value of the current in each phase
+* ``"phi_deg"``: angle between voltages and currents

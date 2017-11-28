@@ -1,2 +1,6 @@
+sphinx
 nbsphinx
 ipykernel
+sphinx_rtd_theme
+numba
+qgrid

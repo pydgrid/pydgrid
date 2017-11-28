@@ -1,0 +1,30 @@
+# The only current way of using OS X virtual machines in Travis CI
+# is setting up a generic environment
+# This is not a problem because Python will be installed through conda
+
+language: python
+python:
+  - "3.5"
+
+branches:
+  only:
+    - master
+
+install:
+  - pip install numpy  # Required
+  - pip install scipy  # Required
+  - pip install matplotlib  # Required
+  - pip install numba  # Required
+  - pip install bokeh  # Required
+  - pip install .  # Test installation correctness
+
+
+script:
+  - pytest  # Test against installed code
+
+after_success:
+  # Uninstall to test coverage against sources
+  - pip uninstall pydgrid -y
+  - pip install -e .
+
+sudo: false

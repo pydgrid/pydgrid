@@ -1,0 +1,426 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>User guide &mdash; pydgrid 0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pydgrid 0.2 documentation" href="index.html"/>
+        <link rel="next" title="Definitions" href="definitions.html"/>
+        <link rel="prev" title="Getting started" href="getting_started.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> pydgrid
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#import-modules">Import modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#define-or-write-grid-parameters">Define or write grid parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generate-a-grid-instance">Generate a grid instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#read-grid-parameters">Read grid parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execute-power-flow">Execute power flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#post-process-results">Post process results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plot-results">Plot results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elements.html">Elements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_notebooks.html">Jupyter Notebooks</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pydgrid</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>User guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/user_guide.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+/* nice headers on first paragraph of info/warning boxes */
+.admonition .first {
+    margin: -12px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    color: #fff;
+    line-height: 1;
+    display: block;
+}
+.admonition.warning .first {
+    background: #f0b37e;
+}
+.admonition.note .first {
+    background: #6ab0de;
+}
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="user-guide">
+<h1>User guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
+<p>The simplest use can be understood with an example. Suppose we want to calculate the power flow of the following system:</p>
+<a class="reference internal image-reference" href="_images/trafo_line_load.png"><img alt="_images/trafo_line_load.png" src="_images/trafo_line_load.png" style="width: 600px;" /></a>
+<p>The following steps should be considered:</p>
+<ol class="arabic simple">
+<li>Import modules</li>
+<li>Define or load grid parameters</li>
+<li>Generate a grid instance</li>
+<li>Read grid parameters</li>
+<li>Run power flow</li>
+<li>Post process results</li>
+<li>Plot results</li>
+</ol>
+<div class="section" id="import-modules">
+<h2>Import modules<a class="headerlink" href="#import-modules" title="Permalink to this headline">¶</a></h2>
+<p>First of all, we have to import the relevant modules and classes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">pydgrid</span> <span class="kn">import</span> <span class="n">grid</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="define-or-write-grid-parameters">
+<h2>Define or write grid parameters<a class="headerlink" href="#define-or-write-grid-parameters" title="Permalink to this headline">¶</a></h2>
+<p>The network can be introduced in two ways:</p>
+<ul class="simple">
+<li>Python dictionary</li>
+<li>json file with the same structure as in the case of the previous python dictionary</li>
+</ul>
+<p>For the proposed system example the following elemnts from pydgrid should be considered:</p>
+<a class="reference internal image-reference" href="_images/trafo_line_load_pydgrid.png"><img alt="_images/trafo_line_load_pydgrid.png" src="_images/trafo_line_load_pydgrid.png" style="width: 600px;" /></a>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;buses&quot;</span><span class="p">:[</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>  <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span>   <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span>   <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;U_kV&quot;</span><span class="p">:</span><span class="mf">20.0</span><span class="p">},</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>  <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span>  <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span>   <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;U_kV&quot;</span><span class="p">:</span><span class="mf">0.4</span><span class="p">},</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B3&quot;</span><span class="p">,</span>  <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span>  <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;U_kV&quot;</span><span class="p">:</span><span class="mf">0.4</span><span class="p">}</span>
+                <span class="p">],</span>
+        <span class="s2">&quot;grid_formers&quot;</span><span class="p">:[</span>
+                        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;deg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mi">240</span><span class="p">],</span>
+                        <span class="s2">&quot;kV&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">11.547</span><span class="p">,</span> <span class="mf">11.547</span><span class="p">,</span> <span class="mf">11.547</span><span class="p">]}</span>
+                       <span class="p">],</span>
+        <span class="s2">&quot;transformers&quot;</span><span class="p">:[</span>
+                        <span class="p">{</span><span class="s2">&quot;bus_j&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>  <span class="s2">&quot;bus_k&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>  <span class="s2">&quot;S_n_kVA&quot;</span><span class="p">:</span> <span class="mf">2500.0</span><span class="p">,</span> <span class="s2">&quot;U_j_kV&quot;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;U_k_kV&quot;</span><span class="p">:</span><span class="mf">0.42</span><span class="p">,</span>
+                         <span class="s2">&quot;R_cc_pu&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;X_cc_pu&quot;</span><span class="p">:</span><span class="mf">0.04</span><span class="p">,</span> <span class="s2">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;Dyn11&quot;</span><span class="p">,</span>   <span class="s2">&quot;conductors_j&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;conductors_k&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+                       <span class="p">],</span>
+        <span class="s2">&quot;lines&quot;</span><span class="p">:[</span>
+                 <span class="p">{</span><span class="s2">&quot;bus_j&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>  <span class="s2">&quot;bus_k&quot;</span><span class="p">:</span> <span class="s2">&quot;B3&quot;</span><span class="p">,</span>  <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="s2">&quot;lv_cu_150&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">},</span>
+                <span class="p">],</span>
+        <span class="s2">&quot;loads&quot;</span><span class="p">:[</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B3&quot;</span> <span class="p">,</span> <span class="s2">&quot;kVA&quot;</span><span class="p">:</span> <span class="mf">300.0</span><span class="p">,</span> <span class="s2">&quot;pf&quot;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;3P+N&quot;</span><span class="p">}</span>
+                <span class="p">],</span>
+        <span class="s2">&quot;shunts&quot;</span><span class="p">:[</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">]}</span>
+                 <span class="p">],</span>
+        <span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
+            <span class="p">{</span><span class="s2">&quot;lv_cu_150&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;Rph&quot;</span><span class="p">:</span><span class="mf">0.167</span><span class="p">,</span><span class="s2">&quot;Xph&quot;</span><span class="p">:</span><span class="mf">0.08</span><span class="p">,</span> <span class="s2">&quot;Rn&quot;</span><span class="p">:</span><span class="mf">0.167</span><span class="p">,</span> <span class="s2">&quot;Xn&quot;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">}</span>
+            <span class="p">}</span>
+       <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-a-grid-instance">
+<h2>Generate a grid instance<a class="headerlink" href="#generate-a-grid-instance" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">grid_1</span> <span class="o">=</span> <span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-grid-parameters">
+<h2>Read grid parameters<a class="headerlink" href="#read-grid-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">grid_1</span> <span class="o">=</span> <span class="n">grid</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="execute-power-flow">
+<h2>Execute power flow<a class="headerlink" href="#execute-power-flow" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">grid_1</span><span class="o">.</span><span class="n">pf</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="post-process-results">
+<h2>Post process results<a class="headerlink" href="#post-process-results" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">grid_1</span><span class="o">.</span><span class="n">get_v</span><span class="p">()</span>
+<span class="n">grid_1</span><span class="o">.</span><span class="n">get_i</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot-results">
+<h2>Plot results<a class="headerlink" href="#plot-results" title="Permalink to this headline">¶</a></h2>
+<p>In the case of using jupyter notebook results can be visualized with a bokeh plot that includes hover tools.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydgrid.plot_bokeh</span> <span class="kn">import</span> <span class="n">plot_results</span>
+<span class="n">plot_results</span><span class="p">(</span><span class="n">grid_1</span><span class="p">)</span>
+</pre></div>
+</div>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>example1</title>
+        
+<link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.7.min.css" type="text/css" />
+        
+<script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.7.min.js"></script>
+<script type="text/javascript">
+    Bokeh.set_log_level("info");
+</script>
+        <style>
+          html {
+            width: 100%;
+            height: 100%;
+          }
+          body {
+            width: 90%;
+            height: 100%;
+            margin: auto;
+          }
+        </style>
+    </head>
+    <body>
+        
+        <div class="bk-root">
+            <div class="bk-plotdiv" id="f0c7229d-40fc-4caf-a205-0dc69c6e55c4"></div>
+        </div>
+        
+        <script type="text/javascript">
+            (function() {
+          var fn = function() {
+            Bokeh.safely(function() {
+              var docs_json = {"1f51ebd5-01bf-420f-a433-bc133173fbda":{"roots":{"references":[{"attributes":{"source":{"id":"3e3b43bd-ba96-497b-badb-bbe6af438f5a","type":"ColumnDataSource"}},"id":"6b127f07-7912-4521-9ed6-030203b7fe56","type":"CDSView"},{"attributes":{},"id":"a17897fc-200a-4595-9bae-06740b3e6b47","type":"BasicTicker"},{"attributes":{"below":[{"id":"d312f66e-4bea-4ea1-b87f-e5c67f26473a","type":"LinearAxis"}],"css_classes":null,"left":[{"id":"8bd4752c-3c10-49a5-800b-9e6cc0dc3585","type":"LinearAxis"}],"plot_height":400,"renderers":[{"id":"d312f66e-4bea-4ea1-b87f-e5c67f26473a","type":"LinearAxis"},{"id":"7e41f42f-d416-4f2f-9707-c972f2f20c35","type":"Grid"},{"id":"8bd4752c-3c10-49a5-800b-9e6cc0dc3585","type":"LinearAxis"},{"id":"5529dd96-2759-4f26-845f-10a4c9613e46","type":"Grid"},{"id":"c8235fda-9995-4c43-bcae-db29166e0760","type":"BoxAnnotation"},{"id":"de79f311-97f5-4c1d-bc81-30abb6cc729d","type":"GlyphRenderer"},{"id":"d5f811a9-87e3-4e90-8a5a-7b9cad0f95f9","type":"GlyphRenderer"},{"id":"397290e7-a267-436d-ab17-b5f557848c15","type":"GlyphRenderer"}],"title":{"id":"e91ac5f7-ba20-4d8f-a7e7-72d24a5c4ca4","type":"Title"},"toolbar":{"id":"8c44df84-78d5-4b03-bd57-7f1dcd79111a","type":"Toolbar"},"x_range":{"id":"e1be73ab-aec0-4122-ae50-d525f8179f7f","type":"DataRange1d"},"x_scale":{"id":"747bcbf4-5e71-4e22-8674-205408129a22","type":"LinearScale"},"y_range":{"id":"aa780993-0510-47b1-85af-08a909754990","type":"DataRange1d"},"y_scale":{"id":"97989725-79a1-4a4a-bdd3-2a993a28892c","type":"LinearScale"}},"id":"18b8dcaa-83f9-4485-9428-8849e83f15b0","subtype":"Figure","type":"Plot"},{"attributes":{"overlay":{"id":"c8235fda-9995-4c43-bcae-db29166e0760","type":"BoxAnnotation"}},"id":"5788e4ec-2de4-43fe-a2a0-c2e9f8b11e52","type":"BoxZoomTool"},{"attributes":{"source":{"id":"54dd8c74-f155-44a1-af0d-b1a627be42b9","type":"ColumnDataSource"}},"id":"15089200-3b66-4aa7-827c-7a3f57a181a1","type":"CDSView"},{"attributes":{},"id":"ea89cf86-91ac-47b4-919b-8f403186f7b7","type":"PanTool"},{"attributes":{"callback":null},"id":"e1be73ab-aec0-4122-ae50-d525f8179f7f","type":"DataRange1d"},{"attributes":{},"id":"d2528d9a-ef20-4201-b858-d4e6b398eba4","type":"BasicTickFormatter"},{"attributes":{"callback":null,"column_names":["x_s","y_s","trafo_id","i_1a_m","i_1b_m","i_1c_m","i_1n_m","deg_1a","deg_1b","deg_1c","deg_1n","i_2a_m","i_2b_m","i_2c_m","i_2n_m","deg_2a","deg_2b","deg_2c","deg_2n"],"data":{"deg_1a":[-31.79131386400389],"deg_1b":[-151.7913138640033],"deg_1c":[88.20868613599542],"deg_1n":[-45.0],"deg_2a":[118.20868613599673],"deg_2b":[-1.7913138640042336],"deg_2c":[-121.79131386400455],"deg_2n":[33.690067525979785],"i_1a_m":[8.98520340900167],"i_1b_m":[8.985203409001715],"i_1c_m":[8.985203409001661],"i_1n_m":[1.6077746776921858e-13],"i_2a_m":[427.86682900008094],"i_2b_m":[427.86682900007213],"i_2c_m":[427.866829000083],"i_2n_m":[2.6233838256040975e-11],"trafo_id":["B1-B2"],"x_s":[[0,10]],"y_s":[[0,0]]}},"id":"3e3b43bd-ba96-497b-badb-bbe6af438f5a","type":"ColumnDataSource"},{"attributes":{"plot":null,"text":"Results"},"id":"e91ac5f7-ba20-4d8f-a7e7-72d24a5c4ca4","type":"Title"},{"attributes":{},"id":"8ef46aee-e8cd-4a9d-b249-4a9bc0915623","type":"BasicTickFormatter"},{"attributes":{"data_source":{"id":"3e3b43bd-ba96-497b-badb-bbe6af438f5a","type":"ColumnDataSource"},"glyph":{"id":"17b93a78-2cde-4b67-baa4-cba422551230","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"82591310-7ffc-4de4-8a41-436b4b453944","type":"MultiLine"},"selection_glyph":null,"view":{"id":"6b127f07-7912-4521-9ed6-030203b7fe56","type":"CDSView"}},"id":"de79f311-97f5-4c1d-bc81-30abb6cc729d","type":"GlyphRenderer"},{"attributes":{"fill_alpha":{"value":0.5},"fill_color":{"value":"navy"},"line_alpha":{"value":0.5},"line_color":{"value":"navy"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"14e0b017-8970-4b6e-90b1-963d2cdf9ebc","type":"Circle"},{"attributes":{},"id":"52330344-72be-44c3-8f5c-260ba3f9321f","type":"WheelZoomTool"},{"attributes":{"source":{"id":"97bbc22f-3285-4951-bb14-36d844c1f906","type":"ColumnDataSource"}},"id":"bd1679c3-c05f-40fd-bbcc-f53724d69189","type":"CDSView"},{"attributes":{"callback":null,"column_names":["x_s","y_s","line_id","i_a_m","i_b_m","i_c_m","i_n_m","deg_a","deg_b","deg_c","deg_n"],"data":{"deg_a":[-61.79131386400304],"deg_b":[178.2086861359971],"deg_c":[58.208686135996956],"deg_n":[0.0],"i_a_m":[427.8668290000757],"i_b_m":[427.8668290000736],"i_c_m":[427.86682900007173],"i_n_m":[0.0],"line_id":["B2-B3"],"x_s":[[10,100]],"y_s":[[0,0]]}},"id":"97bbc22f-3285-4951-bb14-36d844c1f906","type":"ColumnDataSource"},{"attributes":{},"id":"80f470b4-13e4-446f-9011-0d66a04825e2","type":"HelpTool"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"c7d8ea7b-256a-4875-9c63-c89f2505ec5e","type":"BoxAnnotation"},{"attributes":{"callback":null,"column_names":["x_s","y_s","line_id","i_a_m","i_b_m","i_c_m","i_n_m","deg_a","deg_b","deg_c","deg_n"],"data":{"deg_a":[-61.79131386400304],"deg_b":[178.2086861359971],"deg_c":[58.208686135996956],"deg_n":[0.0],"i_a_m":[427.8668290000757],"i_b_m":[427.8668290000736],"i_c_m":[427.86682900007173],"i_n_m":[0.0],"line_id":["B2-B3"],"x_s":[[10,100]],"y_s":[[0,0]]}},"id":"85154dee-b2e9-489b-8a70-b33a2bdaa6bc","type":"ColumnDataSource"},{"attributes":{},"id":"d36ccda0-bfd1-4a4d-a1a0-7c109b5d1f84","type":"BasicTickFormatter"},{"attributes":{},"id":"747bcbf4-5e71-4e22-8674-205408129a22","type":"LinearScale"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"7510a8ce-3c23-44bf-9316-b697a673caea","type":"MultiLine"},{"attributes":{},"id":"70769ef7-9643-4f5f-bb11-e648d13f47fa","type":"WheelZoomTool"},{"attributes":{},"id":"86eb53d6-7c7d-48d3-92f2-40edbd31186f","type":"PanTool"},{"attributes":{"formatter":{"id":"d36ccda0-bfd1-4a4d-a1a0-7c109b5d1f84","type":"BasicTickFormatter"},"plot":{"id":"d2d13ea7-1a5a-4805-a406-3f6a7b263d4c","subtype":"Figure","type":"Plot"},"ticker":{"id":"a17897fc-200a-4595-9bae-06740b3e6b47","type":"BasicTicker"}},"id":"e29aad1b-a67a-4326-adfa-1a00a1740790","type":"LinearAxis"},{"attributes":{"data_source":{"id":"85154dee-b2e9-489b-8a70-b33a2bdaa6bc","type":"ColumnDataSource"},"glyph":{"id":"4bf1db04-a659-47c6-9655-52c68737cfef","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"053f0339-5839-44f6-8b47-01b1c60b1a4e","type":"MultiLine"},"selection_glyph":null,"view":{"id":"e03f91db-3c0c-4bd7-a955-9c528fbd1293","type":"CDSView"}},"id":"d5f811a9-87e3-4e90-8a5a-7b9cad0f95f9","type":"GlyphRenderer"},{"attributes":{"overlay":{"id":"c7d8ea7b-256a-4875-9c63-c89f2505ec5e","type":"BoxAnnotation"}},"id":"e641a376-e50c-44b1-92ad-be2d0c762e51","type":"BoxZoomTool"},{"attributes":{},"id":"1eb4f0e7-6050-4865-bb1c-1a172057fa54","type":"LinearScale"},{"attributes":{},"id":"9d07cf56-016f-4683-ada5-a852dc0dc420","type":"SaveTool"},{"attributes":{"dimension":1,"plot":{"id":"d2d13ea7-1a5a-4805-a406-3f6a7b263d4c","subtype":"Figure","type":"Plot"},"ticker":{"id":"a17897fc-200a-4595-9bae-06740b3e6b47","type":"BasicTicker"}},"id":"80c425a3-3d52-4c9d-83b1-feeff6889ee2","type":"Grid"},{"attributes":{"source":{"id":"deaf4499-af4c-4f4d-aaee-5efbdb04948a","type":"ColumnDataSource"}},"id":"438da9f8-778e-4451-87a5-6d1381e6aaf3","type":"CDSView"},{"attributes":{},"id":"ca18a1fb-5f8e-4ee4-b48e-482480fe805a","type":"BasicTicker"},{"attributes":{"callback":null,"column_names":["x_s","y_s","trafo_id","i_1a_m","i_1b_m","i_1c_m","i_1n_m","deg_1a","deg_1b","deg_1c","deg_1n","i_2a_m","i_2b_m","i_2c_m","i_2n_m","deg_2a","deg_2b","deg_2c","deg_2n"],"data":{"deg_1a":[-31.79131386400389],"deg_1b":[-151.7913138640033],"deg_1c":[88.20868613599542],"deg_1n":[-45.0],"deg_2a":[118.20868613599673],"deg_2b":[-1.7913138640042336],"deg_2c":[-121.79131386400455],"deg_2n":[33.690067525979785],"i_1a_m":[8.98520340900167],"i_1b_m":[8.985203409001715],"i_1c_m":[8.985203409001661],"i_1n_m":[1.6077746776921858e-13],"i_2a_m":[427.86682900008094],"i_2b_m":[427.86682900007213],"i_2c_m":[427.866829000083],"i_2n_m":[2.6233838256040975e-11],"trafo_id":["B1-B2"],"x_s":[[0,10]],"y_s":[[0,0]]}},"id":"54dd8c74-f155-44a1-af0d-b1a627be42b9","type":"ColumnDataSource"},{"attributes":{"data_source":{"id":"deaf4499-af4c-4f4d-aaee-5efbdb04948a","type":"ColumnDataSource"},"glyph":{"id":"6206cc84-25f1-435e-b505-464942d4b6f3","type":"Circle"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1149c572-63ce-4c44-b67d-5b27e842d3ff","type":"Circle"},"selection_glyph":null,"view":{"id":"438da9f8-778e-4451-87a5-6d1381e6aaf3","type":"CDSView"}},"id":"397290e7-a267-436d-ab17-b5f557848c15","type":"GlyphRenderer"},{"attributes":{"below":[{"id":"f63cf40d-0154-4711-bcdc-7c123f1eb7c0","type":"LinearAxis"}],"left":[{"id":"e29aad1b-a67a-4326-adfa-1a00a1740790","type":"LinearAxis"}],"plot_height":400,"renderers":[{"id":"f63cf40d-0154-4711-bcdc-7c123f1eb7c0","type":"LinearAxis"},{"id":"87513d78-2f73-43f8-9fc8-c099850ba44c","type":"Grid"},{"id":"e29aad1b-a67a-4326-adfa-1a00a1740790","type":"LinearAxis"},{"id":"80c425a3-3d52-4c9d-83b1-feeff6889ee2","type":"Grid"},{"id":"c7d8ea7b-256a-4875-9c63-c89f2505ec5e","type":"BoxAnnotation"},{"id":"ac7cc408-84b1-4f73-9c41-36b1db5277de","type":"GlyphRenderer"},{"id":"131410ff-a346-4a86-86a8-98aebfa474d3","type":"GlyphRenderer"},{"id":"11260c8a-3215-4b60-8b93-5d68865e85cc","type":"GlyphRenderer"}],"title":{"id":"3ab93b31-348a-4343-b2b9-aff12b1eada0","type":"Title"},"toolbar":{"id":"58eb8508-abbb-42dd-bb83-57111409df4b","type":"Toolbar"},"x_range":{"id":"3bec6512-8991-4b4e-b415-653bd3438ef7","type":"DataRange1d"},"x_scale":{"id":"040cc647-6eca-42ee-b8ef-9309791f28f0","type":"LinearScale"},"y_range":{"id":"16575c71-444e-4283-a66f-4b70682136ba","type":"DataRange1d"},"y_scale":{"id":"1eb4f0e7-6050-4865-bb1c-1a172057fa54","type":"LinearScale"}},"id":"d2d13ea7-1a5a-4805-a406-3f6a7b263d4c","subtype":"Figure","type":"Plot"},{"attributes":{"callback":null},"id":"3bec6512-8991-4b4e-b415-653bd3438ef7","type":"DataRange1d"},{"attributes":{"callback":null,"column_names":["x","y","bus_id","v_an","v_bn","v_cn","v_ng","v_an_pu","v_bn_pu","v_cn_pu","deg_an","deg_bn","deg_cn","deg_ng","v_ab","v_bc","v_ca","p_a","p_b","p_c","q_a","q_b","q_c","p_abc","q_abc","s_radio","s_color"],"data":{"bus_id":["B1","B2","B3"],"deg_an":["0.00","-30.21","-30.00"],"deg_bn":["-120.00","-150.21","-150.00"],"deg_cn":["120.00","89.79","90.00"],"deg_ng":["0.00","90.00","90.00"],"p_a":["88.19","0.00","-85.00"],"p_abc":["264.56","0.00","-255.00"],"p_b":["88.19","-0.00","-85.00"],"p_c":["88.19","0.00","-85.00"],"q_a":["54.66","-0.00","-52.68"],"q_abc":["163.98","0.00","-158.03"],"q_b":["54.66","0.00","-52.68"],"q_c":["54.66","0.00","-52.68"],"s_color":["red","blue","green"],"s_radio":[5.579036039417759,1,5.477224881252728],"v_ab":[19999.99067499782,418.4561065246554,404.8106212906803],"v_an":["11547.00","241.60","233.72"],"v_an_pu":["1.0000","1.0461","1.0120"],"v_bc":[19999.990674997825,418.45610652465535,404.8106212906802],"v_bn":["11547.00","241.60","233.72"],"v_bn_pu":["1.0000","1.0461","1.0120"],"v_ca":[19999.99067499783,418.45610652465535,404.8106212906803],"v_cn":["11547.00","241.60","233.72"],"v_cn_pu":["1.0000","1.0461","1.0120"],"v_ng":["0.00","0.00","0.00"],"x":[0,10,100],"y":[0,0,0]}},"id":"630fcd79-65c8-468d-a960-d59b65eb7f03","type":"ColumnDataSource"},{"attributes":{"plot":{"id":"d2d13ea7-1a5a-4805-a406-3f6a7b263d4c","subtype":"Figure","type":"Plot"},"ticker":{"id":"ca18a1fb-5f8e-4ee4-b48e-482480fe805a","type":"BasicTicker"}},"id":"87513d78-2f73-43f8-9fc8-c099850ba44c","type":"Grid"},{"attributes":{"data_source":{"id":"54dd8c74-f155-44a1-af0d-b1a627be42b9","type":"ColumnDataSource"},"glyph":{"id":"2dc5c573-695e-49d2-a43f-b0ded1efcd6b","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"7510a8ce-3c23-44bf-9316-b697a673caea","type":"MultiLine"},"selection_glyph":null,"view":{"id":"15089200-3b66-4aa7-827c-7a3f57a181a1","type":"CDSView"}},"id":"ac7cc408-84b1-4f73-9c41-36b1db5277de","type":"GlyphRenderer"},{"attributes":{"fill_alpha":{"value":0.5},"fill_color":{"value":"navy"},"line_alpha":{"value":0.5},"line_color":{"value":"navy"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"6206cc84-25f1-435e-b505-464942d4b6f3","type":"Circle"},{"attributes":{"formatter":{"id":"8ef46aee-e8cd-4a9d-b249-4a9bc0915623","type":"BasicTickFormatter"},"plot":{"id":"d2d13ea7-1a5a-4805-a406-3f6a7b263d4c","subtype":"Figure","type":"Plot"},"ticker":{"id":"ca18a1fb-5f8e-4ee4-b48e-482480fe805a","type":"BasicTicker"}},"id":"f63cf40d-0154-4711-bcdc-7c123f1eb7c0","type":"LinearAxis"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"c8235fda-9995-4c43-bcae-db29166e0760","type":"BoxAnnotation"},{"attributes":{},"id":"e7eb9338-9ea6-423a-9732-6bea1c22add3","type":"ResetTool"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"green"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"2dc5c573-695e-49d2-a43f-b0ded1efcd6b","type":"MultiLine"},{"attributes":{"dimension":1,"plot":{"id":"18b8dcaa-83f9-4485-9428-8849e83f15b0","subtype":"Figure","type":"Plot"},"ticker":{"id":"91b8ce62-a80f-4a59-b311-47135fbe2fc0","type":"BasicTicker"}},"id":"5529dd96-2759-4f26-845f-10a4c9613e46","type":"Grid"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"red"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"15349b5f-7b6c-4abb-94de-460a20cc4cfb","type":"MultiLine"},{"attributes":{},"id":"040cc647-6eca-42ee-b8ef-9309791f28f0","type":"LinearScale"},{"attributes":{},"id":"91b8ce62-a80f-4a59-b311-47135fbe2fc0","type":"BasicTicker"},{"attributes":{"source":{"id":"630fcd79-65c8-468d-a960-d59b65eb7f03","type":"ColumnDataSource"}},"id":"1cade546-c023-43f9-b9a9-a6ab03c199e9","type":"CDSView"},{"attributes":{"callback":null},"id":"16575c71-444e-4283-a66f-4b70682136ba","type":"DataRange1d"},{"attributes":{"formatter":{"id":"d2528d9a-ef20-4201-b858-d4e6b398eba4","type":"BasicTickFormatter"},"plot":{"id":"18b8dcaa-83f9-4485-9428-8849e83f15b0","subtype":"Figure","type":"Plot"},"ticker":{"id":"91b8ce62-a80f-4a59-b311-47135fbe2fc0","type":"BasicTicker"}},"id":"8bd4752c-3c10-49a5-800b-9e6cc0dc3585","type":"LinearAxis"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1149c572-63ce-4c44-b67d-5b27e842d3ff","type":"Circle"},{"attributes":{"callback":null,"renderers":[{"id":"ac7cc408-84b1-4f73-9c41-36b1db5277de","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            line id = @trafo_id  \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>1a</sub> =  @i_1a_m &ang; @deg_1a </td>\n                    <td>I<sub>2a</sub> =  @i_2a_m &ang; @deg_2a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1b</sub> =  @i_1b_m &ang; @deg_1b </td>\n                    <td >I<sub>2b</sub> =  @i_2b_m &ang; @deg_2b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1c</sub> =  @i_1c_m &ang; @deg_1c </td>\n                    <td >I<sub>2c</sub> =  @i_2c_m &ang; @deg_2c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1n</sub> =  @i_1n_m &ang; @deg_1n </td>\n                    <td >I<sub>2n</sub> =  @i_2n_m &ang; @deg_2n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"5262d99f-61aa-4408-8d8e-8711f750210c","type":"HoverTool"},{"attributes":{"plot":{"id":"18b8dcaa-83f9-4485-9428-8849e83f15b0","subtype":"Figure","type":"Plot"},"ticker":{"id":"632e52b6-1ecb-48fb-a638-8d272b19dee9","type":"BasicTicker"}},"id":"7e41f42f-d416-4f2f-9707-c972f2f20c35","type":"Grid"},{"attributes":{},"id":"632e52b6-1ecb-48fb-a638-8d272b19dee9","type":"BasicTicker"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"3d5d96e2-c844-4a34-ab89-fd29cd38c318","type":"Circle"},{"attributes":{"plot":null,"text":"Results"},"id":"3ab93b31-348a-4343-b2b9-aff12b1eada0","type":"Title"},{"attributes":{},"id":"ba1763e3-1350-4b52-8287-7fb7d3823b37","type":"HelpTool"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"82591310-7ffc-4de4-8a41-436b4b453944","type":"MultiLine"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_scroll":"auto","active_tap":"auto","tools":[{"id":"ea89cf86-91ac-47b4-919b-8f403186f7b7","type":"PanTool"},{"id":"70769ef7-9643-4f5f-bb11-e648d13f47fa","type":"WheelZoomTool"},{"id":"e641a376-e50c-44b1-92ad-be2d0c762e51","type":"BoxZoomTool"},{"id":"9d07cf56-016f-4683-ada5-a852dc0dc420","type":"SaveTool"},{"id":"e7eb9338-9ea6-423a-9732-6bea1c22add3","type":"ResetTool"},{"id":"80f470b4-13e4-446f-9011-0d66a04825e2","type":"HelpTool"},{"id":"5262d99f-61aa-4408-8d8e-8711f750210c","type":"HoverTool"},{"id":"4f294299-748e-43d9-8e46-67cba6c101b5","type":"HoverTool"},{"id":"551661df-e210-40e7-9112-f8ddd1e5aea6","type":"HoverTool"}]},"id":"58eb8508-abbb-42dd-bb83-57111409df4b","type":"Toolbar"},{"attributes":{"callback":null,"renderers":[{"id":"11260c8a-3215-4b60-8b93-5d68865e85cc","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            bus_id = @bus_id \n            <table border=\"1\">\n                <tr>\n                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a </td>\n                </tr>\n                      <tr>\n                      <td> </td> <td>v<sub>ab</sub>= @v_ab V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b </td>\n                </tr>\n                      <tr>\n                      <td> </td><td>v<sub>bc</sub>= @v_bc V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c </td>\n                </tr> \n                    <tr>\n                     <td> </td> <td>v<sub>ca</sub>= @v_ca V</td>\n                    </tr>\n               <tr>\n                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc </td>\n              </tr>\n            </table>\n            </div>\n            "},"id":"551661df-e210-40e7-9112-f8ddd1e5aea6","type":"HoverTool"},{"attributes":{"formatter":{"id":"28aadc51-3916-4f11-a51c-04a90ae4cc66","type":"BasicTickFormatter"},"plot":{"id":"18b8dcaa-83f9-4485-9428-8849e83f15b0","subtype":"Figure","type":"Plot"},"ticker":{"id":"632e52b6-1ecb-48fb-a638-8d272b19dee9","type":"BasicTicker"}},"id":"d312f66e-4bea-4ea1-b87f-e5c67f26473a","type":"LinearAxis"},{"attributes":{},"id":"61a93227-e3d3-47d9-a1cf-af82523e1920","type":"ResetTool"},{"attributes":{"callback":null,"renderers":[{"id":"397290e7-a267-436d-ab17-b5f557848c15","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            bus_id = @bus_id \n            <table border=\"1\">\n                <tr>\n                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a </td>\n                </tr>\n                      <tr>\n                      <td> </td> <td>v<sub>ab</sub>= @v_ab V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b </td>\n                </tr>\n                      <tr>\n                      <td> </td><td>v<sub>bc</sub>= @v_bc V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c </td>\n                </tr> \n                    <tr>\n                     <td> </td> <td>v<sub>ca</sub>= @v_ca V</td>\n                    </tr>\n               <tr>\n                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc </td>\n              </tr>\n            </table>\n            </div>\n            "},"id":"4c4a322a-d9bd-44f3-949f-aa0fbf93a6fe","type":"HoverTool"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"green"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"17b93a78-2cde-4b67-baa4-cba422551230","type":"MultiLine"},{"attributes":{"source":{"id":"85154dee-b2e9-489b-8a70-b33a2bdaa6bc","type":"ColumnDataSource"}},"id":"e03f91db-3c0c-4bd7-a955-9c528fbd1293","type":"CDSView"},{"attributes":{"callback":null,"renderers":[{"id":"de79f311-97f5-4c1d-bc81-30abb6cc729d","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            line id = @trafo_id  \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>1a</sub> =  @i_1a_m &ang; @deg_1a </td>\n                    <td>I<sub>2a</sub> =  @i_2a_m &ang; @deg_2a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1b</sub> =  @i_1b_m &ang; @deg_1b </td>\n                    <td >I<sub>2b</sub> =  @i_2b_m &ang; @deg_2b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1c</sub> =  @i_1c_m &ang; @deg_1c </td>\n                    <td >I<sub>2c</sub> =  @i_2c_m &ang; @deg_2c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1n</sub> =  @i_1n_m &ang; @deg_1n </td>\n                    <td >I<sub>2n</sub> =  @i_2n_m &ang; @deg_2n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"81777590-a3e7-44d7-ba5e-ba840f6082d0","type":"HoverTool"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"red"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"4bf1db04-a659-47c6-9655-52c68737cfef","type":"MultiLine"},{"attributes":{},"id":"28aadc51-3916-4f11-a51c-04a90ae4cc66","type":"BasicTickFormatter"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_scroll":"auto","active_tap":"auto","tools":[{"id":"86eb53d6-7c7d-48d3-92f2-40edbd31186f","type":"PanTool"},{"id":"52330344-72be-44c3-8f5c-260ba3f9321f","type":"WheelZoomTool"},{"id":"5788e4ec-2de4-43fe-a2a0-c2e9f8b11e52","type":"BoxZoomTool"},{"id":"0ab3b72b-cd0f-4aac-8274-5f494b0e42e3","type":"SaveTool"},{"id":"61a93227-e3d3-47d9-a1cf-af82523e1920","type":"ResetTool"},{"id":"ba1763e3-1350-4b52-8287-7fb7d3823b37","type":"HelpTool"},{"id":"81777590-a3e7-44d7-ba5e-ba840f6082d0","type":"HoverTool"},{"id":"9f74eeac-9bcb-44fc-86ae-95dfd0bc258b","type":"HoverTool"},{"id":"4c4a322a-d9bd-44f3-949f-aa0fbf93a6fe","type":"HoverTool"}]},"id":"8c44df84-78d5-4b03-bd57-7f1dcd79111a","type":"Toolbar"},{"attributes":{},"id":"97989725-79a1-4a4a-bdd3-2a993a28892c","type":"LinearScale"},{"attributes":{"callback":null,"renderers":[{"id":"131410ff-a346-4a86-86a8-98aebfa474d3","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            line id = @line_id \n            <table border=\"1\">\n                <tr>\n                <td>I<sub>a</sub> =  @i_a_m &ang; @deg_a </td>\n                </tr>\n                <tr>\n                <td>I<sub>b</sub> =  @i_b_m &ang; @deg_b </td>\n                </tr>\n                <tr>\n                <td>I<sub>c</sub> =  @i_c_m &ang; @deg_c </td>\n                </tr>\n                <tr>\n                <td>I<sub>n</sub> =  @i_n_m &ang; @deg_n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"4f294299-748e-43d9-8e46-67cba6c101b5","type":"HoverTool"},{"attributes":{"data_source":{"id":"97bbc22f-3285-4951-bb14-36d844c1f906","type":"ColumnDataSource"},"glyph":{"id":"15349b5f-7b6c-4abb-94de-460a20cc4cfb","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"44a25a16-87ef-4e98-b4b8-46881adf5d0b","type":"MultiLine"},"selection_glyph":null,"view":{"id":"bd1679c3-c05f-40fd-bbcc-f53724d69189","type":"CDSView"}},"id":"131410ff-a346-4a86-86a8-98aebfa474d3","type":"GlyphRenderer"},{"attributes":{"data_source":{"id":"630fcd79-65c8-468d-a960-d59b65eb7f03","type":"ColumnDataSource"},"glyph":{"id":"14e0b017-8970-4b6e-90b1-963d2cdf9ebc","type":"Circle"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"3d5d96e2-c844-4a34-ab89-fd29cd38c318","type":"Circle"},"selection_glyph":null,"view":{"id":"1cade546-c023-43f9-b9a9-a6ab03c199e9","type":"CDSView"}},"id":"11260c8a-3215-4b60-8b93-5d68865e85cc","type":"GlyphRenderer"},{"attributes":{"callback":null},"id":"aa780993-0510-47b1-85af-08a909754990","type":"DataRange1d"},{"attributes":{"callback":null,"renderers":[{"id":"d5f811a9-87e3-4e90-8a5a-7b9cad0f95f9","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            line id = @line_id \n            <table border=\"1\">\n                <tr>\n                <td>I<sub>a</sub> =  @i_a_m &ang; @deg_a </td>\n                </tr>\n                <tr>\n                <td>I<sub>b</sub> =  @i_b_m &ang; @deg_b </td>\n                </tr>\n                <tr>\n                <td>I<sub>c</sub> =  @i_c_m &ang; @deg_c </td>\n                </tr>\n                <tr>\n                <td>I<sub>n</sub> =  @i_n_m &ang; @deg_n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"9f74eeac-9bcb-44fc-86ae-95dfd0bc258b","type":"HoverTool"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"44a25a16-87ef-4e98-b4b8-46881adf5d0b","type":"MultiLine"},{"attributes":{"callback":null,"column_names":["x","y","bus_id","v_an","v_bn","v_cn","v_ng","v_an_pu","v_bn_pu","v_cn_pu","deg_an","deg_bn","deg_cn","deg_ng","v_ab","v_bc","v_ca","p_a","p_b","p_c","q_a","q_b","q_c","p_abc","q_abc","s_radio","s_color"],"data":{"bus_id":["B1","B2","B3"],"deg_an":["0.00","-30.21","-30.00"],"deg_bn":["-120.00","-150.21","-150.00"],"deg_cn":["120.00","89.79","90.00"],"deg_ng":["0.00","90.00","90.00"],"p_a":["88.19","0.00","-85.00"],"p_abc":["264.56","0.00","-255.00"],"p_b":["88.19","-0.00","-85.00"],"p_c":["88.19","0.00","-85.00"],"q_a":["54.66","-0.00","-52.68"],"q_abc":["163.98","0.00","-158.03"],"q_b":["54.66","0.00","-52.68"],"q_c":["54.66","0.00","-52.68"],"s_color":["red","blue","green"],"s_radio":[5.579036039417759,1,5.477224881252728],"v_ab":[19999.99067499782,418.4561065246554,404.8106212906803],"v_an":["11547.00","241.60","233.72"],"v_an_pu":["1.0000","1.0461","1.0120"],"v_bc":[19999.990674997825,418.45610652465535,404.8106212906802],"v_bn":["11547.00","241.60","233.72"],"v_bn_pu":["1.0000","1.0461","1.0120"],"v_ca":[19999.99067499783,418.45610652465535,404.8106212906803],"v_cn":["11547.00","241.60","233.72"],"v_cn_pu":["1.0000","1.0461","1.0120"],"v_ng":["0.00","0.00","0.00"],"x":[0,10,100],"y":[0,0,0]}},"id":"deaf4499-af4c-4f4d-aaee-5efbdb04948a","type":"ColumnDataSource"},{"attributes":{},"id":"0ab3b72b-cd0f-4aac-8274-5f494b0e42e3","type":"SaveTool"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"053f0339-5839-44f6-8b47-01b1c60b1a4e","type":"MultiLine"}],"root_ids":["18b8dcaa-83f9-4485-9428-8849e83f15b0","d2d13ea7-1a5a-4805-a406-3f6a7b263d4c"]},"title":"Bokeh Application","version":"0.12.7"}};
+              var render_items = [{"docid":"1f51ebd5-01bf-420f-a433-bc133173fbda","elementid":"f0c7229d-40fc-4caf-a205-0dc69c6e55c4","modelid":"d2d13ea7-1a5a-4805-a406-3f6a7b263d4c"}];
+              
+              Bokeh.embed.embed_items(docs_json, render_items);
+            });
+          };
+          if (document.readyState != "loading") fn();
+          else document.addEventListener("DOMContentLoaded", fn);
+        })();
+        
+        </script>
+    </body>
+</html><p>An on-line working jupyter notebook with the same example can be obtained here:</p>
+<a class="reference external image-reference" href="https://mybinder.org/v2/gh/pydgrid/pydgrid/master?filepath=%2Fexamples%2Ftutorial%2FExample%201.ipynb"><img alt="https://mybinder.org/badge.svg" src="https://mybinder.org/badge.svg" /></a>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="definitions.html" class="btn btn-neutral float-right" title="Definitions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting_started.html" class="btn btn-neutral" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Juan Manuel Mauricio.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
