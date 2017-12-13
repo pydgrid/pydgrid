@@ -277,7 +277,7 @@ class grid(object):
                 pq_3pn_int_list += [list(it_node_i + np.array([0,1,2,3]))]
                 it_node_i += 4
                 if 'kVA' in load:
-                    if type(load['kVA']) == float:
+                    if type(load['kVA']) == int or float:
                         S = -1000.0*load['kVA']*np.exp(1j*np.arccos(load['pf'])*np.sign(load['pf']))
                         pq_3pn_list += [[S/3,S/3,S/3]]
                     if type(load['kVA']) == list:
@@ -292,7 +292,7 @@ class grid(object):
                 if 'kVA' in load:
                     S_va = -1000.0*load['kVA']
                     phi = np.arccos(load['pf'])
-                    if type(load['kVA']) == float:
+                    if type(load['kVA']) == int or float:
                         pq_3p_list += [[S_va*np.exp(1j*phi*np.sign(load['pf']))]]
 
             if load['type'] == '1P+N':
@@ -349,56 +349,144 @@ class grid(object):
         gfeed_powers_list = []
         gfeed_id_list = []
         gfeed_i_abcn_list = []
+        gfeed_L_list = []
+        gfeed_R_list = []
+        gfeed_V_dc_list = []
+        gfeed_C_ac_list = []
+        gfeed_L_grid_list = []
+        gfeed_R_grid_list = []
+        gfeed_type_list = []
+        gfeed_ctrl_type_list = []
+        gfeed_p_ref_list = []
+        gfeed_q_ref_list = []
+        
         for grid_feeder in grid_feeders:
-            N_gfeeds += 1   
+            
+            # determine type of greed feeder: 0) ideal, 1) vsc
+            data_type = 'ideal'
+            if 'type' in grid_feeder:  
+                if grid_feeder['type']=='vsc':
+                    data_type = 'vsc'
+            
+            N_gfeeds += 1 
+            
+            # default values
             gfeed_nodes = np.zeros((4,), dtype=np.int32) # every grid feeder considers 4 nodes per bus here
             gfeed_bus_nodes = np.zeros((4,), dtype=np.int32) # every grid feeder considers 4 nodes per bus here
             gfeed_currents = np.zeros((4,), dtype=np.complex128) # every grid feeder considers 4 nodes per bus here
             gfeed_powers = np.zeros((4,), dtype=np.complex128) # every grid feeder considers 4 nodes per bus here
             gfeed_i_abcn = np.zeros((4,), dtype=np.complex128) # every grid feeder considers 4 nodes per bus here
-
-            gf_node_it = 0
-            for node in grid_feeder['bus_nodes']:              
-                node_str = '{:s}.{:s}'.format(grid_feeder['bus'],str(node))
-                if not node_str in nodes: nodes +=[node_str]
-                gfeed_bus_nodes[gf_node_it] = nodes.index(node_str)
-                gf_node_it += 1
-                it_node_i += 1
-            if 'kW' in grid_feeder:
-                gf_it = 0
-                if type(grid_feeder['kW']) == float:
-                    for i in range(3):
-                        kW = grid_feeder['kW']
-                        kvar = grid_feeder['kvar']
-                        gfeed_powers[gf_it] = 1000.0*(kW+1j*kvar)/3
-                        gf_it += 1
-                else:                     
-        
-                    for kW,kvar in zip(grid_feeder['kW'],grid_feeder['kvar']):              
-                        gfeed_powers[gf_it] = 1000.0*(kW+1j*kvar)
-                        gf_it += 1
-            if 'kA' in grid_feeder:
-                gf_it = 0
-                for kA,phi_deg in zip(grid_feeder['kA'],grid_feeder['phi_deg']):              
-                    gfeed_currents[gf_it] = 1000.0*kA*np.exp(1j*np.deg2rad(phi_deg))
-                    gf_it += 1                
+            L = 0.0
+            R = 0.0
+            V_dc = 0.0
+            C_ac = 0.0
+            L_grid = 0.0
+            R_grid = 0.0
+            gf_type = 0
+            ctrl_type = 0
+            p_ref = 0.0
+            q_ref = 0.0
+            
+            if data_type == 'ideal':
+                gf_type = 0
+                gf_node_it = 0
+                for node in grid_feeder['bus_nodes']:              
+                    node_str = '{:s}.{:s}'.format(grid_feeder['bus'],str(node))
+                    if not node_str in nodes: nodes +=[node_str]
+                    gfeed_bus_nodes[gf_node_it] = nodes.index(node_str)
+                    gf_node_it += 1
+                    it_node_i += 1
+                if 'kW' in grid_feeder:
+                    gf_it = 0
+                    if type(grid_feeder['kW']) == int or float:
+                        for i in range(3):
+                            kW = grid_feeder['kW']
+                            kvar = grid_feeder['kvar']
+                            gfeed_powers[gf_it] = 1000.0*(kW+1j*kvar)/3
+                            gf_it += 1
+                    else:                                 
+                        for kW,kvar in zip(grid_feeder['kW'],grid_feeder['kvar']):              
+                            gfeed_powers[gf_it] = 1000.0*(kW+1j*kvar)
+                            gf_it += 1
+                if 'kA' in grid_feeder:
+                    gf_it = 0
+                    for kA,phi_deg in zip(grid_feeder['kA'],grid_feeder['phi_deg']):              
+                        gfeed_currents[gf_it] = 1000.0*kA*np.exp(1j*np.deg2rad(phi_deg))
+                        gf_it += 1                
+                    
+            if data_type == 'vsc':
+                gf_type = 1
+                gf_node_it = 0
+                for node in grid_feeder['bus_nodes']:              
+                    node_str = '{:s}.{:s}'.format(grid_feeder['bus'],str(node))
+                    if not node_str in nodes: nodes +=[node_str]
+                    gfeed_bus_nodes[gf_node_it] = nodes.index(node_str)
+                    gf_node_it += 1
+                    it_node_i += 1
+                if 'kW' in grid_feeder:
+                    gf_it = 0
+                    if type(grid_feeder['kW']) == int or float:
+                        for i in range(3):
+                            kW = grid_feeder['kW']
+                            kvar = grid_feeder['kvar']
+                            p_ref = 1000.0*kW
+                            q_ref = 1000.0*kvar
+                            gf_it += 1
+                    else:                     
+                        print('power reference must be defined')
+                if 'kA' in grid_feeder:
+                    gf_it = 0
+                    for kA,phi_deg in zip(grid_feeder['kA'],grid_feeder['phi_deg']):              
+                        gfeed_currents[gf_it] = 1000.0*kA*np.exp(1j*np.deg2rad(phi_deg))
+                        gf_it += 1      
+                if 'control_type' in grid_feeder:
+                    ctrl_type_str = grid_feeder['control_type']
+                    if ctrl_type_str == 'pq_neg0': ctrl_type = 1
+                    if ctrl_type_str == 'pq_leon': ctrl_type = 11
+                    if ctrl_type_str == 'pq_lipo': ctrl_type = 13
+                    if ctrl_type_str == 'z_mode': ctrl_type = 20
+                else:
+                    print('No VSC control type specified')
+                    ctrl_type = 0
+                L = grid_feeder['L']
+                R = grid_feeder['R']
+                V_dc = grid_feeder['V_dc']
+                
             gfeed_bus_nodes_list += [gfeed_bus_nodes]
             gfeed_currents_list += [gfeed_currents]
             gfeed_powers_list += [gfeed_powers]
             gfeed_i_abcn_list += [gfeed_i_abcn]
+            gfeed_L_list += [L]
+            gfeed_R_list += [R]
+            gfeed_V_dc_list += [V_dc]
+            gfeed_C_ac_list += [C_ac]
+            gfeed_L_grid_list += [L_grid]
+            gfeed_R_grid_list += [R_grid]
+            gfeed_type_list += [gf_type]
+            gfeed_ctrl_type_list += [ctrl_type]
+            gfeed_p_ref_list += [p_ref]
+            gfeed_q_ref_list += [q_ref]
             if "id" in grid_feeder:       
                 gfeed_id_list += [grid_feeder["id"]]
             else:
                 gfeed_id_list += ['{:s}.{:s}'.format('gfeeder',grid_feeder['bus'])]
-                
-            
+                    
         self.N_gfeeds = N_gfeeds          
         self.gfeed_bus_nodes = np.array(gfeed_bus_nodes_list)-N_v_known
         self.gfeed_currents  = np.array(gfeed_currents_list)
         self.gfeed_powers    = np.array(gfeed_powers_list)
         self.gfeed_i_abcn    = np.array(gfeed_i_abcn_list)
+        self.gfeed_L = np.array(gfeed_L_list)
+        self.gfeed_R = np.array(gfeed_R_list)
+        self.gfeed_V_dc = np.array(gfeed_V_dc_list)
+        self.gfeed_C_ac = np.array(gfeed_C_ac_list)
+        self.gfeed_L_grid = np.array(gfeed_L_grid_list)
+        self.gfeed_R_grid = np.array(gfeed_R_grid_list)
         self.gfeed_id    = gfeed_id_list
-        
+        self.gfeed_type    = np.array(gfeed_type_list)    
+        self.gfeed_ctrl_type    = np.array(gfeed_ctrl_type_list) 
+        self.gfeed_p_ref   = np.array(gfeed_p_ref_list)       
+        self.gfeed_q_ref   = np.array(gfeed_q_ref_list)
         N_nz_nodes += it_node_i 
 
 
@@ -890,7 +978,9 @@ class grid(object):
 
 
         yii = LUstruct(self.Y_ii)[0]
-            
+
+        
+           
         dt_pf = np.dtype([
                   ('pf_solver',np.int32),
                   ('Y_vv',np.complex128,(N_v,N_v)),('Y_iv',np.complex128,(N_i,N_v)),
@@ -900,6 +990,10 @@ class grid(object):
                   ('gform_voltages',np.complex128,self.gformer_voltages.shape),('gform_v_abcn',np.complex128,self.gformer_v_abcn.shape), ('gform_i_abcn',np.complex128,self.gformer_i_abcn.shape),
                   ('N_gfeeds',np.int32),('gfeed_bus_nodes',np.int32,self.gfeed_bus_nodes.shape),
                   ('gfeed_currents',np.complex128,self.gfeed_currents.shape),('gfeed_powers',np.complex128,self.gfeed_powers.shape),('gfeed_i_abcn',np.complex128,self.gfeed_i_abcn.shape),                  
+                  ('gfeed_L',np.float64,self.gfeed_L.shape),('gfeed_R',np.float64,self.gfeed_R.shape),('gfeed_V_dc',np.float64,self.gfeed_V_dc.shape),
+                  ('gfeed_C_ac',np.float64,self.gfeed_C_ac.shape),('gfeed_L_grid',np.float64,self.gfeed_L_grid.shape),('gfeed_R_grid',np.float64,self.gfeed_R_grid.shape),
+                  ('gfeed_type',np.int32,self.gfeed_type.shape),
+                  ('gfeed_ctrl_type',np.int32,self.gfeed_ctrl_type.shape),('gfeed_p_ref',np.float64,self.gfeed_p_ref.shape),('gfeed_q_ref',np.float64,self.gfeed_q_ref.shape),                  
                   ('N_pq_1p',np.int32),('pq_1p_int',np.int32,self.pq_1p_int.shape),('pq_1p',np.complex128,self.pq_1p.shape),('pq_1p_0',np.complex128,self.pq_1p.shape),                  
                   ('N_pq_1pn',np.int32),('pq_1pn_int',np.int32,self.pq_1pn_int.shape),('pq_1pn',np.complex128,self.pq_1pn.shape),('pq_1pn_0',np.complex128,self.pq_1pn.shape),
                   ('N_pq_3p',np.int32),('pq_3p_int',np.int32,self.pq_3p_int.shape),('pq_3p',np.complex128,self.pq_3p.shape),('pq_3p_0',np.complex128,self.pq_3p.shape),
@@ -917,6 +1011,9 @@ class grid(object):
                                 self.I_node,self.V_node,
                                 self.N_gformers, self.gformer_nodes, self.gformer_bus_nodes, self.gformer_voltages, self.gformer_v_abcn, self.gformer_i_abcn,
                                 self.N_gfeeds, self.gfeed_bus_nodes,self.gfeed_currents,self.gfeed_powers,self.gfeed_i_abcn,
+                                self.gfeed_L,self.gfeed_R,self.gfeed_V_dc,self.gfeed_C_ac,self.gfeed_L_grid,self.gfeed_R_grid,
+                                self.gfeed_type,
+                                self.gfeed_ctrl_type,self.gfeed_p_ref,self.gfeed_q_ref,
                                 self.N_pq_1p, self.pq_1p_int,self.pq_1p,np.copy(self.pq_1p),
                                 self.N_pq_1pn, self.pq_1pn_int,self.pq_1pn,np.copy(self.pq_1pn),
                                 self.N_pq_3p, self.pq_3p_int,self.pq_3p,np.copy(self.pq_3p),
@@ -1248,6 +1345,7 @@ class grid(object):
             trafo.update({'deg_2b':np.angle(I_2b, deg=True)})
             trafo.update({'deg_2c':np.angle(I_2c, deg=True)})
             trafo.update({'deg_2n':np.angle(I_2n, deg=True)})
+
                         
         self.I_lines = I_lines
         for line in self.lines:
@@ -1258,6 +1356,11 @@ class grid(object):
                 I_c = (I_lines[it_single_line+2,0])
                 #I_n = (I_lines[it_single_line+3,0])
                 I_n = I_a+I_b+I_c
+                
+                alpha = alpha = np.exp(2.0/3*np.pi*1j)
+                i_z =  1/3*(I_a+I_b+I_c)
+                i_p = 1.0/3.0*(I_a + I_b*alpha + I_c*alpha**2)
+                i_n = 1.0/3.0*(I_a + I_b*alpha**2 + I_c*alpha)                
                 it_single_line += N_conductors
                 line.update({'i_a_m':np.abs(I_a)})
                 line.update({'i_b_m':np.abs(I_b)})
@@ -1267,6 +1370,9 @@ class grid(object):
                 line.update({'deg_b':np.angle(I_b, deg=True)})
                 line.update({'deg_c':np.angle(I_c, deg=True)})
                 line.update({'deg_n':np.angle(I_n, deg=True)})
+                line.update({'i_z':np.abs(i_z)})
+                line.update({'i_p':np.abs(i_p)})
+                line.update({'i_n':np.abs(i_n)})
             if N_conductors == 4:
                 I_a = (I_lines[it_single_line,0])
                 I_b = (I_lines[it_single_line+1,0])
@@ -1288,7 +1394,7 @@ class grid(object):
         
         self.bus_tooltip = '''
             <div>
-            bus_id = @bus_id 
+            bus_id = @bus_id &nbsp &nbsp |  u<sub>avg</sub>= @u_avg_pu pu |  u<sub>unb</sub>= @v_unb %
             <table border="1">
                 <tr>
                 <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a </td>
@@ -1323,6 +1429,24 @@ class grid(object):
         v_cn = ['{:2.2f}'.format(float(item['v_cn'])) for item in self.buses]
         v_ng = ['{:2.2f}'.format(float(item['v_ng'])) for item in self.buses]
         sqrt3=np.sqrt(3)
+        
+        u_avg_pu = []
+        v_unb = []
+        for item in  self.buses:
+            V_base = float(item['U_kV'])*1000.0/sqrt3
+            v_an_float = float(item['v_an'])
+            v_bn_float = float(item['v_bn'])
+            v_cn_float = float(item['v_cn'])
+            v_ng_float = float(item['v_ng'])
+            
+            v_abc = np.array([v_an_float,v_bn_float,v_cn_float])
+            v_avg = np.average(v_abc)
+            unb = float(np.max(np.abs(v_abc-v_avg))/v_avg)
+            v_avg_pu = float(v_avg/V_base)
+            u_avg_pu += ['{:2.3f}'.format(v_avg_pu)]
+            v_unb += ['{:2.1f}'.format(unb*100)]
+            
+        
         v_an_pu = ['{:2.4f}'.format(float(item['v_an'])/float(item['U_kV'])/1000.0*sqrt3) for item in self.buses]
         v_bn_pu = ['{:2.4f}'.format(float(item['v_bn'])/float(item['U_kV'])/1000.0*sqrt3) for item in self.buses]
         v_cn_pu = ['{:2.4f}'.format(float(item['v_cn'])/float(item['U_kV'])/1000.0*sqrt3) for item in self.buses]
@@ -1365,8 +1489,7 @@ class grid(object):
             if p_total==0.0:
                 s_color += ['blue']
                                 
-                
-        self.bus_data = dict(x=x, y=y, bus_id=bus_id,
+        self.bus_data = dict(x=x, y=y, bus_id=bus_id,  u_avg_pu=u_avg_pu,  v_unb=v_unb,
                              v_an=v_an, v_bn=v_bn, v_cn=v_cn, v_ng=v_ng, 
                              v_an_pu=v_an_pu, v_bn_pu=v_bn_pu, v_cn_pu=v_cn_pu, 
                              deg_an=deg_an, deg_bn=deg_bn, deg_cn=deg_cn, 
@@ -1498,6 +1621,24 @@ class grid(object):
         return self.bus_data
 
 
+    def v_abc(self,bus_id):
+        V_abc = np.zeros((3,1),np.complex128)
+        for it in range(1,4):
+            idx = self.nodes.index(bus_id+'.'+str(it))
+            V_abc[it-1,0] = self.V_node[idx,0]
+            
+        return V_abc
+            
+    def i_abc(self,bus_id):
+        I_abc = np.zeros((3,1),np.complex128)
+        for it in range(1,4):
+            idx = self.nodes.index(bus_id+'.'+str(it))
+            I_abc[it-1,0] = self.I_node[idx,0]
+            
+        return I_abc            
+
+
+        
 def LUstruct(A_sp):
     LU_sp = sla.splu(sparse.csc_matrix(A_sp))
     L_sp = LU_sp.L
@@ -1533,7 +1674,87 @@ def LUstruct(A_sp):
                      ])
     return struct
 
+def phasor2time(ABC, t_end = 0.04, freq=50, N=200):
+    alpha = np.exp(2.0/3*np.pi*1j)
 
+    A_a0 = 1/3* np.array([[1, 1, 1],
+                          [1, alpha, alpha**2],
+                          [1, alpha**2, alpha]])
+            
+            
+    t = np.linspace(0,t_end-t_end/N,N)
+    zpn = A_a0 @ ABC
+    z = zpn[0]
+    p = zpn[1]
+    n = zpn[2]
+
+    omega = 2.0*np.pi*freq
+    alpha_p = (np.exp( 1j*omega*t)*p).imag*np.sqrt(2)
+    beta_p  = (np.exp( 1j*omega*t)*p).real*np.sqrt(2)
+    alpha_n = (np.exp(-1j*omega*t)*n).imag*np.sqrt(2)
+    beta_n  = (np.exp(-1j*omega*t)*n).real*np.sqrt(2)
+    
+    zero = 0.0
+    alpha = alpha_p + alpha_n
+    beta  = beta_p  + beta_n
+
+    a =  7.07106781e-01*zero + 1.00000000e+00*alpha
+    b =  7.07106781e-01*zero - 5.00000000e-01*alpha  -8.66025404e-01*beta
+    c =  7.07106781e-01*zero - 5.00000000e-01*alpha  +8.66025404e-01*beta
+    
+    return a,b,c,t
+
+
+def pq(V_abc, I_abc, t_end = 0.04, freq=50, N=200):   
+ 
+    alpha = np.exp(2.0/3*np.pi*1j)
+
+    A_a0 = 1/3* np.array([[1, 1, 1],
+                          [1, alpha, alpha**2],
+                          [1, alpha**2, alpha]])
+                  
+    t = np.linspace(0,t_end-t_end/N,N)
+    
+    I_zpn = A_a0 @ I_abc
+    V_zpn = A_a0 @ V_abc
+    
+    I_p = I_zpn[1]
+    I_n = I_zpn[2]
+    V_p = V_zpn[1]
+    V_n = V_zpn[2]
+    
+    w = 2.0*np.pi*freq
+    
+    i_alpha_p = (np.exp( 1j*w*t)*I_p).imag*np.sqrt(2)
+    i_beta_p  = (np.exp( 1j*w*t)*I_p).real*np.sqrt(2)
+    i_alpha_n = (np.exp(-1j*w*t)*I_n).imag*np.sqrt(2)
+    i_beta_n  = (np.exp(-1j*w*t)*I_n).real*np.sqrt(2)
+    
+    v_alpha_p = (np.exp( 1j*w*t)*V_p).imag*np.sqrt(2)
+    v_beta_p  = (np.exp( 1j*w*t)*V_p).real*np.sqrt(2)
+    v_alpha_n = (np.exp(-1j*w*t)*V_n).imag*np.sqrt(2)
+    v_beta_n  = (np.exp(-1j*w*t)*V_n).real*np.sqrt(2)
+    
+    v_alpha_p_lipo = (-1j*np.exp( 1j*w*t)*V_p).imag*np.sqrt(2)
+    v_beta_p_lipo  = (-1j*np.exp( 1j*w*t)*V_p).real*np.sqrt(2)
+    v_alpha_n_lipo = (1j*np.exp(-1j*w*t)*V_n).imag*np.sqrt(2)
+    v_beta_n_lipo  = (1j*np.exp(-1j*w*t)*V_n).real*np.sqrt(2)
+    
+    i_alpha = i_alpha_p + i_alpha_n
+    i_beta  = i_beta_p + i_beta_n
+    v_alpha = v_alpha_p + v_alpha_n
+    v_beta  = v_beta_p + v_beta_n
+    v_alpha_lipo = v_alpha_p_lipo + v_alpha_n_lipo
+    v_beta_lipo  = v_beta_p_lipo + v_beta_n_lipo
+
+    
+    p = 3/2*(i_alpha*v_alpha + i_beta*v_beta)
+    q = 3/2*(v_alpha*i_beta - v_beta*i_alpha)
+    q_lipo = 3/2*(i_alpha*v_alpha_lipo + i_beta*v_beta_lipo)
+    
+    return p,q,q_lipo,t
+        
+        
 def diag_2d_inv(Z_line_list):
 
     N_cols = 0

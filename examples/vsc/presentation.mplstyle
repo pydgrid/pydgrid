@@ -5,7 +5,6 @@ lines.linewidth: 4
 lines.solid_capstyle: butt
 
 legend.fancybox: true
-legend.fontsize: 12
 #d9524f
 #axes.prop_cycle: d9524f, 5cb85c, 337ab7, f0ad4e, 5bc0de,5e4485   # bootsrap
 #axes.prop_cycle: 30a2da, fc4f30, e5ae38, 5cb85c, 8b8b8b  # fivethirtyeight
@@ -34,14 +33,13 @@ xtick.minor.size: 0
 ytick.major.size: 0
 ytick.minor.size: 0
 
-font.size:12.0
+font.size:16.0
 
 savefig.edgecolor: ffffff
 savefig.facecolor: ffffff
 
 figure.subplot.left: 0.15
 figure.subplot.right: 0.95
-figure.autolayout : True
 figure.subplot.top: 0.95
 figure.subplot.bottom: 0.1
 figure.facecolor: ffffff

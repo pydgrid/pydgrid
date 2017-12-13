@@ -7,6 +7,7 @@ Created on Mon Mar 27 11:41:44 2017
 
 import numpy as np
 import numba
+from pydgrid.electric import vsc_pf_eval
 
 '''
 
@@ -20,7 +21,7 @@ sys1.pf() 0.5933837890625
 '''
 
 
-@numba.jit(nopython=True, cache=True,nogil=True)
+@numba.jit (nopython=True,cache=True) #,nogil=True)
 def pf_eval(params,ig=0,max_iter=100):
     '''
     
@@ -53,7 +54,7 @@ def pf_eval(params,ig=0,max_iter=100):
     gfeed_currents = params[ig].gfeed_currents
     gfeed_powers = params[ig].gfeed_powers
     gfeed_i_abcn  = params[ig].gfeed_i_abcn
-
+    gfeed_type  = params[ig].gfeed_type
 
     V_node = params[ig].V_node
     I_node = params[ig].I_node
@@ -114,20 +115,28 @@ def pf_eval(params,ig=0,max_iter=100):
 
         if N_gfeeds > 0:
 
-            for it in range(gfeed_bus_nodes.shape[0]):
+            for it in range(N_gfeeds):
+                
+                if gfeed_type[it] == 0:
                
-                V_abc   = V_unknown[gfeed_bus_nodes[it][0:3],0]
-                S_abc_gf = gfeed_powers[it,0:3]
-#                print(S_abc_gf)
-                I_abc_pq = np.conj(S_abc_gf/V_abc)
-                I_abc_ir = gfeed_currents[it,0:3]*np.exp(1j*np.angle(V_abc))
-                
-                I_abc_gfeed = I_abc_pq + I_abc_ir + gfeed_i_abcn[it,0:3]
-                
-                I_known[gfeed_bus_nodes[it][0:3],0] += I_abc_gfeed
-                I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc_gfeed) + gfeed_i_abcn[it,3]
-                
-   
+                    V_abc   = V_unknown[gfeed_bus_nodes[it][0:3],0]
+                    S_abc_gf = gfeed_powers[it,0:3]
+    #                print(S_abc_gf)
+                    I_abc_pq = np.conj(S_abc_gf/V_abc)
+                    I_abc_ir = gfeed_currents[it,0:3]*np.exp(1j*np.angle(V_abc))
+                    
+                    I_abc_gfeed = I_abc_pq + I_abc_ir + gfeed_i_abcn[it,0:3]
+                    
+                    I_known[gfeed_bus_nodes[it][0:3],0] += I_abc_gfeed
+                    #I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc_gfeed) + gfeed_i_abcn[it,3]
+ 
+                if gfeed_type[it] == 1:
+                    
+                    params[0].gfeed_bus_nodes
+                    vsc_pf_eval(it,params)
+                    I_abc_gfeed = params[ig].gfeed_currents[it,0:3]                  
+                    I_known[gfeed_bus_nodes[it][0:3],0] += I_abc_gfeed
+                    #I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc_gfeed) + gfeed_i_abcn[it,3]
     
         I_aux = ( I_known - Y_iv @ V_known)  
 
@@ -145,7 +154,10 @@ def pf_eval(params,ig=0,max_iter=100):
         error = np.linalg.norm((V_unknown_m - V_unknown_0_m)/V_unknown_0_m,np.inf)
         if error <1.0e-6: break
         V_unknown_0 = V_unknown
-
+        params[ig].V_node[0:N_v,:] = V_known 
+        params[ig].V_node[N_v:,:]  = V_unknown 
+        
+        
     I_unknown =Y_vv @ V_known + Y_vi @ V_unknown
     
     V_node[0:N_v,:] = V_known 
@@ -157,6 +169,10 @@ def pf_eval(params,ig=0,max_iter=100):
     params[ig].iters = iteration
         
     return V_node,I_node
+
+
+
+
 
 
 @numba.jit(nopython=True, cache=True, nogil=True)
