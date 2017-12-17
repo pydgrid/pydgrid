@@ -11,3 +11,4 @@ https://mybinder.org/v2/gh/pydgrid/pydgrid/master
 
 python setup.py sdist upload
 
+pip install pydgrid --upgrade

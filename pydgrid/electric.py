@@ -56,6 +56,8 @@ class bess_vsc(object):  # feed mode
             if item['source_mode'] == 'grid_feeder': 
                 source_mode = 0
                 ctrl_mode = item['ctrl_mode']
+                if 'p_ref' in item: p_ref = item['p_ref']
+                if 'q_ref' in item: q_ref = item['q_ref']
                 gfeed_idx = grid.gfeed_id.index(item['id'])
                 bus_nodes = grid.gfeed_bus_nodes[gfeed_idx]+grid.N_nodes_v
                 nodes =  grid.gfeed_bus_nodes[gfeed_idx]
@@ -73,11 +75,16 @@ class bess_vsc(object):  # feed mode
             V_dc  = item['V_dc']
             L  = item['L']
             R  = item['R']
-            C_ac  = item['C_ac']
+            if 'C_ac' in item: 
+                C_ac  = item['C_ac'] 
+            else: 
+                C_ac = 1e-8
             v_abcn_0 = np.zeros((4,1))
             i_abcn_0 = np.zeros((4,1))
             v_abcn = np.zeros((4,1))
             i_abcn = np.zeros((4,1))
+            e_abcn = np.zeros((4,1))
+            eta_abcn = np.zeros((4,1))
             S_ref = np.zeros((4,1))
             S = np.zeros((4,1))        
             S_0 = np.zeros((4,1))
@@ -91,7 +98,8 @@ class bess_vsc(object):  # feed mode
             soc_0 = item['soc_ini_kWh']*1000*3600
             soc= item['soc_ini_kWh']*1000*3600
             switch = 1.0
-   
+            p_ref = 0.0
+            q_ref = 0.0
             s_times  =  np.zeros((N_s_points,1))
             s_shapes =  np.zeros((N_s_points,1),dtype=np.complex128)  
             s_npoints = 0                                     
@@ -140,7 +148,9 @@ class bess_vsc(object):  # feed mode
                               switch,
                               s_times,
                               s_shapes,
-                              s_npoints
+                              s_npoints,
+                              p_ref,
+                              q_ref
                              )
                              ]
             
@@ -178,7 +188,9 @@ class bess_vsc(object):  # feed mode
                       ('switch','float64'), # switch_list
                       ('s_times',np.float64,(N_s_points,1)), # s_times
                       ('s_shapes',np.complex128,(N_s_points,1)), # s_shapes
-                      ('s_npoints','int64')  # s_npoints                       
+                      ('s_npoints','int64'),  # s_npoints     
+                      ('p_ref','float64'),
+                      ('q_ref','float64')
                      ]
         dtype = np.dtype(dtype_list)     
         
@@ -316,7 +328,167 @@ class bess_vsc(object):  # feed mode
         
         print(string)
         
+            
 
+@numba.jit (nopython=True, cache=True) # ,parallel=True, nogil=True)
+def vsc_pf_eval(it,params_pf):
+    ig = 0
+    
+    gfeed_bus_nodes = params_pf[ig].gfeed_bus_nodes
+       
+# %% power flow    
+    N_v = params_pf[ig].N_nodes_v
+    v_abcn = params_pf[ig].V_node[gfeed_bus_nodes[it]+N_v,:]    # todo: check that nodes are correct
+
+    v_abc = v_abcn[0:3,:]
+
+    L = params_pf[ig].gfeed_L[it]
+    R = params_pf[ig].gfeed_R[it] 
+    v_dc = params_pf[ig].gfeed_V_dc[it]  
+    
+    omega = 2*np.pi*50.0
+    w=omega
+    alpha = np.exp(2.0/3*np.pi*1j)
+    A_0a = np.zeros((3,3), np.complex128)
+    A_0a[0,0] = 1.0
+    A_0a[0,1] = 1.0
+    A_0a[0,2] = 1.0
+    A_0a[1,0] = 1.0
+    A_0a[1,1] = alpha**2
+    A_0a[1,2] = alpha
+    A_0a[2,0] = 1.0
+    A_0a[2,1] = alpha
+    A_0a[2,2] = alpha**2
+
+    A_a0 = np.zeros((3,3), np.complex128)
+    A_a0[0,0] = 1.0/3.0
+    A_a0[0,1] = 1.0/3.0
+    A_a0[0,2] = 1.0/3.0
+    A_a0[1,0] = 1.0/3.0
+    A_a0[1,1] = alpha/3.0
+    A_a0[1,2] = alpha**2/3.0
+    A_a0[2,0] = 1.0/3.0
+    A_a0[2,1] = alpha**2/3.0
+    A_a0[2,2] = alpha/3.0
+    
+    # Fortescue
+    v_zpn = A_a0 @ v_abc 
+    v_z = v_zpn[0,0]
+    v_p = v_zpn[1,0]
+    v_n = v_zpn[2,0]
+    
+    # PLL
+    theta_pll = np.angle(v_p)
+    
+    # Park
+    v_dq_p = v_p*np.exp(-1j*theta_pll)*np.sqrt(2)
+    v_dq_n = v_n*np.exp( 1j*theta_pll)*np.sqrt(2)
+    
+    v_d_p = v_dq_p.imag
+    v_q_p = v_dq_p.real
+    v_d_n = v_dq_n.imag
+    v_q_n = v_dq_n.real
+    
+    # References
+    p_ref = params_pf[ig].gfeed_p_ref[it]
+    q_ref = params_pf[ig].gfeed_q_ref[it]
+    
+    
+    mode = int(params_pf[ig].gfeed_ctrl_type[it])
+    
+    i_d_p_ref = 0.0
+    i_q_p_ref = 0.0
+    i_d_n_ref = 0.0
+    i_q_n_ref = 0.0
+        
+        
+    if mode == 1: # i_pos
+        i_d_p_ref = -(0.666666666666667*p_ref*v_d_p*(v_d_n**2 + v_d_p**2 + v_q_n**2 + v_q_p**2) + 0.666666666666667*q_ref*v_q_p*(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2))/(v_d_n**4 + 2.0*v_d_n**2*v_q_n**2 - v_d_p**4 - 2.0*v_d_p**2*v_q_p**2 + v_q_n**4 - v_q_p**4)
+        i_q_p_ref = 0.666666666666667*(-p_ref*v_q_p*(v_d_n**2 + v_d_p**2 + v_q_n**2 + v_q_p**2) + q_ref*v_d_p*(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2))/(v_d_n**4 + 2.0*v_d_n**2*v_q_n**2 - v_d_p**4 - 2.0*v_d_p**2*v_q_p**2 + v_q_n**4 - v_q_p**4)
+        i_d_n_ref = 0
+        i_q_n_ref = 0
+        
+    if mode == 12: # 'q_cte'
+        i_d_p_ref = 0.666666666666667*(p_ref*v_d_p*(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2) + q_ref*v_q_p*(v_d_n**2 + v_d_p**2 + v_q_n**2 + v_q_p**2))/(v_d_n**4 + 2.0*v_d_n**2*v_q_n**2 - v_d_p**4 - 2.0*v_d_p**2*v_q_p**2 + v_q_n**4 - v_q_p**4)
+        i_q_p_ref = 0.666666666666667*(p_ref*v_q_p*(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2) - q_ref*v_d_p*(v_d_n**2 + v_d_p**2 + v_q_n**2 + v_q_p**2))/(v_d_n**4 + 2.0*v_d_n**2*v_q_n**2 - v_d_p**4 - 2.0*v_d_p**2*v_q_p**2 + v_q_n**4 - v_q_p**4)
+        i_d_n_ref = 0.666666666666667*(p_ref*v_d_n*(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2) - q_ref*v_q_n*(v_d_n**2 + v_d_p**2 + v_q_n**2 + v_q_p**2))/(v_d_n**4 + 2.0*v_d_n**2*v_q_n**2 - v_d_p**4 - 2.0*v_d_p**2*v_q_p**2 + v_q_n**4 - v_q_p**4)
+        i_q_n_ref = 0.666666666666667*(p_ref*v_q_n*(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2) + q_ref*v_d_n*(v_d_n**2 + v_d_p**2 + v_q_n**2 + v_q_p**2))/(v_d_n**4 + 2.0*v_d_n**2*v_q_n**2 - v_d_p**4 - 2.0*v_d_p**2*v_q_p**2 + v_q_n**4 - v_q_p**4)    
+    
+    if mode == 13: #'pq_cte': # Lipo
+        i_d_p_ref = 0.666666666666667*(-p_ref*v_d_p + q_ref*v_q_p)/(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2)
+        i_q_p_ref = -(0.666666666666667*p_ref*v_q_p + 0.666666666666667*q_ref*v_d_p)/(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2)
+        i_d_n_ref = 0.666666666666667*(p_ref*v_d_n + q_ref*v_q_n)/(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2)
+        i_q_n_ref = 0.666666666666667*(p_ref*v_q_n - q_ref*v_d_n)/(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2)
+    
+    if mode == 11: # 'pq_leon':
+        #print('mode',mode)
+        i_d_p_ref = -(0.666666666666667*p_ref*v_d_p*(v_d_n**2 + v_d_p**2 + v_q_n**2 + v_q_p**2) + 0.666666666666667*q_ref*v_q_p*(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2))/(v_d_n**4 + 2.0*v_d_n**2*v_q_n**2 - v_d_p**4 - 2.0*v_d_p**2*v_q_p**2 + v_q_n**4 - v_q_p**4)
+        i_q_p_ref =   0.666666666666667*(-p_ref*v_q_p*(v_d_n**2 + v_d_p**2 + v_q_n**2 + v_q_p**2) + q_ref*v_d_p*(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2))/(v_d_n**4 + 2.0*v_d_n**2*v_q_n**2 - v_d_p**4 - 2.0*v_d_p**2*v_q_p**2 + v_q_n**4 - v_q_p**4)
+        i_d_n_ref =   0.666666666666667*(p_ref*v_d_n*(v_d_n**2 + v_d_p**2 + v_q_n**2 + v_q_p**2) - q_ref*v_q_n*(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2))/(v_d_n**4 + 2.0*v_d_n**2*v_q_n**2 - v_d_p**4 - 2.0*v_d_p**2*v_q_p**2 + v_q_n**4 - v_q_p**4)
+        i_q_n_ref =   0.666666666666667*(p_ref*v_q_n*(v_d_n**2 + v_d_p**2 + v_q_n**2 + v_q_p**2) + q_ref*v_d_n*(v_d_n**2 - v_d_p**2 + v_q_n**2 - v_q_p**2))/(v_d_n**4 + 2.0*v_d_n**2*v_q_n**2 - v_d_p**4 - 2.0*v_d_p**2*v_q_p**2 + v_q_n**4 - v_q_p**4)
+
+    if mode == 20: # 'z_mode':
+        I_p_ref = np.conj((p_ref+1j*q_ref)/v_p)/3/np.sqrt(3)
+        Z_p = v_p/I_p_ref
+        I_n_ref = np.conj((p_ref+1j*q_ref)/v_n)/3/np.sqrt(3)
+        Z_n = v_n/I_n_ref
+        i_d_p_ref = ((v_q_p + 1j*v_d_p)/Z_p).imag
+        i_q_p_ref = ((v_q_p + 1j*v_d_p)/Z_p).real
+        i_d_n_ref = ((v_q_n + 1j*v_d_n)/Z_n).imag
+        i_q_n_ref = ((v_q_n + 1j*v_d_n)/Z_n).real
+        
+    # Control
+    eta_d_p = 2.0/v_dc*(R*i_d_p_ref + L*w*i_q_p_ref + v_d_p)
+    eta_q_p = 2.0/v_dc*(R*i_q_p_ref - L*w*i_d_p_ref + v_q_p)
+    eta_d_n = 2.0/v_dc*(R*i_d_n_ref + L*w*i_q_n_ref + v_d_n)
+    eta_q_n = 2.0/v_dc*(R*i_q_n_ref - L*w*i_d_n_ref + v_q_n)
+    
+    eta_dq_p = eta_q_p + 1j*eta_d_p
+    e_dq_p = v_dc/2.0*eta_dq_p       # phase-neutral peak value
+     
+    eta_dq_n = eta_q_n + 1j*eta_d_n
+    e_dq_n = v_dc/2.0*eta_dq_n       # phase-neutral peak value
+    
+    # Modulation
+    e_p = e_dq_p *np.exp( 1j*theta_pll)/np.sqrt(2) # phase-neutral RMS value   
+    e_n = e_dq_n *np.exp(-1j*theta_pll)/np.sqrt(2) # phase-neutral RMS value
+    e_z = v_z
+    #e_n = 0.0
+
+    e_zpn = np.zeros((3,1),np.complex128)
+    e_zpn[0,0] = e_z
+    e_zpn[1,0] = e_p
+    e_zpn[2,0] = e_n
+        
+    e_abc = A_0a @ e_zpn
+    
+    # Plant 
+    Z_1 = R +1j *L*omega
+    Z_2 = Z_1
+    Z_0 = Z_1
+
+    Z_012 = np.zeros((3,3),np.complex128)  
+    Z_012[0,0] = Z_0
+    Z_012[1,1] = Z_1
+    Z_012[2,2] = Z_2
+        
+    Z_abc = A_0a @ Z_012 @ A_a0
+    
+    Y_abc = np.linalg.inv(Z_abc)
+    i_abc = Y_abc @ (e_abc-v_abc)
+    
+    params_pf[ig].gfeed_currents[it,0:3] = i_abc[:,0]
+##    print('p_ref',p_ref)
+##    print('q_ref',q_ref)    
+##    print('i_d_p_ref',i_d_p_ref)
+##    print('i_q_p_ref',i_q_p_ref)
+##    print('i_d_n_ref',i_d_n_ref)
+##    print('i_q_n_ref',i_q_n_ref)
+##    print(abs(params_pf[ig].gfeed_currents[it,0:3]))
+#    
+##    return i_abc
+    
+    
 #@numba.jit(nopython=True,parallel=True, nogil=True)
 def bess_vsc_eval(t,mode,params,params_pf,params_simu):
     '''
@@ -336,7 +508,6 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
         11: grid feeder, constant power
         12: grid feeder, power profile
         
-        
     '''
 
     N = len(params) # total number of bess_vsc_feeder
@@ -346,20 +517,16 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
         nodes = params[it].nodes
         N_conductors = params[it].N_conductors
         v_abcn = params_pf[0].V_node[nodes,:]
+        v_abc = v_abcn[0:3,:]
         i_abcn = params[it].i_abcn
         if source_mode==1:
             i_abcn = params_pf[0].I_node[nodes,:]
         gfeed_idx = params[it].gfeed_idx 
         gform_idx = params[it].gform_idx        
         
-        ctrl_mode = params[it].ctrl_mode    
-   
-# %% power flow    
-        if mode == 0:  # pf
-            i_abcn_0 = np.zeros((4,1), dtype=np.complex128)
-            
+        ctrl_mode = params[it].ctrl_mode 
 
-    
+            
 # %% initialization    
         if mode == 1:  # ini
             i_abcn_0 = np.zeros((4,1), dtype=np.complex128)
@@ -393,7 +560,6 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
 #                params[it].T_sink =  params[it].x[3,0]  
 #                params[it].T_j_igbt_abcn[:]  = params[it].T_sink
     
- 
 # %% derivatives    
         if mode == 2:  # der
             S_ctrl = params[it].S_ref
@@ -409,12 +575,14 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
             params_simu[0].f[ix_0+0,0] =  -p_ac_total*params[it].switch
 
             #bess_control_eval(t,it,ctrl_mode,1,params)
-            
+            bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params)
             
 # %% out
         if mode == 4: # out
 
             if source_mode==0: 
+                bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params)
+                
                 S_ctrl = params[it].S_ref
                 ix_0 = params[it].ix_0
                 
@@ -438,12 +606,95 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
                 params[it].switch = switch
 
 
+# %%
+@numba.jit(nopython=True,cache=True)
+def bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params):
 
-@numba.jit(nopython=True,cache=True, nogil=True)
-def bess_control_eval(t,it,ctrl_mode,mode,params):
     
+    if ctrl_mode == 1:
+        DV_remote = params[it].DV_remote
+        params[it].v_abcn[:] = params[it].v_abcn_0[:] * (1+DV_remote)
+
+
+    if ctrl_mode == 3:  # p-v, q-ang
+
+        if mode == 2: # derivatives
+            
+            K_v = params[it].K_v 
+            K_ang = params[it].K_ang
+        
+            DS_abc = S-params[it].S_0*0 # complex power increment 
+            
+            DP_abc = DS_abc.real
+            DQ_abc = DS_abc.imag
+      
+            DV_m_ref =  -K_v*np.sum(DP_abc)/S_base
+            Dang_ref =   K_ang*np.sum(DQ_abc)/S_base
+        
+            params[it].f[0:1,:] = 1.0/T_v*(DV_m_ref - params[it].x[0:1,:])  # voltage control dynamics
+            params[it].f[1:2,:] = 1.0/T_ang*(Dang_ref - params[it].x[1:2,:])  # angle control dynamics
+            params[it].f[2:3,:] = 0.0  # angle from frequency
+
+        if mode == 4: # out
+            
+            params[it].v_abcn[:] = params[it].v_abcn_0[:]
+        
+            V_abc_0 = params[it].v_abcn_0[0:3,:] # phase to neutral abc voltages (without neutral)
+            S_base = params[it].S_base
+    
+            DV_remote = params[it].DV_remote            
+
+            DV_m = params[it].x[0:1,:]
+            params[it].v_abcn[:] = params[it].v_abcn_0[:] * (1+DV_m+DV_remote)
+        
+
+    if ctrl_mode == 4:  # i-v ruben
+
+        if mode == 2: # derivatives
+            
+            K_p = params[it].K_p 
+            K_i = params[it].K_i
+            I_max = S_base/690.0
+            
+            for it_ph in range(3):
+                error = I_abc_m[it_ph,0] - I_max
+                DV = K_p * error + K_i*params[it].x[it_ph:(it_ph+1),0]
+                params[it].f[it_ph:(it_ph+1),:] = 0.0
+                
+                if DV[0]>0.0:
+                    params[it].f[it_ph:(it_ph+1),:] = error
+                if DV[0]>200.0:
+                    params[it].f[it_ph:(it_ph+1),:] = 0.0  
+                    
+            
+        if mode == 4: # out
+            
+            DV_remote = params[it].DV_remote
+            K_p = params[it].K_p 
+            K_i = params[it].K_i
+            I_abc = params[it].i_abcn[0:3,:] # phase currents (without neutral)                    
+           
+            I_abc_m = np.abs(I_abc)
+            I_max = S_base/690.0
+            
+            for it_ph in range(3):
+                error = I_abc_m[it_ph,0] - I_max
+                DV = K_p * error + K_i*params[it].x[it_ph:(it_ph+1),0]
+                
+                if DV[0]>0.0:
+                    if DV[0]>20.0:
+                        DV[0]=20
+    
+                if DV[0]<0.0: DV[0]=0.0
+    #                    print(it,DV[0])
+                params[it].v_abcn[:] = params[it].v_abcn_0[:] * (1-DV/231+DV_remote)    
+
+
     if ctrl_mode == 12:
         bess_pq_profile(t,it,ctrl_mode,mode,params)
+        
+        
+        
     
 @numba.jit(nopython=True,cache=True)
 def bess_pq_profile(t,it,ctrl_mode,mode,params):

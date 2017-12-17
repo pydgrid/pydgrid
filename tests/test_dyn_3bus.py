@@ -54,13 +54,13 @@ def test_dyn_bess():
             {"bus": "Bus_4" , "R": 0.1, "X": 0.0, "bus_nodes": [4,0]}
             ],
     "bess_vsc":[{"id":"gformer.Bus_1","source_mode":"grid_former","ctrl_mode":3,"s_n_kVA":50.0,"V_dc":800.0,
-                "soc_max_kWh":1.0,"soc_ini_kWh":0.5},
+                "soc_max_kWh":1.0,"soc_ini_kWh":0.5, 'L':400.0e-6, 'R':0.01},
                 {"id":"gfeeder.Bus_2","source_mode":"grid_feeder","ctrl_mode":3,"s_n_kVA":50.0,"V_dc":800.0,
-                "soc_max_kWh":1.0,"soc_ini_kWh":0.5},
+                "soc_max_kWh":1.0,"soc_ini_kWh":0.5, 'L':400.0e-6, 'R':0.01},
                 {"id":"gfeeder.Bus_3","source_mode":"grid_feeder","ctrl_mode":3,"s_n_kVA":50.0,"V_dc":800.0,
-                "soc_max_kWh":1.0,"soc_ini_kWh":0.5},
+                "soc_max_kWh":1.0,"soc_ini_kWh":0.5, 'L':400.0e-6, 'R':0.01},
                 {"id":"gformer.Bus_4","source_mode":"grid_former","ctrl_mode":3,"s_n_kVA":50.0,"V_dc":800.0,
-                "soc_max_kWh":1.0,"soc_ini_kWh":0.5}]
+                "soc_max_kWh":1.0,"soc_ini_kWh":0.5, 'L':400.0e-6, 'R':0.01}]
     }
 
     sys1 = grid()
@@ -86,7 +86,4 @@ def test_dyn_bess():
     assert abs(T[-1,0]-99.9)<0.01
 
 if __name__ == "__main__":
-    pass
-
-#    test_Dyn11()
-#    test_Dyg11_3w()
+    test_dyn_bess()
