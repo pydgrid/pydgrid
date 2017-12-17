@@ -123,7 +123,8 @@ p,q,q_lipo,t = pq(sys1.v_abc('Bus_3'),sys1.i_abc('Bus_3'))
 #    assert np.abs(np.average(q_lipo)-np.min(q_lipo))< 1.0
         
 if __name__ == "__main__":
-    test_vsc_leon()
+    pass
+    #test_vsc_leon()
 
 #    test_Dyn11()
 #    test_Dyg11_3w()

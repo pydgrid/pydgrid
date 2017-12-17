@@ -508,7 +508,6 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
         11: grid feeder, constant power
         12: grid feeder, power profile
         
-        
     '''
 
     N = len(params) # total number of bess_vsc_feeder
@@ -527,14 +526,6 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
         
         ctrl_mode = params[it].ctrl_mode 
 
-            
-   
-
-            
-            
-
-            
-            
             
 # %% initialization    
         if mode == 1:  # ini
@@ -569,7 +560,6 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
 #                params[it].T_sink =  params[it].x[3,0]  
 #                params[it].T_j_igbt_abcn[:]  = params[it].T_sink
     
- 
 # %% derivatives    
         if mode == 2:  # der
             S_ctrl = params[it].S_ref
@@ -585,12 +575,14 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
             params_simu[0].f[ix_0+0,0] =  -p_ac_total*params[it].switch
 
             #bess_control_eval(t,it,ctrl_mode,1,params)
-            
+            bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params)
             
 # %% out
         if mode == 4: # out
 
             if source_mode==0: 
+                bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params)
+                
                 S_ctrl = params[it].S_ref
                 ix_0 = params[it].ix_0
                 
@@ -614,12 +606,95 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
                 params[it].switch = switch
 
 
+# %%
+@numba.jit(nopython=True,cache=True)
+def bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params):
 
-@numba.jit(nopython=True,cache=True, nogil=True)
-def bess_control_eval(t,it,ctrl_mode,mode,params):
     
+    if ctrl_mode == 1:
+        DV_remote = params[it].DV_remote
+        params[it].v_abcn[:] = params[it].v_abcn_0[:] * (1+DV_remote)
+
+
+    if ctrl_mode == 3:  # p-v, q-ang
+
+        if mode == 2: # derivatives
+            
+            K_v = params[it].K_v 
+            K_ang = params[it].K_ang
+        
+            DS_abc = S-params[it].S_0*0 # complex power increment 
+            
+            DP_abc = DS_abc.real
+            DQ_abc = DS_abc.imag
+      
+            DV_m_ref =  -K_v*np.sum(DP_abc)/S_base
+            Dang_ref =   K_ang*np.sum(DQ_abc)/S_base
+        
+            params[it].f[0:1,:] = 1.0/T_v*(DV_m_ref - params[it].x[0:1,:])  # voltage control dynamics
+            params[it].f[1:2,:] = 1.0/T_ang*(Dang_ref - params[it].x[1:2,:])  # angle control dynamics
+            params[it].f[2:3,:] = 0.0  # angle from frequency
+
+        if mode == 4: # out
+            
+            params[it].v_abcn[:] = params[it].v_abcn_0[:]
+        
+            V_abc_0 = params[it].v_abcn_0[0:3,:] # phase to neutral abc voltages (without neutral)
+            S_base = params[it].S_base
+    
+            DV_remote = params[it].DV_remote            
+
+            DV_m = params[it].x[0:1,:]
+            params[it].v_abcn[:] = params[it].v_abcn_0[:] * (1+DV_m+DV_remote)
+        
+
+    if ctrl_mode == 4:  # i-v ruben
+
+        if mode == 2: # derivatives
+            
+            K_p = params[it].K_p 
+            K_i = params[it].K_i
+            I_max = S_base/690.0
+            
+            for it_ph in range(3):
+                error = I_abc_m[it_ph,0] - I_max
+                DV = K_p * error + K_i*params[it].x[it_ph:(it_ph+1),0]
+                params[it].f[it_ph:(it_ph+1),:] = 0.0
+                
+                if DV[0]>0.0:
+                    params[it].f[it_ph:(it_ph+1),:] = error
+                if DV[0]>200.0:
+                    params[it].f[it_ph:(it_ph+1),:] = 0.0  
+                    
+            
+        if mode == 4: # out
+            
+            DV_remote = params[it].DV_remote
+            K_p = params[it].K_p 
+            K_i = params[it].K_i
+            I_abc = params[it].i_abcn[0:3,:] # phase currents (without neutral)                    
+           
+            I_abc_m = np.abs(I_abc)
+            I_max = S_base/690.0
+            
+            for it_ph in range(3):
+                error = I_abc_m[it_ph,0] - I_max
+                DV = K_p * error + K_i*params[it].x[it_ph:(it_ph+1),0]
+                
+                if DV[0]>0.0:
+                    if DV[0]>20.0:
+                        DV[0]=20
+    
+                if DV[0]<0.0: DV[0]=0.0
+    #                    print(it,DV[0])
+                params[it].v_abcn[:] = params[it].v_abcn_0[:] * (1-DV/231+DV_remote)    
+
+
     if ctrl_mode == 12:
         bess_pq_profile(t,it,ctrl_mode,mode,params)
+        
+        
+        
     
 @numba.jit(nopython=True,cache=True)
 def bess_pq_profile(t,it,ctrl_mode,mode,params):

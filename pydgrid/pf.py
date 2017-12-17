@@ -22,7 +22,8 @@ sys1.pf() 0.5933837890625
 
 
 @numba.jit (nopython=True,cache=True) #,nogil=True)
-def pf_eval(params,ig=0,max_iter=100):
+def pf_eval(params,
+            ig=0,max_iter=100):
     '''
     
     
