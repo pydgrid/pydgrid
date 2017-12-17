@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 
-def test_dyn_bess():
+def dyn_bess():
     data = {
     "lines":[
             {"bus_j": "Bus_1",  "bus_k": "Bus_2",  "code": "UG1", "m": 10.0},
