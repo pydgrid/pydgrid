@@ -797,7 +797,9 @@ class grid(object):
                 A_sp[row_j,col] = 1
                 it_col +=1
                 
-            Z_gnd = grounding['Z_gnd']
+            R_gnd = grounding['R_gnd']
+            X_gnd = grounding['X_gnd']
+            Z_gnd = R_gnd + 1j*X_gnd
             Y_gnd = 1.0/Z_gnd 
             Z_m = 1/1000.0e3
             Y_full = -Y_gnd/3+Y_gnd
@@ -950,8 +952,6 @@ class grid(object):
                 
             it+=1
             
-        print(V_unknown_0.shape,N_v)   
-        print(self.V_known.shape)   
            
         self.V_node = np.vstack((self.V_known,V_unknown_0 ))
         
@@ -1028,6 +1028,7 @@ class grid(object):
                                 yii['perm_r'],yii['perm_c']
                                 )],
                                 dtype=dt_pf)
+                  
         self.params_pf = params_pf 
             
     def pf(self):      
