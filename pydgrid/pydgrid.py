@@ -398,7 +398,7 @@ class grid(object):
                     it_node_i += 1
                 if 'kW' in grid_feeder:
                     gf_it = 0
-                    if type(grid_feeder['kW']) == float:
+                    if type(grid_feeder['kW']) == float or int:
                         for i in range(3):
                             kW = float(grid_feeder['kW'])
                             kvar = float(grid_feeder['kvar'])
@@ -954,6 +954,7 @@ class grid(object):
             
            
         self.V_node = np.vstack((self.V_known,V_unknown_0 ))
+        
         
         if self.pq_3pn_int.shape[0] == 0:
             self.pq_3pn_int = np.array([[0,0,0,0]])
