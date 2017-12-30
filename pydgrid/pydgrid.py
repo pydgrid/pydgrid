@@ -393,12 +393,13 @@ class grid(object):
                 for node in grid_feeder['bus_nodes']:              
                     node_str = '{:s}.{:s}'.format(grid_feeder['bus'],str(node))
                     if not node_str in nodes: nodes +=[node_str]
-                    gfeed_bus_nodes[gf_node_it] = nodes.index(node_str)
+                    gfeed_bus_nodes[gf_node_it] = nodes.index(node_str) # todo: supposed to be relative numbering, looks absolute
+                    gfeed_nodes[gf_node_it] = nodes.index(node_str) # absolute numbering
                     gf_node_it += 1
                     it_node_i += 1
                 if 'kW' in grid_feeder:
                     gf_it = 0
-                    if type(grid_feeder['kW']) == float or int:
+                    if type(grid_feeder['kW']) == float or type(grid_feeder['kW']) == int:
                         for i in range(3):
                             kW = float(grid_feeder['kW'])
                             kvar = float(grid_feeder['kvar'])
@@ -453,6 +454,7 @@ class grid(object):
                 V_dc = grid_feeder['V_dc']
                 
             gfeed_bus_nodes_list += [gfeed_bus_nodes]
+            gfeed_nodes_list += [gfeed_nodes]
             gfeed_currents_list += [gfeed_currents]
             gfeed_powers_list += [gfeed_powers]
             gfeed_i_abcn_list += [gfeed_i_abcn]
@@ -473,6 +475,7 @@ class grid(object):
                     
         self.N_gfeeds = N_gfeeds          
         self.gfeed_bus_nodes = np.array(gfeed_bus_nodes_list)-N_v_known
+        self.gfeed_nodes = np.array(gfeed_nodes_list)
         self.gfeed_currents  = np.array(gfeed_currents_list)
         self.gfeed_powers    = np.array(gfeed_powers_list)
         self.gfeed_i_abcn    = np.array(gfeed_i_abcn_list)
@@ -916,7 +919,7 @@ class grid(object):
         
         self.set_pf()
 
-
+        self.data = data
 
     def set_pf(self):
         
@@ -1038,6 +1041,9 @@ class grid(object):
 
         self.V_node = V_node
         self.I_node = I_node 
+        self.iters = self.params_pf['iters']
+        if self.iters > self.max_iter-1:
+            print('Maximum number of iterations reached: {:d}'.format(int(self.iters)))
 
         
     def read_loads_shapes(self,json_file):        

@@ -151,8 +151,8 @@ def pf_eval(params,
         #V_unknown = inv_Y_ii  @ I_aux 
         #V_unknown = np.linalg.solve(Y_ii, I_known - Y_iv @ V_known)
         V_unknown_m = np.abs(V_unknown)
-        V_unknown_0_m = np.abs(V_unknown_0)+1.0
-        error = np.linalg.norm((V_unknown_m - V_unknown_0_m)/V_unknown_0_m,np.inf)
+        V_unknown_0_m = np.abs(V_unknown_0)
+        error = np.linalg.norm((V_unknown_m - V_unknown_0_m)/(V_unknown_0_m+1),np.inf)
         if error <1.0e-6: break
         V_unknown_0 = V_unknown
         params[ig].V_node[0:N_v,:] = V_known 

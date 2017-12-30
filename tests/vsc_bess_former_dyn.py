@@ -49,28 +49,31 @@ data = {
                      "soc_max_kWh":300.0, "soc_ini_kWh":100.0, 
                      "source_mode":"grid_former", "L":1.0e-3, "R":1.0,
                      "R_0":0.1, "R_1":0.2, "C_1":100.0,
-                     "K_v":1.0, "K_ang":0.0}           }
+                     "K_v":0.02, "K_ang":0.02,"T_v":1, "T_ang":1 }},
+"sim_params":{"Dt":0.01}
 }
 
 grid_1 = grid()
 grid_1.read(data)  # Load data
-simu_1 = simu(data, grid_1) 
+simu_1 = simu(grid_1) 
 
 grid_1.pf()  # solve power flow
-
-t = 0.0
-ini_eval(t,
-         grid_1.params_pf,
-         simu_1.params_simu,
-         simu_1.params_bess_vsc)
-
-T,V_nodes,I_nodes,X = run_eval(10,
-                               grid_1.params_pf,
-                               simu_1.params_simu,
-                               simu_1.params_bess_vsc)
-
-grid_1.get_v()      # post process voltages
-grid_1.get_i()      # post process currents 
+simu_1.ini()
+simu_1.run(10)
+    
+#t = 0.0
+#ini_eval(t,
+#         grid_1.params_pf,
+#         simu_1.params_simu,
+#         simu_1.params_bess_vsc)
+#
+#T,V_nodes,I_nodes,X = run_eval(10,
+#                               grid_1.params_pf,
+#                               simu_1.params_simu,
+#                               simu_1.params_bess_vsc)
+#
+#grid_1.get_v()      # post process voltages
+#grid_1.get_i()      # post process currents 
 #v_2_a,v_2_b,v_2_c,t = phasor2time(sys1.v_abc('Bus_3'))
 #i_2_a,i_2_b,i_2_c,t = phasor2time(sys1.i_abc('Bus_3'))
 #p,q,q_lipo,t = pq(sys1.v_abc('Bus_3'),sys1.i_abc('Bus_3'))
