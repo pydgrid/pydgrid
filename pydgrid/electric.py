@@ -23,6 +23,16 @@ class bess_vsc(object):  # feed mode
     relation between bess_vsc's and power flow sources given by:
         gfeed_idx for grid feeders
         gform_idx for grid formers
+        
+    states: 0 = soc
+            1 = order 1 battery model
+            2 = sink themperature
+            3 = not used
+            4 = not used
+            5 = ctrl state 1
+            6 = ctrl state 2
+            7 = ctrl state 3
+            8 = ctrl state 4
     '''
     
     def __init__(self,data_input,grid):
@@ -38,122 +48,284 @@ class bess_vsc(object):  # feed mode
         
         
         if not 'bess_vsc' in data:
+            print('No bess-vsc data present')
             return
         else:
             bess_vsc = data['bess_vsc']
-        
-        N_x = 4
-        ig = 0
-        N_s_points = 100
+
+        if 'grid_formers' in data:
+            grid_formers = data['grid_formers']
+            self.grid_formers = grid_formers
+        else:
+            grid_formers = []
+
+        if 'grid_feeders' in data:
+            grid_feeders = data['grid_feeders']
+            self.grid_feeders = grid_feeders
+        else:
+            grid_feeders = []
+            
         elements_data = []
 
-        s_times = []
-        s_shapes = []
-        s_npoints = []
-        gfeed_idx = 0
-        gform_idx = 0
-        for item in bess_vsc:
-            if item['source_mode'] == 'grid_feeder': 
-                source_mode = 0
-                ctrl_mode = item['ctrl_mode']
-                if 'p_ref' in item: p_ref = item['p_ref']
-                if 'q_ref' in item: q_ref = item['q_ref']
-                gfeed_idx = grid.gfeed_id.index(item['id'])
-                bus_nodes = grid.gfeed_bus_nodes[gfeed_idx]+grid.N_nodes_v
-                nodes =  grid.gfeed_bus_nodes[gfeed_idx]
-            if item['source_mode'] == 'grid_former':
-                source_mode = 1
-                ctrl_mode = item['ctrl_mode']
-                gform_idx = grid.gformer_id.index(item['id'])
-                nodes = grid.gformer_nodes[gform_idx]
-                bus_nodes = grid.gformer_bus_nodes[gform_idx] 
-            
-            N_x = N_x
-            ix_0 = 0
-            
-            S_base = item['s_n_kVA']*1000.0
-            V_dc  = item['V_dc']
-            L  = item['L']
-            R  = item['R']
-            if 'C_ac' in item: 
-                C_ac  = item['C_ac'] 
-            else: 
-                C_ac = 1e-8
-            v_abcn_0 = np.zeros((4,1))
-            i_abcn_0 = np.zeros((4,1))
-            v_abcn = np.zeros((4,1))
-            i_abcn = np.zeros((4,1))
-            e_abcn = np.zeros((4,1))
-            eta_abcn = np.zeros((4,1))
-            S_ref = np.zeros((4,1))
-            S = np.zeros((4,1))        
-            S_0 = np.zeros((4,1))
-            x   = np.zeros((N_x,1))
-            f   = np.zeros((N_x,1))
-            h   = np.zeros((N_x,1))            
-            m = np.zeros((4,1))
-            N_conductors= 4
-            thermal_model = 0
-            soc_max= item['soc_max_kWh']*1000*3600
-            soc_0 = item['soc_ini_kWh']*1000*3600
-            soc= item['soc_ini_kWh']*1000*3600
-            switch = 1.0
-            p_ref = 0.0
-            q_ref = 0.0
-            s_times  =  np.zeros((N_s_points,1))
-            s_shapes =  np.zeros((N_s_points,1),dtype=np.complex128)  
-            s_npoints = 0                                     
-            if item["ctrl_mode"]==12:  # pq reference
-                shape_id = item['shape']
-                shape = data['shapes'][shape_id]
-                npoints = len(shape['t_s'])
-                s_times[0:npoints,0] = np.array(shape['t_s'])
-                s_shapes[0:npoints,0] = (np.array(shape['kW']) + 1j*np.array(shape['kvar']))*1000
-                s_npoints = npoints
-   
-            ig += 1
-                
-            elements_data += [
-                             (source_mode,
-                              ctrl_mode,
-                              gfeed_idx,
-                              gform_idx,
-                              N_x,
-                              ix_0,
-                              nodes,
-                              bus_nodes,
-                              S_base,
-                              L,
-                              R,
-                              C_ac,
-                              V_dc,
-                              e_abcn,
-                              eta_abcn,
-                              v_abcn_0,
-                              i_abcn_0,
-                              v_abcn,
-                              i_abcn,
-                              S_ref,
-                              S,      
-                              S_0,
-                              x,
-                              f,
-                              h,           
-                              m,
-                              N_conductors,
-                              thermal_model,
-                              soc_max,
-                              soc_0,
-                              soc,
-                              switch,
-                              s_times,
-                              s_shapes,
-                              s_npoints,
-                              p_ref,
-                              q_ref
-                             )
-                             ]
-            
+        gformer_idx = 0
+        for grid_former in grid_formers:
+            if 'code' in grid_former:
+                if grid_former['code'] in bess_vsc.keys():
+                    bess_vsc_data = bess_vsc[grid_former['code']]
+                    source_mode = 0
+                    gfeeder_idx = 0
+                    N_x = 10
+                    ix_0 = 0
+                    N_s_points = 100
+                    v_abcn_0 = np.zeros((4,1))
+                    i_abcn_0 = np.zeros((4,1))
+                    v_abcn = np.zeros((4,1))
+                    i_abcn = np.zeros((4,1))
+                    e_abcn = np.zeros((4,1))
+                    eta_abcn = np.zeros((4,1))
+                    S_ref = np.zeros((4,1))
+                    S = np.zeros((4,1))        
+                    S_0 = np.zeros((4,1))
+                    x   = np.zeros((N_x,1))
+                    f   = np.zeros((N_x,1))
+                    h   = np.zeros((N_x,1))            
+                    m = np.zeros((4,1))
+                    N_conductors = bess_vsc_data['N_conductors']  if 'N_conductors' in bess_vsc_data else 4 
+                    thermal_model = 0
+                    ctrl_mode = bess_vsc_data['ctrl_mode']
+                    S_base = bess_vsc_data['s_n_kVA']*1000.0
+                    V_dc  = bess_vsc_data['V_dc']
+                    L  = bess_vsc_data['L']
+                    R  = bess_vsc_data['R']
+                    C_ac = bess_vsc_data['C_ac']  if 'C_ac' in bess_vsc_data else 1e-8 
+                    soc_max= bess_vsc_data['soc_max_kWh']*1000*3600
+                    soc_0 = bess_vsc_data['soc_ini_kWh']*1000*3600
+                    soc= bess_vsc_data['soc_ini_kWh']*1000*3600
+                    switch = 1.0
+                    p_ref = 0.0
+                    q_ref = 0.0
+                    s_times  =  np.zeros((N_s_points,1))
+                    s_shapes =  np.zeros((N_s_points,1),dtype=np.complex128)  
+                    s_npoints = 0                                     
+                    if bess_vsc_data["ctrl_mode"]==12:  # pq reference
+                        shape_id = item['shape']
+                        shape = data['shapes'][shape_id]
+                        npoints = len(shape['t_s'])
+                        s_times[0:npoints,0] = np.array(shape['t_s'])
+                        s_shapes[0:npoints,0] = (np.array(shape['kW']) + 1j*np.array(shape['kvar']))*1000
+                        s_npoints = npoints
+                    N_serie = bess_vsc_data['N_serie']  if 'N_serie' in bess_vsc_data else 1.0 
+                    N_parallel = bess_vsc_data['N_parallel']  if 'N_parallel' in bess_vsc_data else 1.0 
+                    R_0 = bess_vsc_data['R_0']  if 'R_0' in bess_vsc_data else 1.0e-6 
+                    R_1 = bess_vsc_data['R_1']  if 'R_1' in bess_vsc_data else 1.0e-6   
+                    C_1 = bess_vsc_data['C_1']  if 'C_1' in bess_vsc_data else 1.0e3
+                    N_soc_points = 20
+                    soc_as = np.linspace(0.0,1e3,N_soc_points).reshape(N_soc_points,1)
+                    soc_e = np.ones((N_soc_points,1))
+                    if 'soc_ah_e' in bess_vsc_data:
+                        soc_ah_e = np.array(bess_vsc_data['soc_ah_e'])
+                        N_soc_points = soc_ah_e.shape[0] 
+                        soc_as[0:N_soc_points,0] = soc_ah_e[:,0]*3600
+                        soc_e[0:N_soc_points,0] = soc_ah_e[:,1]*3600 
+                    K_v = bess_vsc_data['K_v']  if 'K_v' in bess_vsc_data else 1.0 
+                    K_ang = bess_vsc_data['K_ang']  if 'K_ang' in bess_vsc_data else 1.0
+                    K_p = bess_vsc_data['K_p']  if 'K_p' in bess_vsc_data else 1.0 
+                    K_i = bess_vsc_data['K_i']  if 'K_i' in bess_vsc_data else 1.0
+                    T_v = bess_vsc_data['T_v']  if 'T_v' in bess_vsc_data else 1.0 
+                    T_ang = bess_vsc_data['T_ang']  if 'T_ang' in bess_vsc_data else 1.0
+                    DV_remote = 0.0    
+                    
+                    elements_data += [
+                                     (source_mode,
+                                      ctrl_mode,
+                                      gfeeder_idx,
+                                      gformer_idx,
+                                      N_x,
+                                      ix_0,
+                                      grid.gformer_nodes[gformer_idx,:],
+                                      grid.gformer_bus_nodes[gformer_idx,:],
+                                      S_base,
+                                      L,
+                                      R,
+                                      C_ac,
+                                      V_dc,
+                                      e_abcn,
+                                      eta_abcn,
+                                      v_abcn_0,
+                                      i_abcn_0,
+                                      v_abcn,
+                                      i_abcn,
+                                      S_ref,
+                                      S,      
+                                      S_0,
+                                      x,
+                                      f,
+                                      h,           
+                                      m,
+                                      N_conductors,
+                                      thermal_model,
+                                      soc_max,
+                                      soc_0,
+                                      soc,
+                                      switch,
+                                      s_times,
+                                      s_shapes,
+                                      s_npoints,
+                                      p_ref,
+                                      q_ref,
+                                      K_v,
+                                      K_ang,
+                                      K_p,
+                                      K_i,                                    
+                                      T_v,
+                                      T_ang,
+                                      DV_remote,
+                                      N_serie,
+                                      N_parallel,
+                                      R_0,
+                                      R_1,
+                                      C_1,
+                                      N_soc_points,
+                                      soc_as,
+                                      soc_e
+                                     )
+                                     ]
+                   
+            gformer_idx += 1
+
+
+        gfeeder_idx = 0
+        for grid_feeder in grid_feeders:
+            if 'code' in grid_feeder:
+                if grid_feeder['code'] in bess_vsc.keys():
+                    bess_vsc_data = bess_vsc[grid_feeder['code']]
+                    source_mode = 1
+                    N_x = 10
+                    ix_0 = 0
+                    N_s_points = 100
+                    v_abcn_0 = np.zeros((4,1))
+                    i_abcn_0 = np.zeros((4,1))
+                    v_abcn = np.zeros((4,1))
+                    i_abcn = np.zeros((4,1))
+                    e_abcn = np.zeros((4,1))
+                    eta_abcn = np.zeros((4,1))
+                    S_ref = np.zeros((4,1))
+                    S = np.zeros((4,1))        
+                    S_0 = np.zeros((4,1))
+                    x   = np.zeros((N_x,1))
+                    f   = np.zeros((N_x,1))
+                    h   = np.zeros((N_x,1))            
+                    m = np.zeros((4,1))
+                    N_conductors = bess_vsc_data['N_conductors']  if 'N_conductors' in bess_vsc_data else 4 
+                    thermal_model = 0
+                    ctrl_mode = bess_vsc_data['ctrl_mode']
+                    S_base = bess_vsc_data['s_n_kVA']*1000.0
+                    V_dc  = bess_vsc_data['V_dc']
+                    L  = bess_vsc_data['L']
+                    R  = bess_vsc_data['R']
+                    C_ac = bess_vsc_data['C_ac']  if 'C_ac' in bess_vsc_data else 1e-8 
+                    soc_max= bess_vsc_data['soc_max_kWh']*1000*3600
+                    soc_0 = bess_vsc_data['soc_ini_kWh']*1000*3600
+                    soc= bess_vsc_data['soc_ini_kWh']*1000*3600
+                    switch = 1.0
+                    p_ref = 0.0
+                    q_ref = 0.0
+
+                    s_times  =  np.zeros((N_s_points,1))
+                    s_shapes =  np.zeros((N_s_points,1),dtype=np.complex128)  
+                    s_npoints = 0                                     
+                    if bess_vsc_data["ctrl_mode"]==12:  # pq reference
+                        shape_id = grid_feeder['shape']
+                        shape = data['shapes'][shape_id]
+                        npoints = len(shape['t_s'])
+                        s_times[0:npoints,0] = np.array(shape['t_s'])
+                        s_shapes[0:npoints,0] = (np.array(shape['kW']) + 1j*np.array(shape['kvar']))*1000
+                        s_npoints = npoints
+                    N_serie = bess_vsc_data['N_serie']  if 'N_serie' in bess_vsc_data else 1.0 
+                    N_parallel = bess_vsc_data['N_parallel']  if 'N_parallel' in bess_vsc_data else 1.0 
+                    R_0 = bess_vsc_data['R_0']  if 'R_0' in bess_vsc_data else 1.0e-6 
+                    R_1 = bess_vsc_data['R_1']  if 'R_1' in bess_vsc_data else 1.0e-6   
+                    C_1 = bess_vsc_data['C_1']  if 'C_1' in bess_vsc_data else 1.0e3   
+                    N_soc_points = 20
+                    soc_as = np.linspace(0.0,1e3,N_soc_points).reshape(N_soc_points,1)
+                    soc_e = np.ones((N_soc_points,1))
+                    if 'soc_ah_e' in bess_vsc_data:
+                        soc_ah_e = np.array(bess_vsc_data['soc_ah_e'])
+                        N_soc_points = soc_ah_e.shape[0] 
+                        soc_as[0:N_soc_points,0] = soc_ah_e[:,0]*3600
+                        soc_e[0:N_soc_points,0] = soc_ah_e[:,1]*3600                        
+                        
+                        
+                    K_v = bess_vsc_data['K_v']  if 'K_v' in bess_vsc_data else 1.0 
+                    K_ang = bess_vsc_data['K_ang']  if 'K_ang' in bess_vsc_data else 1.0
+                    K_p = bess_vsc_data['K_p']  if 'K_p' in bess_vsc_data else 1.0 
+                    K_i = bess_vsc_data['K_i']  if 'K_i' in bess_vsc_data else 1.0
+                    T_v = bess_vsc_data['T_v']  if 'T_v' in bess_vsc_data else 1.0 
+                    T_ang = bess_vsc_data['T_ang']  if 'T_ang' in bess_vsc_data else 1.0
+                    DV_remote = 0.0    
+                    
+                    elements_data += [
+                                     (source_mode,
+                                      ctrl_mode,
+                                      gfeeder_idx,
+                                      gformer_idx,
+                                      N_x,
+                                      ix_0,
+                                      grid.gfeed_nodes[gfeeder_idx,:],
+                                      grid.gfeed_bus_nodes[gfeeder_idx,:],
+                                      S_base,
+                                      L,
+                                      R,
+                                      C_ac,
+                                      V_dc,
+                                      e_abcn,
+                                      eta_abcn,
+                                      v_abcn_0,
+                                      i_abcn_0,
+                                      v_abcn,
+                                      i_abcn,
+                                      S_ref,
+                                      S,      
+                                      S_0,
+                                      x,
+                                      f,
+                                      h,           
+                                      m,
+                                      N_conductors,
+                                      thermal_model,
+                                      soc_max,
+                                      soc_0,
+                                      soc,
+                                      switch,
+                                      s_times,
+                                      s_shapes,
+                                      s_npoints,
+                                      p_ref,
+                                      q_ref,
+                                      K_v,
+                                      K_ang,
+                                      K_p,
+                                      K_i,                                    
+                                      T_v,
+                                      T_ang,
+                                      DV_remote,
+                                      N_serie,
+                                      N_parallel,
+                                      R_0,
+                                      R_1,
+                                      C_1,
+                                      N_soc_points,
+                                      soc_as,
+                                      soc_e
+                                     )
+                                     ]
+                   
+            gformer_idx += 1
+
+                                   
+        self.elements_data = elements_data    
+        
+           
         dtype_list =[ ('source_mode','int32'),
                       ('ctrl_mode','int32'),# ctrl_mode_list
                       ('gfeed_idx','int32'), # g_idx_list
@@ -190,13 +362,28 @@ class bess_vsc(object):  # feed mode
                       ('s_shapes',np.complex128,(N_s_points,1)), # s_shapes
                       ('s_npoints','int64'),  # s_npoints     
                       ('p_ref','float64'),
-                      ('q_ref','float64')
+                      ('q_ref','float64'),
+                      ('K_v','float64'),
+                      ('K_ang','float64'),
+                      ('K_p','float64'),
+                      ('K_i','float64'),
+                      ('T_v','float64'),
+                      ('T_ang','float64'),
+                      ('DV_remote','float64'),
+                      ('N_serie','float64'),
+                      ('N_parallel','float64'),
+                      ('R_0','float64'),
+                      ('R_1','float64'),
+                      ('C_1','float64'),
+                      ('N_soc_points','int32'),
+                      ('soc_as',np.float64,(20,1)), # s_times
+                      ('soc_e',np.float64,(20,1)), # s_shapes
                      ]
         dtype = np.dtype(dtype_list)     
         
         self.params_bess_vsc  = np.rec.array(elements_data,dtype=dtype) 
-        self.N_bess_vsc = ig
-        self.N_x = N_x
+#        self.N_bess_vsc = ig
+#        self.N_x = N_x
 
 
         
@@ -489,7 +676,7 @@ def vsc_pf_eval(it,params_pf):
 ##    return i_abc
     
     
-#@numba.jit(nopython=True,parallel=True, nogil=True)
+#@numba.jit(nopython=True, cache=True)
 def bess_vsc_eval(t,mode,params,params_pf,params_simu):
     '''
     
@@ -512,19 +699,26 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
 
     N = len(params) # total number of bess_vsc_feeder
     for it in range(N):
+        gfeed_idx = params[it].gfeed_idx 
+        gform_idx = params[it].gform_idx   
         source_mode = params[it].source_mode  
         ix_0 = params[it].ix_0
+        N_x = params[it].N_x
         nodes = params[it].nodes
         N_conductors = params[it].N_conductors
         v_abcn = params_pf[0].V_node[nodes,:]
         v_abc = v_abcn[0:3,:]
-        i_abcn = params[it].i_abcn
-        if source_mode==1:
+        
+       # i_abcn = params[it].i_abcn
+        if source_mode==0:
             i_abcn = params_pf[0].I_node[nodes,:]
-        gfeed_idx = params[it].gfeed_idx 
-        gform_idx = params[it].gform_idx        
+        if source_mode==1:
+            i_abcn = params[it].i_abcn[:]
+     
         
         ctrl_mode = params[it].ctrl_mode 
+        
+        params[it].v_abcn[:] = params_pf[0].V_node[nodes,:]
 
             
 # %% initialization    
@@ -533,25 +727,30 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
             
             if source_mode==0: 
             
-                S_ref = params_pf[0].gfeed_powers[gfeed_idx]            
-                I_ref = params_pf[0].gfeed_currents[gfeed_idx]*np.exp(1j*np.angle(v_abcn[:,0]))
-     
-                I_abc_ref =  I_ref + np.conjugate(S_ref/v_abcn[:,0])
-                I_n = -np.sum(I_abc_ref)
+                params[it].v_abcn_0[:] = np.copy(params_pf[0].V_node[nodes,:])
+
+            if source_mode==1: 
             
-                i_abcn_0[0:4,0] = I_abc_ref
+                S_ref = params_pf[0].gfeed_powers[gfeed_idx,0:3]            
+                I_ref = params_pf[0].gfeed_currents[gfeed_idx,0:3]*np.exp(1j*np.angle(v_abcn[0:3,0]))
+
+                I_abc_ref =  I_ref + np.conjugate(S_ref/v_abc[:,0])
+                I_n = -np.sum(I_abc_ref)
+                
+                i_abcn_0[0:3,0] = I_abc_ref
                 i_abcn_0[3,:] = I_n
    
                 v_abcn_0 = np.copy(v_abcn)
   
                 S_0 = v_abcn_0*np.conj(i_abcn_0)
     
-                params[it].v_abcn_0[:] = v_abcn_0
+                params[it].v_abcn_0[:] = np.copy(params_pf[0].V_node[nodes,:])
                 params[it].i_abcn_0[:] = i_abcn_0     
                 params[it].i_abcn[:] = np.copy(i_abcn_0)
                 params[it].S_0[:] = S_0
                 params[it].S_ref[:] = S_0
-            
+                
+                
             params_simu[0].x[ix_0+0,0] = params[it].soc_0
 
 #            # thermal model 
@@ -562,25 +761,33 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
     
 # %% derivatives    
         if mode == 2:  # der
-            S_ctrl = params[it].S_ref
-    
+            # update local state vector
+            params[it].x[:,:]  = params_simu[0].x[ix_0:(ix_0+N_x),:] 
+                
             S_abcn = v_abcn*np.conj(i_abcn)
-            P_abcn = S_abcn.real + S_ctrl.real
+            P_abcn = S_abcn.real
+
             if N_conductors == 3:
                 p_ac_total = np.sum(P_abcn[0:3,:])  
             if N_conductors == 4:
                 p_ac_total = np.sum(P_abcn[0:3,:]) 
             
+            # battery charge            
+            params[it].f[0,:]  =  -p_ac_total*params[it].switch
             
-            params_simu[0].f[ix_0+0,0] =  -p_ac_total*params[it].switch
-
-            #bess_control_eval(t,it,ctrl_mode,1,params)
             bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params)
             
+            # update global derivatives vector
+            params_simu[0].f[ix_0:(ix_0+N_x),:] = params[it].f[:,:] 
+#            
 # %% out
         if mode == 4: # out
 
             if source_mode==0: 
+                bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params)
+                params_pf[0].V_node[nodes,:] = params[it].v_abcn[:]
+                
+            if source_mode==1: 
                 bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params)
                 
                 S_ctrl = params[it].S_ref
@@ -598,19 +805,33 @@ def bess_vsc_eval(t,mode,params,params_pf,params_simu):
                     switch = 0.0
                 if params[it].soc > params[it].soc_max:
                     switch = 0.0
-                    
-                params[it].i_abcn[:] = np.copy(params[it].i_abcn_0)*switch
+                
+                
+                params[it].i_abcn[0:3,:] = np.conj(S_ctrl[0:3,:]/v_abc)*switch
                 params_pf[0].gfeed_i_abcn[gfeed_idx,:] = params[it].i_abcn[:,0]
-                params_pf[0].gfeed_powers[gfeed_idx,0:3] = S_ctrl[0:3,0]*switch
                 
                 params[it].switch = switch
-
+                
 
 # %%
 @numba.jit(nopython=True,cache=True)
 def bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params):
-
     
+    V_abc = params[it].v_abcn[0:3,:]
+    I_abc = params[it].i_abcn[0:3,:] # phase currents (without neutral)                      
+
+    S_abc = V_abc * np.conj(I_abc)
+    I_abc_m = np.abs(I_abc)
+
+    K_p = params[it].K_p 
+    K_i = params[it].K_i   
+    K_v = params[it].K_v 
+    K_ang = params[it].K_ang
+    T_v = params[it].T_v 
+    T_ang = params[it].T_ang
+    
+    S_base = params[it].S_base
+
     if ctrl_mode == 1:
         DV_remote = params[it].DV_remote
         params[it].v_abcn[:] = params[it].v_abcn_0[:] * (1+DV_remote)
@@ -620,9 +841,7 @@ def bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params):
 
         if mode == 2: # derivatives
             
-            K_v = params[it].K_v 
-            K_ang = params[it].K_ang
-        
+            S = np.sum(S_abc)
             DS_abc = S-params[it].S_0*0 # complex power increment 
             
             DP_abc = DS_abc.real
@@ -631,9 +850,10 @@ def bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params):
             DV_m_ref =  -K_v*np.sum(DP_abc)/S_base
             Dang_ref =   K_ang*np.sum(DQ_abc)/S_base
         
-            params[it].f[0:1,:] = 1.0/T_v*(DV_m_ref - params[it].x[0:1,:])  # voltage control dynamics
-            params[it].f[1:2,:] = 1.0/T_ang*(Dang_ref - params[it].x[1:2,:])  # angle control dynamics
-            params[it].f[2:3,:] = 0.0  # angle from frequency
+            params[it].f[5,:] = 1.0/T_v*  (DV_m_ref - params[it].x[5,:])  # voltage control dynamics
+            params[it].f[6,:] = 1.0/T_ang*(Dang_ref - params[it].x[6,:])  # angle control dynamics
+            params[it].f[7,:] = 0.0  # angle from frequency
+            
 
         if mode == 4: # out
             
@@ -644,10 +864,13 @@ def bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params):
     
             DV_remote = params[it].DV_remote            
 
-            DV_m = params[it].x[0:1,:]
-            params[it].v_abcn[:] = params[it].v_abcn_0[:] * (1+DV_m+DV_remote)
+            DV_m = params[it].x[5,:]
+            Dang = params[it].x[6,:]
+            
+            params[it].v_abcn[:] = params[it].v_abcn_0[:] * (1+DV_m+DV_remote) * np.exp(1j*Dang)
+            
         
-
+        
     if ctrl_mode == 4:  # i-v ruben
 
         if mode == 2: # derivatives
@@ -672,9 +895,7 @@ def bess_vsc_ctrl_eval(t,it,ctrl_mode,mode,params):
             DV_remote = params[it].DV_remote
             K_p = params[it].K_p 
             K_i = params[it].K_i
-            I_abc = params[it].i_abcn[0:3,:] # phase currents (without neutral)                    
-           
-            I_abc_m = np.abs(I_abc)
+
             I_max = S_base/690.0
             
             for it_ph in range(3):

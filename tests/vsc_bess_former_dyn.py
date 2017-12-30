@@ -20,40 +20,60 @@ import time
     
 data = {
 "lines":[
-		{"bus_j": "Bus_1",  "bus_k": "Bus_2",  "code": "UG1", "m": 100.0},
-		{"bus_j": "Bus_3",  "bus_k": "Bus_2",  "code": "UG1", "m": 100.0}
+		{"bus_j": "B1",  "bus_k": "B2",  "code": "UG1", "m": 50.0},
+		{"bus_j": "B2",  "bus_k": "B3",  "code": "UG1", "m": 100.0}
 		],
 "buses":[
-		{"bus": "Bus_1",  "pos_x":  0,  "pos_y": 0, "units": "m", "U_kV":0.4},
-		{"bus": "Bus_2",  "pos_x":100,  "pos_y": 0, "units": "m", "U_kV":0.4},
-		{"bus": "Bus_3",  "pos_x":200,  "pos_y": 0, "units": "m", "U_kV":0.4}
+		{"bus": "B1",  "pos_x":  0,  "pos_y": 0, "units": "m", "U_kV":0.4},
+		{"bus": "B2",  "pos_x":100,  "pos_y": 0, "units": "m", "U_kV":0.4},
+		{"bus": "B3",  "pos_x":200,  "pos_y": 0, "units": "m", "U_kV":0.4}
 		],
 "grid_formers":[
-		{"bus": "Bus_1",
-			"bus_nodes": [1, 2, 3, 4], "deg": [0, -120, -240],
-			"kV": [0.23, 0.23, 0.23]},
-		{"bus": "Bus_3",
-			"bus_nodes": [1, 2, 3, 4], "deg": [0, -120, -240],
-			"kV": [0.23, 0.23, 0.23]}
+		{"bus": "B1",
+			"bus_nodes": [1, 2, 3, 4], "deg": [0, -120, -240, 0.0],
+			"kV": [0.23, 0.23, 0.23, 0.0], "code":"bess_100kVA_300kWh"},
+		{"bus": "B3",
+			"bus_nodes": [1, 2, 3, 4], "deg": [0, -120, -240, 0.0],
+			"kV": [0.23, 0.23, 0.23, 0.0], "code":"bess_100kVA_300kWh"},
 		],
-"grid_feeders":[{ "bus": "Bus_2","bus_nodes": [1, 2, 3, 4],
-					"kW": [-0.0, -0.0, -0.0], "kvar": [0.0,0.0,0.0],
+"grid_feeders":[{ "bus": "B2","bus_nodes": [1, 2, 3, 4],
+					"kW": [-100.0, -0.0, -0.0], "kvar": [-20.0,0.0,0.0],
 					"kA": [0.0,0.0,0.0], "phi_deg":[-90, -90, -90]}
 				],
 "shunts":[
-		{"bus": "Bus_1" , "R": 0.0001, "X": 0.0, "bus_nodes": [4,0]},
-		{"bus": "Bus_3" , "R": 0.0001, "X": 0.0, "bus_nodes": [4,0]}
-		]
+		{"bus": "B1" , "R": 1.0, "X": 0.0, "bus_nodes": [4,0]},
+		{"bus": "B3" , "R": 1.0, "X": 0.0, "bus_nodes": [4,0]}
+		],
+"bess_vsc":{
+            "bess_100kVA_300kWh":{"ctrl_mode":3, "s_n_kVA":100.0, "V_dc":800.0, 
+                     "soc_max_kWh":300.0, "soc_ini_kWh":100.0, 
+                     "source_mode":"grid_former", "L":1.0e-3, "R":1.0,
+                     "R_0":0.1, "R_1":0.2, "C_1":100.0,
+                     "K_v":0.02, "K_ang":0.02,"T_v":1, "T_ang":1 }},
+"sim_params":{"Dt":0.01}
 }
 
-sys1 = grid()
-sys1.read(data)  # Load data
-#sys1.pf()  # solve power flow
+grid_1 = grid()
+grid_1.read(data)  # Load data
+simu_1 = simu(grid_1) 
 
-
-#sys1.get_v()      # post process voltages
-#sys1.get_i()      # post process currents
+grid_1.pf()  # solve power flow
+simu_1.ini()
+simu_1.run(10)
+    
+#t = 0.0
+#ini_eval(t,
+#         grid_1.params_pf,
+#         simu_1.params_simu,
+#         simu_1.params_bess_vsc)
 #
+#T,V_nodes,I_nodes,X = run_eval(10,
+#                               grid_1.params_pf,
+#                               simu_1.params_simu,
+#                               simu_1.params_bess_vsc)
+#
+#grid_1.get_v()      # post process voltages
+#grid_1.get_i()      # post process currents 
 #v_2_a,v_2_b,v_2_c,t = phasor2time(sys1.v_abc('Bus_3'))
 #i_2_a,i_2_b,i_2_c,t = phasor2time(sys1.i_abc('Bus_3'))
 #p,q,q_lipo,t = pq(sys1.v_abc('Bus_3'),sys1.i_abc('Bus_3'))

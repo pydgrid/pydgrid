@@ -393,12 +393,13 @@ class grid(object):
                 for node in grid_feeder['bus_nodes']:              
                     node_str = '{:s}.{:s}'.format(grid_feeder['bus'],str(node))
                     if not node_str in nodes: nodes +=[node_str]
-                    gfeed_bus_nodes[gf_node_it] = nodes.index(node_str)
+                    gfeed_bus_nodes[gf_node_it] = nodes.index(node_str) # todo: supposed to be relative numbering, looks absolute
+                    gfeed_nodes[gf_node_it] = nodes.index(node_str) # absolute numbering
                     gf_node_it += 1
                     it_node_i += 1
                 if 'kW' in grid_feeder:
                     gf_it = 0
-                    if type(grid_feeder['kW']) == float:
+                    if type(grid_feeder['kW']) == float or type(grid_feeder['kW']) == int:
                         for i in range(3):
                             kW = float(grid_feeder['kW'])
                             kvar = float(grid_feeder['kvar'])
@@ -453,6 +454,7 @@ class grid(object):
                 V_dc = grid_feeder['V_dc']
                 
             gfeed_bus_nodes_list += [gfeed_bus_nodes]
+            gfeed_nodes_list += [gfeed_nodes]
             gfeed_currents_list += [gfeed_currents]
             gfeed_powers_list += [gfeed_powers]
             gfeed_i_abcn_list += [gfeed_i_abcn]
@@ -473,6 +475,7 @@ class grid(object):
                     
         self.N_gfeeds = N_gfeeds          
         self.gfeed_bus_nodes = np.array(gfeed_bus_nodes_list)-N_v_known
+        self.gfeed_nodes = np.array(gfeed_nodes_list)
         self.gfeed_currents  = np.array(gfeed_currents_list)
         self.gfeed_powers    = np.array(gfeed_powers_list)
         self.gfeed_i_abcn    = np.array(gfeed_i_abcn_list)
@@ -797,7 +800,9 @@ class grid(object):
                 A_sp[row_j,col] = 1
                 it_col +=1
                 
-            Z_gnd = grounding['Z_gnd']
+            R_gnd = grounding['R_gnd']
+            X_gnd = grounding['X_gnd']
+            Z_gnd = R_gnd + 1j*X_gnd
             Y_gnd = 1.0/Z_gnd 
             Z_m = 1/1000.0e3
             Y_full = -Y_gnd/3+Y_gnd
@@ -914,7 +919,7 @@ class grid(object):
         
         self.set_pf()
 
-
+        self.data = data
 
     def set_pf(self):
         
@@ -950,10 +955,9 @@ class grid(object):
                 
             it+=1
             
-        print(V_unknown_0.shape,N_v)   
-        print(self.V_known.shape)   
            
         self.V_node = np.vstack((self.V_known,V_unknown_0 ))
+        
         
         if self.pq_3pn_int.shape[0] == 0:
             self.pq_3pn_int = np.array([[0,0,0,0]])
@@ -988,22 +992,22 @@ class grid(object):
                   ('inv_Y_ii',np.complex128,(N_i,N_i)),('Y_ii',np.complex128,(N_i,N_i)),
                   ('I_node',np.complex128,(N_v+N_i,1)),
                   ('V_node',np.complex128,(N_v+N_i,1)),
-#                  ('N_gformers',np.int32),('gformer_nodes',np.int32,self.gformer_nodes.shape),('gformers_bus_nodes',np.int32,self.gformer_bus_nodes.shape),
-#                  ('gform_voltages',np.complex128,self.gformer_voltages.shape),('gform_v_abcn',np.complex128,self.gformer_v_abcn.shape), ('gform_i_abcn',np.complex128,self.gformer_i_abcn.shape),
-#                  ('N_gfeeds',np.int32),('gfeed_bus_nodes',np.int32,self.gfeed_bus_nodes.shape),
-#                  ('gfeed_currents',np.complex128,self.gfeed_currents.shape),('gfeed_powers',np.complex128,self.gfeed_powers.shape),('gfeed_i_abcn',np.complex128,self.gfeed_i_abcn.shape),                  
-#                  ('gfeed_L',np.float64,self.gfeed_L.shape),('gfeed_R',np.float64,self.gfeed_R.shape),('gfeed_V_dc',np.float64,self.gfeed_V_dc.shape),
-#                  ('gfeed_C_ac',np.float64,self.gfeed_C_ac.shape),('gfeed_L_grid',np.float64,self.gfeed_L_grid.shape),('gfeed_R_grid',np.float64,self.gfeed_R_grid.shape),
-#                  ('gfeed_type',np.int32,self.gfeed_type.shape),
-#                  ('gfeed_ctrl_type',np.int32,self.gfeed_ctrl_type.shape),('gfeed_p_ref',np.float64,self.gfeed_p_ref.shape),('gfeed_q_ref',np.float64,self.gfeed_q_ref.shape),                  
-#                  ('N_pq_1p',np.int32),('pq_1p_int',np.int32,self.pq_1p_int.shape),('pq_1p',np.complex128,self.pq_1p.shape),('pq_1p_0',np.complex128,self.pq_1p.shape),                  
-#                  ('N_pq_1pn',np.int32),('pq_1pn_int',np.int32,self.pq_1pn_int.shape),('pq_1pn',np.complex128,self.pq_1pn.shape),('pq_1pn_0',np.complex128,self.pq_1pn.shape),
-#                  ('N_pq_3p',np.int32),('pq_3p_int',np.int32,self.pq_3p_int.shape),('pq_3p',np.complex128,self.pq_3p.shape),('pq_3p_0',np.complex128,self.pq_3p.shape),
-#                  ('N_pq_3pn',np.int32),('pq_3pn_int',np.int32,self.pq_3pn_int.shape),('pq_3pn',np.complex128,self.pq_3pn.shape),('pq_3pn_0',np.complex128,self.pq_3pn.shape),
-#                  ('N_nodes_v',np.int32),('N_nodes_i',np.int32),('iters',np.int32),('N_nz_nodes',np.int32),
-#                  ('L_indptr',np.int32,yii['L_indptr'].shape), ('L_indices',np.int32,yii['L_indices'].shape), ('L_data',np.complex128,yii['L_data'].shape),
-#                  ('U_indptr',np.int32,yii['U_indptr'].shape), ('U_indices',np.int32,yii['U_indices'].shape), ('U_data',np.complex128,yii['U_data'].shape),
-#                  ('perm_r',np.int32, yii['perm_r'].shape),('perm_c',np.int32, yii['perm_c'].shape)
+                  ('N_gformers',np.int32),('gformer_nodes',np.int32,self.gformer_nodes.shape),('gformers_bus_nodes',np.int32,self.gformer_bus_nodes.shape),
+                  ('gform_voltages',np.complex128,self.gformer_voltages.shape),('gform_v_abcn',np.complex128,self.gformer_v_abcn.shape), ('gform_i_abcn',np.complex128,self.gformer_i_abcn.shape),
+                  ('N_gfeeds',np.int32),('gfeed_bus_nodes',np.int32,self.gfeed_bus_nodes.shape),
+                  ('gfeed_currents',np.complex128,self.gfeed_currents.shape),('gfeed_powers',np.complex128,self.gfeed_powers.shape),('gfeed_i_abcn',np.complex128,self.gfeed_i_abcn.shape),                  
+                  ('gfeed_L',np.float64,self.gfeed_L.shape),('gfeed_R',np.float64,self.gfeed_R.shape),('gfeed_V_dc',np.float64,self.gfeed_V_dc.shape),
+                  ('gfeed_C_ac',np.float64,self.gfeed_C_ac.shape),('gfeed_L_grid',np.float64,self.gfeed_L_grid.shape),('gfeed_R_grid',np.float64,self.gfeed_R_grid.shape),
+                  ('gfeed_type',np.int32,self.gfeed_type.shape),
+                  ('gfeed_ctrl_type',np.int32,self.gfeed_ctrl_type.shape),('gfeed_p_ref',np.float64,self.gfeed_p_ref.shape),('gfeed_q_ref',np.float64,self.gfeed_q_ref.shape),                  
+                  ('N_pq_1p',np.int32),('pq_1p_int',np.int32,self.pq_1p_int.shape),('pq_1p',np.complex128,self.pq_1p.shape),('pq_1p_0',np.complex128,self.pq_1p.shape),                  
+                  ('N_pq_1pn',np.int32),('pq_1pn_int',np.int32,self.pq_1pn_int.shape),('pq_1pn',np.complex128,self.pq_1pn.shape),('pq_1pn_0',np.complex128,self.pq_1pn.shape),
+                  ('N_pq_3p',np.int32),('pq_3p_int',np.int32,self.pq_3p_int.shape),('pq_3p',np.complex128,self.pq_3p.shape),('pq_3p_0',np.complex128,self.pq_3p.shape),
+                  ('N_pq_3pn',np.int32),('pq_3pn_int',np.int32,self.pq_3pn_int.shape),('pq_3pn',np.complex128,self.pq_3pn.shape),('pq_3pn_0',np.complex128,self.pq_3pn.shape),
+                  ('N_nodes_v',np.int32),('N_nodes_i',np.int32),('iters',np.int32),('N_nz_nodes',np.int32),
+                  ('L_indptr',np.int32,yii['L_indptr'].shape), ('L_indices',np.int32,yii['L_indices'].shape), ('L_data',np.complex128,yii['L_data'].shape),
+                  ('U_indptr',np.int32,yii['U_indptr'].shape), ('U_indices',np.int32,yii['U_indices'].shape), ('U_data',np.complex128,yii['U_data'].shape),
+                  ('perm_r',np.int32, yii['perm_r'].shape),('perm_c',np.int32, yii['perm_c'].shape)
                   ])    
 
 
@@ -1013,21 +1017,22 @@ class grid(object):
                                 self.inv_Y_ii,self.Y_ii.toarray(), 
                                 self.I_node,
                                 self.V_node,
-#                                self.N_gformers, self.gformer_nodes, self.gformer_bus_nodes, self.gformer_voltages, self.gformer_v_abcn, self.gformer_i_abcn,
-#                                self.N_gfeeds, self.gfeed_bus_nodes,self.gfeed_currents,self.gfeed_powers,self.gfeed_i_abcn,
-#                                self.gfeed_L,self.gfeed_R,self.gfeed_V_dc,self.gfeed_C_ac,self.gfeed_L_grid,self.gfeed_R_grid,
-#                                self.gfeed_type,
-#                                self.gfeed_ctrl_type,self.gfeed_p_ref,self.gfeed_q_ref,
-#                                self.N_pq_1p, self.pq_1p_int,self.pq_1p,np.copy(self.pq_1p),
-#                                self.N_pq_1pn, self.pq_1pn_int,self.pq_1pn,np.copy(self.pq_1pn),
-#                                self.N_pq_3p, self.pq_3p_int,self.pq_3p,np.copy(self.pq_3p),
-#                                self.N_pq_3pn, self.pq_3pn_int,self.pq_3pn,np.copy(self.pq_3pn),
-#                                self.N_nodes_v,self.N_nodes_i,0,self.N_nz_nodes,
-#                                yii['L_indptr'], yii['L_indices'], yii['L_data'],
-#                                yii['U_indptr'], yii['U_indices'], yii['U_data'],    
-#                                yii['perm_r'],yii['perm_c']
+                                self.N_gformers, self.gformer_nodes, self.gformer_bus_nodes, self.gformer_voltages, self.gformer_v_abcn, self.gformer_i_abcn,
+                                self.N_gfeeds, self.gfeed_bus_nodes,self.gfeed_currents,self.gfeed_powers,self.gfeed_i_abcn,
+                                self.gfeed_L,self.gfeed_R,self.gfeed_V_dc,self.gfeed_C_ac,self.gfeed_L_grid,self.gfeed_R_grid,
+                                self.gfeed_type,
+                                self.gfeed_ctrl_type,self.gfeed_p_ref,self.gfeed_q_ref,
+                                self.N_pq_1p, self.pq_1p_int,self.pq_1p,np.copy(self.pq_1p),
+                                self.N_pq_1pn, self.pq_1pn_int,self.pq_1pn,np.copy(self.pq_1pn),
+                                self.N_pq_3p, self.pq_3p_int,self.pq_3p,np.copy(self.pq_3p),
+                                self.N_pq_3pn, self.pq_3pn_int,self.pq_3pn,np.copy(self.pq_3pn),
+                                self.N_nodes_v,self.N_nodes_i,0,self.N_nz_nodes,
+                                yii['L_indptr'], yii['L_indices'], yii['L_data'],
+                                yii['U_indptr'], yii['U_indices'], yii['U_data'],    
+                                yii['perm_r'],yii['perm_c']
                                 )],
                                 dtype=dt_pf)
+                  
         self.params_pf = params_pf 
             
     def pf(self):      
@@ -1036,6 +1041,9 @@ class grid(object):
 
         self.V_node = V_node
         self.I_node = I_node 
+        self.iters = self.params_pf['iters']
+        if self.iters > self.max_iter-1:
+            print('Maximum number of iterations reached: {:d}'.format(int(self.iters)))
 
         
     def read_loads_shapes(self,json_file):        

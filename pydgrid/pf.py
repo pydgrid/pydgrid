@@ -129,7 +129,7 @@ def pf_eval(params,
                     I_abc_gfeed = I_abc_pq + I_abc_ir + gfeed_i_abcn[it,0:3]
                     
                     I_known[gfeed_bus_nodes[it][0:3],0] += I_abc_gfeed
-                    #I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc_gfeed) + gfeed_i_abcn[it,3]
+                    I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc_gfeed) + gfeed_i_abcn[it,3]
  
                 if gfeed_type[it] == 1:
                     
@@ -152,7 +152,7 @@ def pf_eval(params,
         #V_unknown = np.linalg.solve(Y_ii, I_known - Y_iv @ V_known)
         V_unknown_m = np.abs(V_unknown)
         V_unknown_0_m = np.abs(V_unknown_0)
-        error = np.linalg.norm((V_unknown_m - V_unknown_0_m)/V_unknown_0_m,np.inf)
+        error = np.linalg.norm((V_unknown_m - V_unknown_0_m)/(V_unknown_0_m+1),np.inf)
         if error <1.0e-6: break
         V_unknown_0 = V_unknown
         params[ig].V_node[0:N_v,:] = V_known 
