@@ -549,6 +549,8 @@ class grid(object):
                 if 'Rph' in line_data:  data_type='ZRphXph'
                 if 'Rn' in line_data:  data_type='ZRphXphRnXn'  
                 if 'rho_20_m' in line_data:  data_type='ZrhoX'  
+                if 'u90_fp08' in line_data:  data_type='RX90fp'  # like in manufacturer catalog
+                
                 
                 if data_type=='ZR1X1':
                     line['type'] = 'z'
@@ -637,6 +639,45 @@ class grid(object):
                     Z[3,3] = R_n+1j*X_n
                     
                     self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})                      
+
+                if data_type == 'RX90fp':
+                    
+                    line['type'] = 'z'
+                    
+                    u90_fp08 = np.array(data['line_codes'][line_code]['u90_fp08'])
+                    u90_fp10 = np.array(data['line_codes'][line_code]['u90_fp10'])
+                    
+                    if 'T_deg' in data['line_codes'][line_code]: 
+                        T_deg = np.array(data['line_codes'][line_code]['T_deg'])
+                    else: T_deg = 90.0
+                    
+                    if 'alpha' in  data['line_codes'][line_code]: 
+                        alpha = np.array(data['line_codes'][line_code]['alpha'])
+                    else: alpha = 0.004
+
+                    
+                    # u = sqrt(3) * (r*cos(phi) + x*sin(phi))
+
+                    r90 = u90_fp10/np.sqrt(3)
+                    x90 = (u90_fp08/np.sqrt(3) - 0.8*r90)/0.6
+                    
+ 
+                    DT = T_deg-90.0 
+                    
+                    R_ph  = r90*(1.0+alpha*DT) # resistamce per km at  T_deg
+                    X_ph  = x90  
+
+                    R_n = R_ph
+                    X_n = X_ph
+                    Z = np.zeros((4,4),dtype=np.complex128)
+                    Z[0,0] = R_ph+1j*X_ph
+                    Z[1,1] = R_ph+1j*X_ph
+                    Z[2,2] = R_ph+1j*X_ph
+                    Z[3,3] = R_n+1j*X_n
+                    
+                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})    
+
+                    
                 
             N_conductors = len(self.line_codes_lib[line['code']]['Z'])
             if line['type'] == 'z':
