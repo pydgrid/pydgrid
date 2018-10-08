@@ -255,8 +255,8 @@ def lu_sparse_solve2(struct,b_original,N_nz_nodes):
     return x[struct[0]['perm_c']]
 
 @numba.jit(nopython=True, cache=True)
-def set_load_factor(t,params_pf,params_lshapes,ig=0):
-    interp = 0
+def set_load_factor(t,params_pf,params_lshapes,ig=0, interp = 1):
+    
     for it in range(params_lshapes[ig].N_loads):
         time_idx = np.argmax(params_lshapes[ig].time[:,it]>t)
         #params_pf[ig]['pq_1p'][it]  = params_pf[ig]['pq_1p_0'][it]  * params_lshapes[ig].shapes[it,time_idx] 
@@ -281,7 +281,7 @@ def set_load_factor(t,params_pf,params_lshapes,ig=0):
 
 
 @numba.jit(nopython=True, parallel=False)
-def time_serie(t_ini,t_end,Dt,params_pf,params_lshapes):
+def time_serie(t_ini,t_end,Dt,params_pf,params_lshapes, interp = 1):
     ig = 0
     N_times = int(np.ceil(t_end-t_ini)/Dt)
     N_v = params_pf[ig].N_nodes_v
@@ -296,7 +296,7 @@ def time_serie(t_ini,t_end,Dt,params_pf,params_lshapes):
 #    for it in numba.prange(N_times):
 
         t=it*Dt
-        set_load_factor(t,params_pf,params_lshapes,ig=0) 
+        set_load_factor(t,params_pf,params_lshapes,ig=0, interp = interp) 
         V_node,I_node = pf_eval(params_pf,ig=0,max_iter=50)
         T[it,:] = t
         V_nodes[it,:] = V_node[:,0]
