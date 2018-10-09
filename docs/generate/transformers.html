@@ -1,14 +1,14 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="sp" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="sp" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Transformers &mdash; pydgrid 0.2 documentation</title>
+  <title>Transformers &mdash; pydgrid 0.3 documentation</title>
   
 
   
@@ -24,28 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="pydgrid 0.2 documentation" href="index.html"/>
-        <link rel="up" title="Elements" href="elements.html"/>
-        <link rel="next" title="Grid formers" href="grid_formers.html"/>
-        <link rel="prev" title="Line codes" href="line_codes.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Grid formers" href="grid_formers.html" />
+    <link rel="prev" title="Line codes" href="line_codes.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -67,7 +58,7 @@
             
             
               <div class="version">
-                0.2
+                0.3
               </div>
             
           
@@ -123,7 +114,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">pydgrid</a>
@@ -131,9 +122,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -192,21 +184,6 @@
     margin-top: -19px;
 }
 
-/* nice headers on first paragraph of info/warning boxes */
-.admonition .first {
-    margin: -12px;
-    padding: 6px 12px;
-    margin-bottom: 12px;
-    color: #fff;
-    line-height: 1;
-    display: block;
-}
-.admonition.warning .first {
-    background: #f0b37e;
-}
-.admonition.note .first {
-    background: #6ab0de;
-}
 .admonition > p:before {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
@@ -217,7 +194,7 @@
 <div class="section" id="dyn11">
 <h2>Dyn11<a class="headerlink" href="#dyn11" title="Permalink to this headline">¶</a></h2>
 <a class="reference internal image-reference" href="_images/Dyn11.png"><img alt="_images/Dyn11.png" src="_images/Dyn11.png" style="width: 450px;" /></a>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;transformers&quot;</span><span class="p">:[</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transformers&quot;</span><span class="p">:[</span>
              <span class="p">{</span><span class="s2">&quot;bus_j&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_0&quot;</span><span class="p">,</span>  <span class="s2">&quot;bus_k&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_1&quot;</span><span class="p">,</span>  <span class="s2">&quot;S_n_kVA&quot;</span><span class="p">:</span> <span class="mf">2500.0</span><span class="p">,</span> <span class="s2">&quot;U_j_kV&quot;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;U_k_kV&quot;</span><span class="p">:</span><span class="mf">0.69</span><span class="p">,</span>
               <span class="s2">&quot;R_cc_pu&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;X_cc_pu&quot;</span><span class="p">:</span><span class="mf">0.04</span><span class="p">,</span> <span class="s2">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;Dyg11_3w&quot;</span><span class="p">,</span>   <span class="s2">&quot;conductors_j&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;conductors_k&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
                 <span class="p">],</span>
@@ -227,7 +204,7 @@
 <div class="section" id="ygd11-3w">
 <h2>Ygd11_3w<a class="headerlink" href="#ygd11-3w" title="Permalink to this headline">¶</a></h2>
 <a class="reference internal image-reference" href="_images/Ygd11_3w.png"><img alt="_images/Ygd11_3w.png" src="_images/Ygd11_3w.png" style="width: 450px;" /></a>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="s2">&quot;transformers&quot;</span><span class="p">:[</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transformers&quot;</span><span class="p">:[</span>
             <span class="p">{</span><span class="s2">&quot;bus_j&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_0&quot;</span><span class="p">,</span>  <span class="s2">&quot;bus_k&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_1&quot;</span><span class="p">,</span>  <span class="s2">&quot;S_n_kVA&quot;</span><span class="p">:</span> <span class="mf">2500.0</span><span class="p">,</span> <span class="s2">&quot;U_j_kV&quot;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;U_k_kV&quot;</span><span class="p">:</span><span class="mf">0.69</span><span class="p">,</span>
              <span class="s2">&quot;R_cc_pu&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;X_cc_pu&quot;</span><span class="p">:</span><span class="mf">0.04</span><span class="p">,</span> <span class="s2">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;Ygd11_3w&quot;</span><span class="p">,</span>   <span class="s2">&quot;conductors_j&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;conductors_k&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
                 <span class="p">],</span>
@@ -235,16 +212,16 @@
 </div>
 <p>where:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">&quot;bus_j&quot;</span></code>: name of the j bus</li>
-<li><code class="docutils literal"><span class="pre">&quot;bus_k&quot;</span></code>: name of the k bus</li>
-<li><code class="docutils literal"><span class="pre">&quot;pos_x&quot;</span></code>: x position of the bus</li>
-<li><code class="docutils literal"><span class="pre">&quot;pos_y&quot;</span></code>: y position of the bus</li>
-<li><code class="docutils literal"><span class="pre">&quot;S_n_kVA&quot;</span></code>: based power in kVA</li>
-<li><code class="docutils literal"><span class="pre">&quot;U_j_kV&quot;</span></code>: HV side nominal RMS phase-phase voltage in kV</li>
-<li><code class="docutils literal"><span class="pre">&quot;U_k_kV&quot;</span></code>: LV side nominal RMS phase-phase voltage in kV</li>
-<li><code class="docutils literal"><span class="pre">&quot;connection&quot;</span></code>: connection type (see available connections)</li>
-<li><code class="docutils literal"><span class="pre">&quot;conductors_j&quot;</span></code>: HV side conductors</li>
-<li><code class="docutils literal"><span class="pre">&quot;conductors_k&quot;</span></code>: LV side conductors</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;bus_j&quot;</span></code>: name of the j bus</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;bus_k&quot;</span></code>: name of the k bus</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;pos_x&quot;</span></code>: x position of the bus</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;pos_y&quot;</span></code>: y position of the bus</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;S_n_kVA&quot;</span></code>: based power in kVA</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;U_j_kV&quot;</span></code>: HV side nominal RMS phase-phase voltage in kV</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;U_k_kV&quot;</span></code>: LV side nominal RMS phase-phase voltage in kV</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;connection&quot;</span></code>: connection type (see available connections)</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;conductors_j&quot;</span></code>: HV side conductors</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;conductors_k&quot;</span></code>: LV side conductors</li>
 </ul>
 <table class="docutils citation" frame="void" id="t1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
@@ -257,9 +234,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -277,11 +252,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Juan Manuel Mauricio.
+        &copy; Copyright 2018, Juan Manuel Mauricio
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -296,36 +271,34 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.2',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'0.3',
+              LANGUAGE:'sp',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

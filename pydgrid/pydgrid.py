@@ -549,8 +549,8 @@ class grid(object):
                 if 'Rph' in line_data:  data_type='ZRphXph'
                 if 'Rn' in line_data:  data_type='ZRphXphRnXn'  
                 if 'rho_20_m' in line_data:  data_type='ZrhoX'  
-                if 'u90_fp08' in line_data:  data_type='RX90fp'  # like in manufacturer catalog
-                
+                if 'u90_pf08' in line_data:  data_type='RX90pf'  # like in manufacturer catalog
+                #if 'u70_pf08' in line_data:  data_type='RX70pf'  # like in manufacturer catalog
                 
                 if data_type=='ZR1X1':
                     line['type'] = 'z'
@@ -640,12 +640,12 @@ class grid(object):
                     
                     self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})                      
 
-                if data_type == 'RX90fp':
+                if data_type == 'RX90pf':
                     
                     line['type'] = 'z'
                     
-                    u90_fp08 = np.array(data['line_codes'][line_code]['u90_fp08'])
-                    u90_fp10 = np.array(data['line_codes'][line_code]['u90_fp10'])
+                    u90_pf08 = np.array(data['line_codes'][line_code]['u90_pf08'])
+                    u90_pf10 = np.array(data['line_codes'][line_code]['u90_pf10'])
                     
                     if 'T_deg' in data['line_codes'][line_code]: 
                         T_deg = np.array(data['line_codes'][line_code]['T_deg'])
@@ -658,8 +658,8 @@ class grid(object):
                     
                     # u = sqrt(3) * (r*cos(phi) + x*sin(phi))
 
-                    r90 = u90_fp10/np.sqrt(3)
-                    x90 = (u90_fp08/np.sqrt(3) - 0.8*r90)/0.6
+                    r90 = u90_pf10/np.sqrt(3)
+                    x90 = (u90_pf08/np.sqrt(3) - 0.8*r90)/0.6
                     
  
                     DT = T_deg-90.0 

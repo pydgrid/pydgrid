@@ -1,14 +1,14 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="sp" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="sp" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Definitions &mdash; pydgrid 0.2 documentation</title>
+  <title>Definitions &mdash; pydgrid 0.3 documentation</title>
   
 
   
@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="pydgrid 0.2 documentation" href="index.html"/>
-        <link rel="next" title="Elements" href="elements.html"/>
-        <link rel="prev" title="User guide" href="user_guide.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Elements" href="elements.html" />
+    <link rel="prev" title="User guide" href="user_guide.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -66,7 +58,7 @@
             
             
               <div class="version">
-                0.2
+                0.3
               </div>
             
           
@@ -116,7 +108,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">pydgrid</a>
@@ -124,9 +116,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -183,21 +176,6 @@
     margin-top: -19px;
 }
 
-/* nice headers on first paragraph of info/warning boxes */
-.admonition .first {
-    margin: -12px;
-    padding: 6px 12px;
-    margin-bottom: 12px;
-    color: #fff;
-    line-height: 1;
-    display: block;
-}
-.admonition.warning .first {
-    background: #f0b37e;
-}
-.admonition.note .first {
-    background: #6ab0de;
-}
 .admonition > p:before {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
@@ -210,7 +188,7 @@
 </div>
 <div class="section" id="nodes-order">
 <h2>Nodes order<a class="headerlink" href="#nodes-order" title="Permalink to this headline">¶</a></h2>
-<p>The nodes order in the voltages and currents vectors <code class="docutils literal"><span class="pre">V_node</span></code> and <code class="docutils literal"><span class="pre">I_node</span></code>  is as follows:</p>
+<p>The nodes order in the voltages and currents vectors <code class="docutils literal notranslate"><span class="pre">V_node</span></code> and <code class="docutils literal notranslate"><span class="pre">I_node</span></code>  is as follows:</p>
 <ul class="simple">
 <li>nodes with grid formers (known voltages)</li>
 <li>nodes with loads or greed feeders (known currents)</li>
@@ -222,7 +200,7 @@
 <p>V_known has the nodes with grid formers sources
 V_unknown has the rest of the nodes</p>
 <p>V_sorted ...
-Buses order is as defined in the key <code class="docutils literal"><span class="pre">buses</span></code> of the <code class="docutils literal"><span class="pre">.json</span></code> file or data dictionary.</p>
+Buses order is as defined in the key <code class="docutils literal notranslate"><span class="pre">buses</span></code> of the <code class="docutils literal notranslate"><span class="pre">.json</span></code> file or data dictionary.</p>
 </div>
 </div>
 <div class="section" id="buses-results-voltages">
@@ -233,9 +211,7 @@ Buses order is as defined in the key <code class="docutils literal"><span class=
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -253,11 +229,11 @@ Buses order is as defined in the key <code class="docutils literal"><span class=
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Juan Manuel Mauricio.
+        &copy; Copyright 2018, Juan Manuel Mauricio
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -272,36 +248,34 @@ Buses order is as defined in the key <code class="docutils literal"><span class=
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.2',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'0.3',
+              LANGUAGE:'sp',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

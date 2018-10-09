@@ -5,4 +5,7 @@ Created on Fri Jun 16 12:54:49 2017
 @author: jmmauricio
 """
 
-from .pydgrid import grid
+from pydgrid.pydgrid import grid
+
+
+__version__ = '0.3.2'

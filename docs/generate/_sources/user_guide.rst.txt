@@ -87,7 +87,7 @@ Read grid parameters
 
 .. code-block:: python
 
-    grid_1 = grid(data)
+    grid_1.read(data)
 
 
 Execute power flow

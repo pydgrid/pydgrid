@@ -4,12 +4,20 @@
 '''
 python setup.py sdist upload
 '''
-
+import os
 from setuptools import setup, find_packages
+
+
+# https://packaging.python.org/guides/single-sourcing-package-version/
+version = {}
+with open(os.path.join("pydgrid", "__init__.py")) as fp:
+    exec(fp.read(), version)
+
+
 
 setup(
     name='pydgrid',
-    version='0.3.1',
+    version=version['__version__'],
     author='Juan Manuel Mauricio',
     author_email='jmmauricio@us.es',
     description='Python Distribution System Simulator',

@@ -8,17 +8,22 @@ Line codes
 
 Two types of lines models can be considered:
 
-* Serie Impedance
-* PI Section Line
+* Serie Impedance (only R and X)
+* PI Section Line (R, X ans shunt C)
 
 Line parammeters can be introduced as:
 
-* Primitive matrices
+
 * Sequence coordinates
+* Primitive matrices
+* Unitary voltage drop for p.f.= 1.0 and p.f.= 0.8
 
 
 Serie impedance sequence parameters
-'''''''''''''''''''''''''''''''''''
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sequence coordinates
+''''''''''''''''''''
 
 .. code:: python
 
@@ -29,6 +34,70 @@ Serie impedance sequence parameters
          "mv_al_185": {"R1":0.209,  "X1":	0.113, "R0":0.209, "X0":	0.209},
          "mv_al_300": {"R1":0.128,  "X1":	0.105, "R0":0.128, "X0":	0.128}
         }
+
+
+where:
+
+* ``"R1"``: Positive sequence resistance (Ω/km)
+* ``"X1"``: Positive sequence reactance (Ω/km)
+* ``"R0"``: Zero sequence resistance (Ω/km)
+* ``"X0"``: Zero sequence reactance (Ω/km)
+
+
+Primitive matrices
+''''''''''''''''''
+
+.. code:: python
+
+    "line_codes":
+      {"UG1":
+        {"R":[[ 0.211,  0.049,  0.049,  0.049],
+              [ 0.049,  0.211,  0.049,  0.049],
+              [ 0.049,  0.049,  0.211,  0.049],
+              [ 0.049,  0.049,  0.049,  0.211]],
+         "X":[[ 0.747,  0.673,  0.651,  0.673],
+              [ 0.673,  0.747,  0.673,  0.651],
+              [ 0.651,  0.673,  0.747,  0.673],
+              [ 0.673,  0.651,  0.673,  0.747]]
+        },
+      "UG3":
+        {"R":[[ 0.871,  0.049,  0.049,  0.049],
+              [ 0.049,  0.871,  0.049,  0.049],
+              [ 0.049,  0.049,  0.871,  0.049],
+              [ 0.049,  0.049,  0.049,  0.871]],
+         "X":[[ 0.797,  0.719,  0.697,  0.719],
+              [ 0.719,  0.797,  0.719,  0.697],
+              [ 0.697,  0.719,  0.797,  0.719],
+              [ 0.719,  0.697,  0.719,  0.797]]
+        }
+      }
+
+
+where:
+
+* ``"R"``: Resistance primitive (Ω/km)
+* ``"X"``: Reactance primitive (Ω/km)
+
+
+Unitary voltage drop
+''''''''''''''''''''
+
+.. code:: python
+
+    "line_codes":
+        {
+        "lv_cu_150":  {"u90_pf10":0.27,"u90_pf08":0.31, 'T_deg':90.0, 'alpha':0.004},
+        "lv_cu_240":  {"u90_pf10":0.17,"u90_pf08":0.27, 'T_deg':90.0, 'alpha':0.004} 
+        }
+
+where:
+
+* ``"u90_pf10"``: Unitary voltage drop with load cos(φ) = 1.0 at 90ºC (V/(km A))
+* ``"u90_pf08"``: Unitary voltage drop with load cos(φ) = 0.8 at 90ºC (V/(km A))
+* ``"T_deg"``: Current conductor temperature (ºC)
+* ``"alpha"``: Temperature coefficient (1/ºC)
+
+
 
 PI section sequence parameters
 ''''''''''''''''''''''''''''''
@@ -59,30 +128,6 @@ where:
 Serie impedance primitives
 ''''''''''''''''''''''''''
 
-.. code:: python
-
-    "line_codes":
-      {"UG1":
-        {"R":[[ 0.211,  0.049,  0.049,  0.049],
-              [ 0.049,  0.211,  0.049,  0.049],
-              [ 0.049,  0.049,  0.211,  0.049],
-              [ 0.049,  0.049,  0.049,  0.211]],
-         "X":[[ 0.747,  0.673,  0.651,  0.673],
-              [ 0.673,  0.747,  0.673,  0.651],
-              [ 0.651,  0.673,  0.747,  0.673],
-              [ 0.673,  0.651,  0.673,  0.747]]
-        },
-      "UG3":
-        {"R":[[ 0.871,  0.049,  0.049,  0.049],
-              [ 0.049,  0.871,  0.049,  0.049],
-              [ 0.049,  0.049,  0.871,  0.049],
-              [ 0.049,  0.049,  0.049,  0.871]],
-         "X":[[ 0.797,  0.719,  0.697,  0.719],
-              [ 0.719,  0.797,  0.719,  0.697],
-              [ 0.697,  0.719,  0.797,  0.719],
-              [ 0.719,  0.697,  0.719,  0.797]]
-        }
-      }
 
 PI section sequence parameters
 ''''''''''''''''''''''''''''''
