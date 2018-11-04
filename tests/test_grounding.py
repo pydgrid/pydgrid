@@ -70,7 +70,7 @@ def test_no_gnd():
     assert grid_1.buses[1]['v_an'] < 0.001
     assert grid_1.buses[1]['v_bn'] > 20e3*0.999
     assert grid_1.buses[1]['v_cn'] > 20e3*0.999  
-    assert grid_1.lines[0]['i_a_m'] < 0.001
+    assert grid_1.lines[0]['i_j_a_m'] < 0.001
 
     
 def test_zigzag_gnd():
@@ -139,7 +139,7 @@ def test_zigzag_gnd():
     assert grid_1.buses[1]['v_an'] < 10.0
     assert grid_1.buses[1]['v_bn'] < 20e3*0.9
     assert grid_1.buses[1]['v_cn'] < 20e3*0.9  
-    assert grid_1.lines[0]['i_a_m'] > I_cc*0.8
+    assert grid_1.lines[0]['i_j_a_m'] > I_cc*0.8
 
 
  

@@ -19,6 +19,8 @@ import time
 from scipy import sparse
 from scipy.sparse import linalg as sla
 
+## to-do
+# with pi lines line currents are not well displaied
 
 class grid(object):
     '''   
@@ -538,8 +540,15 @@ class grid(object):
             line['type'] = 'z'
             line_code = line['code']
             data_type='ZR1X1'
-            if line_code in self.line_codes_lib: data_type='GLOBAL'
+            if line_code in self.line_codes_lib: 
+                data_type='GLOBAL'
+                line['type'] = 'z'
+                if 'Y' in self.line_codes_lib[line_code]: line['type'] = 'pi'
+                
+            
+                
             if not  data_type=='GLOBAL':
+
                 line_data = data['line_codes'][line_code]
                 if 'X1' in line_data:  data_type='ZR1X1'
                 if 'C_1_muF' in line_data:  data_type='PIR1X1C1'
@@ -551,6 +560,11 @@ class grid(object):
                 if 'rho_20_m' in line_data:  data_type='ZrhoX'  
                 if 'u90_pf08' in line_data:  data_type='RX90pf'  # like in manufacturer catalog
                 #if 'u70_pf08' in line_data:  data_type='RX70pf'  # like in manufacturer catalog
+                
+                if data_type in ['ZR1X1', 'ZRX', 'ZRphXph','ZrhoX' ,'RX90pf'  ]:
+                    line['type'] = 'z'
+                if data_type in ['PIR1X1C1', 'PIRXC'  ]:
+                    line['type'] = 'pi'                    
                 
                 if data_type=='ZR1X1':
                     line['type'] = 'z'
@@ -574,11 +588,11 @@ class grid(object):
                         Z_0 = 3*Z_1
                     Z_012 = np.array([[Z_0,0,0],[0,Z_1,0],[0,0,Z_2]])
                     Z = A_a0 @ Z_012 @ A_0a
-                    
-                    B_1 = 2*np.pi*self.Freq*line_data['C_1_muF']*1e-6
+                    C_km = line_data['C_1_muF']*1e-6 
+                    B_1 = -1j*2*np.pi*self.Freq*C_km
                     B_2 = B_1
                     if 'C_0_muF' in line_data:
-                        B_0 =  2*np.pi*self.Freq*line_data['C_0_muF']*1e-6
+                        B_0 =  -1j*2*np.pi*self.Freq*line_data['C_0_muF']*1e-6
                     else:
                         B_0 =  3.0*B_1                  
 
@@ -661,6 +675,7 @@ class grid(object):
                     r90 = u90_pf10/np.sqrt(3)
                     x90 = (u90_pf08/np.sqrt(3) - 0.8*r90)/0.6
                     
+ 
  
                     DT = T_deg-90.0 
                     
@@ -775,6 +790,8 @@ class grid(object):
                 Z_line_list += [line['m']*0.001*np.array(self.line_codes_lib[line['code']]['Z'])]   # Line code to list of Z lines
 
             if line['type'] == 'pi':
+
+                # serie impadances
                 for item in  line['bus_j_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
                     node_j = '{:s}.{:s}'.format(line['bus_j'], str(item))
                     row = nodes.index(node_j)
@@ -791,6 +808,7 @@ class grid(object):
                     #A[row,col] = -1
                     it_col +=1   
 
+                # shunt admitances 
                 for item in  line['bus_j_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
                     node_j = '{:s}.{:s}'.format(line['bus_j'], str(item))
                     row = nodes.index(node_j)
@@ -801,6 +819,7 @@ class grid(object):
 
                 for item in  line['bus_k_nodes']: # the list of nodes '[<bus>.<node>.<node>...]' is created 
                     node_k = '{:s}.{:s}'.format(line['bus_k'], str(item))
+                    
                     row = nodes.index(node_k)
                     col = it_col
                     A_sp[row,col] = 1
@@ -811,7 +830,9 @@ class grid(object):
                 Z = line['m']*0.001*np.array(self.line_codes_lib[line['code']]['Z'])
                 Y = np.array(self.line_codes_lib[line['code']]['Y'])
      
-                Z_line_list += [Z,line['m']*0.001*np.linalg.inv(Y/2),line['m']*0.001*np.linalg.inv(Y/2)]   # Line code to list of Z lines
+                Z_line_list += [ Z,
+                                -1.0/(line['m']*0.001)*np.linalg.inv(Y/2),
+                                -1.0/(line['m']*0.001)*np.linalg.inv(Y/2)]   # Line code to list of Z lines
                 
                 
         ### shunt elements       
@@ -1353,7 +1374,7 @@ class grid(object):
         '''
        
         I_lines = self.Y_primitive_sp @ self.A_sp.T @ self.V_results
-                
+        self.I_lines = I_lines         
         it_single_line = 0
         for trafo in self.transformers:
             
@@ -1403,45 +1424,135 @@ class grid(object):
                         
         self.I_lines = I_lines
         for line in self.lines:
-            N_conductors = len(line['bus_j_nodes'])
-            if N_conductors == 3:
-                I_a = (I_lines[it_single_line,0])
-                I_b = (I_lines[it_single_line+1,0])
-                I_c = (I_lines[it_single_line+2,0])
-                #I_n = (I_lines[it_single_line+3,0])
-                I_n = I_a+I_b+I_c
-                
-                alpha = alpha = np.exp(2.0/3*np.pi*1j)
-                i_z =  1/3*(I_a+I_b+I_c)
-                i_p = 1.0/3.0*(I_a + I_b*alpha + I_c*alpha**2)
-                i_n = 1.0/3.0*(I_a + I_b*alpha**2 + I_c*alpha)                
-                it_single_line += N_conductors
-                line.update({'i_a_m':np.abs(I_a)})
-                line.update({'i_b_m':np.abs(I_b)})
-                line.update({'i_c_m':np.abs(I_c)})
-                line.update({'i_n_m':np.abs(I_n)})
-                line.update({'deg_a':np.angle(I_a, deg=True)})
-                line.update({'deg_b':np.angle(I_b, deg=True)})
-                line.update({'deg_c':np.angle(I_c, deg=True)})
-                line.update({'deg_n':np.angle(I_n, deg=True)})
-                line.update({'i_z':np.abs(i_z)})
-                line.update({'i_p':np.abs(i_p)})
-                line.update({'i_n':np.abs(i_n)})
-            if N_conductors == 4:
-                I_a = (I_lines[it_single_line,0])
-                I_b = (I_lines[it_single_line+1,0])
-                I_c = (I_lines[it_single_line+2,0])
-                I_n = (I_lines[it_single_line+3,0])
-                it_single_line += N_conductors
-                line.update({'i_a_m':np.abs(I_a)})
-                line.update({'i_b_m':np.abs(I_b)})
-                line.update({'i_c_m':np.abs(I_c)})
-                line.update({'i_n_m':np.abs(I_n)})
-                line.update({'deg_a':np.angle(I_a, deg=True)})
-                line.update({'deg_b':np.angle(I_b, deg=True)})
-                line.update({'deg_c':np.angle(I_c, deg=True)})
-                line.update({'deg_n':np.angle(I_n, deg=True)})                                   
-
+            if line['type'] == 'z':
+                N_conductors = len(line['bus_j_nodes'])
+                if N_conductors == 3:
+                    I_a = (I_lines[it_single_line,0])
+                    I_b = (I_lines[it_single_line+1,0])
+                    I_c = (I_lines[it_single_line+2,0])
+                    #I_n = (I_lines[it_single_line+3,0])
+                    I_n = I_a+I_b+I_c
+                    
+                    alpha = alpha = np.exp(2.0/3*np.pi*1j)
+                    i_z =  1/3*(I_a+I_b+I_c)
+                    i_p = 1.0/3.0*(I_a + I_b*alpha + I_c*alpha**2)
+                    i_n = 1.0/3.0*(I_a + I_b*alpha**2 + I_c*alpha)                
+                    it_single_line += N_conductors
+                    line.update({'i_j_a_m':np.abs(I_a)})
+                    line.update({'i_j_b_m':np.abs(I_b)})
+                    line.update({'i_j_c_m':np.abs(I_c)})
+                    line.update({'i_j_n_m':np.abs(I_n)})
+                    line.update({'deg_j_a':np.angle(I_a, deg=True)})
+                    line.update({'deg_j_b':np.angle(I_b, deg=True)})
+                    line.update({'deg_j_c':np.angle(I_c, deg=True)})
+                    line.update({'deg_j_n':np.angle(I_n, deg=True)})
+                    line.update({'i_k_a_m':np.abs(I_a)})
+                    line.update({'i_k_b_m':np.abs(I_b)})
+                    line.update({'i_k_c_m':np.abs(I_c)})
+                    line.update({'i_k_n_m':np.abs(I_n)})
+                    line.update({'deg_k_a':np.angle(I_a, deg=True)})
+                    line.update({'deg_k_b':np.angle(I_b, deg=True)})
+                    line.update({'deg_k_c':np.angle(I_c, deg=True)})
+                    line.update({'deg_k_n':np.angle(I_n, deg=True)})
+                    line.update({'i_z':np.abs(i_z)})
+                    line.update({'i_p':np.abs(i_p)})
+                    line.update({'i_n':np.abs(i_n)})
+                if N_conductors == 4:
+                    I_a = (I_lines[it_single_line,0])
+                    I_b = (I_lines[it_single_line+1,0])
+                    I_c = (I_lines[it_single_line+2,0])
+                    I_n = (I_lines[it_single_line+3,0])
+                    it_single_line += N_conductors
+                    line.update({'i_j_a_m':np.abs(I_a)})
+                    line.update({'i_j_b_m':np.abs(I_b)})
+                    line.update({'i_j_c_m':np.abs(I_c)})
+                    line.update({'i_j_n_m':np.abs(I_n)})
+                    line.update({'deg_j_a':np.angle(I_a, deg=True)})
+                    line.update({'deg_j_b':np.angle(I_b, deg=True)})
+                    line.update({'deg_j_c':np.angle(I_c, deg=True)})
+                    line.update({'deg_j_n':np.angle(I_n, deg=True)})
+                    line.update({'i_k_a_m':np.abs(I_a)})
+                    line.update({'i_k_b_m':np.abs(I_b)})
+                    line.update({'i_k_c_m':np.abs(I_c)})
+                    line.update({'i_k_n_m':np.abs(I_n)})
+                    line.update({'deg_k_a':np.angle(I_a, deg=True)})
+                    line.update({'deg_k_b':np.angle(I_b, deg=True)})
+                    line.update({'deg_k_c':np.angle(I_c, deg=True)})
+                    line.update({'deg_k_n':np.angle(I_n, deg=True)})
+                    
+            if line['type'] == 'pi':
+                N_conductors = len(line['bus_j_nodes'])
+                if N_conductors == 3:
+                    I_j_a = I_lines[it_single_line+0,0]+I_lines[it_single_line+3,0]
+                    I_j_b = I_lines[it_single_line+1,0]+I_lines[it_single_line+4,0]
+                    I_j_c = I_lines[it_single_line+2,0]+I_lines[it_single_line+5,0]
+                    I_k_a = I_lines[it_single_line+0,0]-I_lines[it_single_line+6,0]
+                    I_k_b = I_lines[it_single_line+1,0]-I_lines[it_single_line+7,0]
+                    I_k_c = I_lines[it_single_line+2,0]-I_lines[it_single_line+8,0]
+                    
+                    #I_n = (I_lines[it_single_line+3,0])
+                    I_j_n = I_j_a+I_j_b+I_j_c
+                    I_k_n = I_k_a+I_k_b+I_k_c
+                    
+                    alpha = alpha = np.exp(2.0/3*np.pi*1j)
+                    i_z =  1/3*(I_j_a+I_j_b+I_j_c)
+                    i_p = 1.0/3.0*(I_j_a + I_j_b*alpha + I_j_c*alpha**2)
+                    i_n = 1.0/3.0*(I_j_a + I_j_b*alpha**2 + I_j_c*alpha)                
+                    it_single_line += N_conductors*3
+                    line.update({'i_j_a_m':np.abs(I_j_a)})
+                    line.update({'i_j_b_m':np.abs(I_j_b)})
+                    line.update({'i_j_c_m':np.abs(I_j_c)})
+                    line.update({'i_j_n_m':np.abs(I_j_n)})
+                    line.update({'deg_j_a':np.angle(I_j_a, deg=True)})
+                    line.update({'deg_j_b':np.angle(I_j_b, deg=True)})
+                    line.update({'deg_j_c':np.angle(I_j_c, deg=True)})
+                    line.update({'deg_j_n':np.angle(I_j_n, deg=True)})
+                    line.update({'i_k_a_m':np.abs(I_k_a)})
+                    line.update({'i_k_b_m':np.abs(I_k_b)})
+                    line.update({'i_k_c_m':np.abs(I_k_c)})
+                    line.update({'i_k_n_m':np.abs(I_k_n)})
+                    line.update({'deg_k_a':np.angle(I_k_a, deg=True)})
+                    line.update({'deg_k_b':np.angle(I_k_b, deg=True)})
+                    line.update({'deg_k_c':np.angle(I_k_c, deg=True)})
+                    line.update({'deg_k_n':np.angle(I_k_n, deg=True)})
+                    line.update({'i_z':np.abs(i_z)})
+                    line.update({'i_p':np.abs(i_p)})
+                    line.update({'i_n':np.abs(i_n)})
+                if N_conductors == 4:
+                    I_j_a = I_lines[it_single_line+0,0]+I_lines[it_single_line+3,0]
+                    I_j_b = I_lines[it_single_line+1,0]+I_lines[it_single_line+4,0]
+                    I_j_c = I_lines[it_single_line+2,0]+I_lines[it_single_line+5,0]
+                    I_k_a = I_lines[it_single_line+0,0]-I_lines[it_single_line+6,0]
+                    I_k_b = I_lines[it_single_line+1,0]-I_lines[it_single_line+7,0]
+                    I_k_c = I_lines[it_single_line+2,0]-I_lines[it_single_line+8,0]
+                    I_j_n = I_lines[it_single_line+3,0]
+                    I_k_n = I_lines[it_single_line+3,0]
+                    
+                    #I_n = (I_lines[it_single_line+3,0])
+                    I_j_n = I_j_a+I_j_b+I_j_c
+                    I_k_n = I_k_a+I_k_b+I_k_c
+                    
+                    alpha = alpha = np.exp(2.0/3*np.pi*1j)
+                    i_z =  1/3*(I_j_a+I_j_b+I_j_c)
+                    i_p = 1.0/3.0*(I_j_a + I_j_b*alpha + I_j_c*alpha**2)
+                    i_n = 1.0/3.0*(I_j_a + I_j_b*alpha**2 + I_j_c*alpha)                
+                    it_single_line += N_conductors*3
+                    line.update({'i_j_a_m':np.abs(I_j_a)})
+                    line.update({'i_j_b_m':np.abs(I_j_b)})
+                    line.update({'i_j_c_m':np.abs(I_j_c)})
+                    line.update({'i_j_n_m':np.abs(I_j_n)})
+                    line.update({'deg_j_a':np.angle(I_j_a, deg=True)})
+                    line.update({'deg_j_b':np.angle(I_j_b, deg=True)})
+                    line.update({'deg_j_c':np.angle(I_j_c, deg=True)})
+                    line.update({'deg_j_n':np.angle(I_j_n, deg=True)})
+                    line.update({'i_k_a_m':np.abs(I_k_a)})
+                    line.update({'i_k_b_m':np.abs(I_k_b)})
+                    line.update({'i_k_c_m':np.abs(I_k_c)})
+                    line.update({'i_k_n_m':np.abs(I_k_n)})
+                    line.update({'deg_k_a':np.angle(I_k_a, deg=True)})
+                    line.update({'deg_k_b':np.angle(I_k_b, deg=True)})
+                    line.update({'deg_k_c':np.angle(I_k_c, deg=True)})
+                    line.update({'deg_k_n':np.angle(I_k_n, deg=True)})                               
 
     def bokeh_tools(self):
 
@@ -1451,25 +1562,25 @@ class grid(object):
             bus_id = @bus_id &nbsp &nbsp |  u<sub>avg</sub>= @u_avg_pu pu |  u<sub>unb</sub>= @v_unb %
             <table border="1">
                 <tr>
-                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a </td>
+                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a kVA</td>
                 </tr>
                       <tr>
                       <td> </td> <td>v<sub>ab</sub>= @v_ab V</td>
                       </tr>
                 <tr>
-                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b </td>
+                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b kVA</td>
                 </tr>
                       <tr>
                       <td> </td><td>v<sub>bc</sub>= @v_bc V</td>
                       </tr>
                 <tr>
-                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c </td>
+                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c kVA </td>
                 </tr> 
                     <tr>
                      <td> </td> <td>v<sub>ca</sub>= @v_ca V</td>
                     </tr>
                <tr>
-                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc </td>
+                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc kVA </td>
               </tr>
             </table>
             </div>
@@ -1558,20 +1669,46 @@ class grid(object):
             line id = @line_id 
             <table border="1">
                 <tr>
-                <td>I<sub>a</sub> =  @i_a_m &ang; @deg_a </td>
+                <td>I<sub>a</sub> =  @i_a_m &ang; @deg_a A</td>
                 </tr>
                 <tr>
-                <td>I<sub>b</sub> =  @i_b_m &ang; @deg_b </td>
+                <td>I<sub>b</sub> =  @i_b_m &ang; @deg_b A</td>
                 </tr>
                 <tr>
-                <td>I<sub>c</sub> =  @i_c_m &ang; @deg_c </td>
+                <td>I<sub>c</sub> =  @i_c_m &ang; @deg_c A</td>
                 </tr>
                 <tr>
-                <td>I<sub>n</sub> =  @i_n_m &ang; @deg_n </td>
+                <td>I<sub>n</sub> =  @i_n_m &ang; @deg_n A</td>
                 </tr>
             </table>            
             </div>
             '''
+
+
+        self.line_tooltip = '''
+            <div>
+            line id = @line_id 
+            <table border="5">
+                <tr >
+                    <td>I<sub>ja</sub> =  @i_j_a_m &ang; @deg_j_a </td>
+                    <td>I<sub>ka</sub> =  @i_k_a_m &ang; @deg_k_a </td>
+                </tr>
+                <tr>
+                    <td >I<sub>jb</sub> =  @i_j_b_m &ang; @deg_j_b </td>
+                    <td >I<sub>kb</sub> =  @i_k_b_m &ang; @deg_k_b </td>
+                </tr>
+                <tr>
+                    <td >I<sub>jc</sub> =  @i_j_c_m &ang; @deg_j_c </td>
+                    <td >I<sub>kc</sub> =  @i_k_c_m &ang; @deg_k_c </td>
+                </tr>
+                <tr>
+                    <td >I<sub>jn</sub> =  @i_j_n_m &ang; @deg_j_n </td>
+                    <td >I<sub>kn</sub> =  @i_k_n_m &ang; @deg_k_n </td>
+                </tr>
+            </table>            
+            </div>
+            '''
+
             
         bus_id_to_x = dict(zip(bus_id,x))
         bus_id_to_y = dict(zip(bus_id,y))
@@ -1587,21 +1724,32 @@ class grid(object):
             x_s += [[ bus_id_to_x[line['bus_j']] , bus_id_to_x[line['bus_k']]]]
             y_s += [[ bus_id_to_y[line['bus_j']] , bus_id_to_y[line['bus_k']]]]
             
-        i_a_m = [item['i_a_m'] for item in self.lines]
-        i_b_m = [item['i_b_m'] for item in self.lines]
-        i_c_m = [item['i_c_m'] for item in self.lines]
-        i_n_m = [item['i_n_m'] for item in self.lines]
+        i_j_a_m = [item['i_j_a_m'] for item in self.lines]
+        i_j_b_m = [item['i_j_b_m'] for item in self.lines]
+        i_j_c_m = [item['i_j_c_m'] for item in self.lines]
+        i_j_n_m = [item['i_j_n_m'] for item in self.lines]
+        i_k_a_m = [item['i_k_a_m'] for item in self.lines]
+        i_k_b_m = [item['i_k_b_m'] for item in self.lines]
+        i_k_c_m = [item['i_k_c_m'] for item in self.lines]
+        i_k_n_m = [item['i_k_n_m'] for item in self.lines]
         
-        deg_a = [item['deg_a'] for item in self.lines]
-        deg_b = [item['deg_b'] for item in self.lines]
-        deg_c = [item['deg_c'] for item in self.lines]
-        deg_n = [item['deg_n'] for item in self.lines]        
+        deg_j_a = [item['deg_j_a'] for item in self.lines]
+        deg_j_b = [item['deg_j_b'] for item in self.lines]
+        deg_j_c = [item['deg_j_c'] for item in self.lines]
+        deg_j_n = [item['deg_j_n'] for item in self.lines]
+        deg_k_a = [item['deg_k_a'] for item in self.lines]
+        deg_k_b = [item['deg_k_b'] for item in self.lines]
+        deg_k_c = [item['deg_k_c'] for item in self.lines]
+        deg_k_n = [item['deg_k_n'] for item in self.lines] 
+        
         line_id = ['{:s}-{:s}'.format(item['bus_j'],item['bus_k']) for item in self.lines]
 #        self.line_data = dict(x_j=x_j, x_k=x_k, y_j=y_j, y_k=y_k, line_id=line_id,
 #                             i_a_m=i_a_m)
         self.line_data = dict(x_s=x_s, y_s=y_s, line_id=line_id,
-                             i_a_m=i_a_m, i_b_m=i_b_m, i_c_m=i_c_m, i_n_m=i_n_m,
-                             deg_a=deg_a, deg_b=deg_b, deg_c=deg_c, deg_n=deg_n)
+                             i_j_a_m=i_j_a_m, i_j_b_m=i_j_b_m, i_j_c_m=i_j_c_m, i_j_n_m=i_j_n_m,
+                             i_k_a_m=i_k_a_m, i_k_b_m=i_k_b_m, i_k_c_m=i_k_c_m, i_k_n_m=i_k_n_m,                             
+                             deg_j_a=deg_j_a, deg_j_b=deg_j_b, deg_j_c=deg_j_c, deg_j_n=deg_j_n,
+                             deg_k_a=deg_k_a, deg_k_b=deg_k_b, deg_k_c=deg_k_c, deg_k_n=deg_k_n)
 
 
         

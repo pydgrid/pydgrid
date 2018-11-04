@@ -27,3 +27,24 @@ git add .
 git commit -m '
 python setup.py sdist upload
 
+
+add feature
+-----------
+
+see: pydgrid/docs/dev/nvie-git-workflow-commands.png
+
+
+make changes
+
+change version in /pydrgid/__init__.py
+
+git add . 
+git commit -m '
+python setup.py sdist upload
+
+
+https://readthedocs.org/projects/pydgrid/builds/
+
+
+
+

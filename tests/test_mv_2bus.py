@@ -47,7 +47,7 @@ def test_line_sequence_z():
     sys1.pf()  # solve power flow
     sys1.get_v()      # post process voltages
     sys1.get_i()      # post process currents
-    I_12_pydgrid = sys1.lines[0]['i_a_m']
+    I_12_pydgrid = sys1.lines[0]['i_j_a_m']
 
     # positive sequence "manual" calculation
     V_1_m = sys1.buses[0]['v_an']
