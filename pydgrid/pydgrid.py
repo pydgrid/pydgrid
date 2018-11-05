@@ -11,16 +11,20 @@ import numba
 import string
 numba.caching.config.CACHE_DIR = '/home/jmmauricio/Documents'
 import multiprocessing
-
+from collections import namedtuple
 import json
 import time
 from pydgrid.pf import pf_eval,set_load_factor,time_serie
 import time
 from scipy import sparse
 from scipy.sparse import linalg as sla
-
+from copy import deepcopy
 ## to-do
-# with pi lines line currents are not well displaied
+# add meter
+# improve load documentation (3-ph loads are not clear)
+# kersting example is failing!
+## done
+# with pi lines line currents are not well displaied 
 
 class grid(object):
     '''   
@@ -292,7 +296,7 @@ class grid(object):
                 pq_3p_int_list += [list(it_node_i + np.array([0,1,2]))]
                 it_node_i += 3
                 if 'kVA' in load:
-                    S_va = -1000.0*load['kVA']
+                    S_va = -1000.0*load['kVA']/3.0
                     phi = np.arccos(load['pf'])
                     if type(load['kVA']) == int or float:
                         pq_3p_list += [[S_va*np.exp(1j*phi*np.sign(load['pf']))]]
@@ -544,7 +548,7 @@ class grid(object):
                 data_type='GLOBAL'
                 line['type'] = 'z'
                 if 'Y' in self.line_codes_lib[line_code]: line['type'] = 'pi'
-                
+                if "B_mu" in self.line_codes_lib[line_code]: line['type'] = 'pi'
             
                 
             if not  data_type=='GLOBAL':
@@ -610,13 +614,18 @@ class grid(object):
                     self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
 
                 if data_type=='PIRXC':
+                    lenght_convertion = 1.0
                     line['type'] = 'pi'
+
+                    
+                    if "unit" in data['line_codes'][line_code]: 
+                        if  data['line_codes'][line_code]['unit'] == 'miles': lenght_convertion = 1.0/1.60934
+                        
                     R = np.array(data['line_codes'][line_code]['R'])
                     X = np.array(data['line_codes'][line_code]['X'])
-                    Z = R + 1j*X
+                    Z = (R + 1j*X)*lenght_convertion              
                     self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
-                    
-                    Y = 1j*np.array(data['line_codes'][line_code]['B_mu'])*1e-6
+                    Y = -1j*np.array(data['line_codes'][line_code]['B_mu'])*1e-6*lenght_convertion
                     self.line_codes_lib[line_code].update({'Y':Y.tolist()})
                     
 
@@ -829,7 +838,7 @@ class grid(object):
                     
                 Z = line['m']*0.001*np.array(self.line_codes_lib[line['code']]['Z'])
                 Y = np.array(self.line_codes_lib[line['code']]['Y'])
-     
+ 
                 Z_line_list += [ Z,
                                 -1.0/(line['m']*0.001)*np.linalg.inv(Y/2),
                                 -1.0/(line['m']*0.001)*np.linalg.inv(Y/2)]   # Line code to list of Z lines
@@ -1839,7 +1848,83 @@ class grid(object):
             
         return I_abc            
 
+    def monitor(self,bus_from,bus_to):
 
+        lines = self.lines
+        buses = self.buses 
+        line_index_from = []
+        line_index = 0
+        bus_idx = 0
+        
+        for line in lines:
+            if (line['bus_j'] == bus_from) & (line['bus_k'] == bus_to):
+                line_index_from += [(line_index,1)]
+            if (line['bus_k'] == bus_from) & (line['bus_j'] == bus_to):
+                line_index_from += [(line_index,-1)]
+            line_index += 1 
+        for bus in buses:
+            if bus['bus'] == bus_from:
+                bus_index  = bus_idx
+            bus_idx += 1 
+        
+        I_a = 0.0
+        I_b = 0.0
+        I_c = 0.0
+        I_n = 0.0
+        for line_idx, direction in line_index_from:
+        
+            if direction ==  1:
+                I_a += lines[line_idx]['i_j_a_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_j_a']))
+                I_b += lines[line_idx]['i_j_b_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_j_b']))
+                I_c += lines[line_idx]['i_j_c_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_j_c']))                              
+                I_n += lines[line_idx]['i_j_n_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_j_n']))                                          
+            if direction == -1:
+                I_a += -lines[line_idx]['i_k_a_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_k_a']))
+                I_b += -lines[line_idx]['i_k_b_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_k_b']))
+                I_c += -lines[line_idx]['i_k_c_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_k_c']))                             
+                I_n += -lines[line_idx]['i_k_n_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_k_n'])) 
+                
+        v_an = buses[bus_index]['v_an']
+        v_bn = buses[bus_index]['v_bn']        
+        v_cn = buses[bus_index]['v_cn']        
+        v_ng = buses[bus_index]['v_ng']          
+        
+        V_a = v_an*np.exp(1j*np.deg2rad(buses[bus_index]['deg_an']))        
+        V_b = v_bn*np.exp(1j*np.deg2rad(buses[bus_index]['deg_bn']))  
+        V_c = v_cn*np.exp(1j*np.deg2rad(buses[bus_index]['deg_cn']))  
+        V_n = v_ng*np.exp(1j*np.deg2rad(buses[bus_index]['deg_ng']))  
+        
+        v_abc = np.array([v_an,v_bn,v_cn])
+        v_avg = np.average(v_abc)
+        unb_v = float(np.max(np.abs(v_abc-v_avg))/v_avg)   
+        
+        i_abc = np.array([np.abs(I_a),np.abs(I_b),np.abs(I_c)])
+        i_avg = np.average(i_abc)
+        unb_i = float(np.max(np.abs(i_abc-i_avg))/i_avg)   
+        
+        S = V_a*np.conjugate(I_a) + V_b*np.conjugate(I_b) + V_c*np.conjugate(I_c) + V_n*np.conj(I_n) 
+        mon = namedtuple('monitor', ['I_a_m', 'I_b_m', 'I_c_m','S','P','Q'], verbose=False)
+        mon.I_a_m = abs(I_a)
+        mon.I_b_m = abs(I_b)
+        mon.I_c_m = abs(I_c)
+        mon.I_a = I_a
+        mon.I_b = I_b
+        mon.I_c = I_c
+        mon.I_n = I_n
+        mon.S_m = abs(S)
+        mon.S = S
+        mon.P = S.real
+        mon.Q = S.imag
+        mon.V_a = V_a
+        mon.V_b = V_b
+        mon.V_c = V_c
+        mon.V_n = V_n  
+        mon.unb_v = unb_v  
+        mon.unb_i = unb_i  
+        mon.pf = S.real/np.abs(S)
+        mon.U = v_avg*np.sqrt(3)
+        mon.I = i_avg
+        return mon
         
 def LUstruct(A_sp):
     LU_sp = sla.splu(sparse.csc_matrix(A_sp))

@@ -2,7 +2,7 @@
   "tests/test_grounding.py::test_no_gnd",
   "tests/test_grounding.py::test_zigzag_gnd",
   "tests/test_kersting_ex6p1.py::test_solver1",
-  "tests/test_kersting_ex6p1.py::test_solver2",
+  "tests/test_monitor.py::test_monitor1",
   "tests/test_mv_2bus.py::test_line_sequence_z",
   "tests/test_mv_2bus.py::test_pr_mt_h",
   "tests/test_transformers.py::test_Dyn11_OC",

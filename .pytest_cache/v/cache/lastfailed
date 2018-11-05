@@ -1,1 +1,3 @@
-{}
+{
+  "tests/test_kersting_ex6p1.py::test_solver2": true
+}

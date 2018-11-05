@@ -1,10 +1,10 @@
 {
 "lines":[
-        {"bus_j": "Bus_1",  "bus_k": "Bus_2",  "code": "Kersting", "m": 1000}
+        {"bus_j": "Bus_1",  "bus_k": "Bus_2",  "code": "Kersting", "m": 1609.34}
         ],
 "buses":[
-		{"bus": "Bus_1",  "pos_x": 10, "pos_y":  0, "units": "m", "U_kV":0.4},
-		{"bus": "Bus_2",  "pos_x": 200, "pos_y": 0, "units": "m", "U_kV":0.4}
+		{"bus": "Bus_1",  "pos_x": 10, "pos_y":  0, "units": "m", "U_kV":12.47},
+		{"bus": "Bus_2",  "pos_x": 200, "pos_y": 0, "units": "m", "U_kV":12.47}
 		],
 "grid_formers":[
 		{"bus": "Bus_1","bus_nodes": [1, 2, 3],
@@ -13,7 +13,7 @@
 		}
 		],
 "loads":[
-		{"bus": "Bus_2" , "kVA": 2000.0, "pf": 0.9,"type":"3P"}
+		{"bus": "Bus_2" , "kVA": 6000.0, "pf": 0.9,"type":"3P"}
         ],
 "line_codes":
 		{"Kersting":
@@ -31,7 +31,8 @@
 					 [10.7409, -3.4777, -1.3322],
 					 [-3.4777, 11.3208, -2.2140],
 					 [ -1.3322, -2.2140, 10.2104]
-				 ]
+				 ],
+"unit":"miles"
 		}
 		}
 }
