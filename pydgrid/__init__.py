@@ -8,4 +8,4 @@ Created on Fri Jun 16 12:54:49 2017
 from pydgrid.pydgrid import grid
 
 
-__version__ = '0.3.2'
+__version__ = '0.4.0'

@@ -1143,6 +1143,8 @@ class grid(object):
         self.iters = self.params_pf['iters']
         if self.iters > self.max_iter-1:
             print('Maximum number of iterations reached: {:d}'.format(int(self.iters)))
+        self.get_v()
+        self.get_i()
 
         
     def read_loads_shapes(self,json_file):        

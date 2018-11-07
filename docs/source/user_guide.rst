@@ -58,7 +58,7 @@ For the proposed system example the following elemnts from pydgrid should be con
                             "kV": [11.547, 11.547, 11.547]}
                            ],
             "transformers":[
-                            {"bus_j": "B1",  "bus_k": "B2",  "S_n_kVA": 2500.0, "U_j_kV":20, "U_k_kV":0.42,
+                            {"bus_j": "B1",  "bus_k": "B2",  "S_n_kVA": 1000.0, "U_j_kV":20, "U_k_kV":0.42,
                              "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": "Dyn11",   "conductors_j": 3, "conductors_k": 4},
                            ],
             "lines":[
