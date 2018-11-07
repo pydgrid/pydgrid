@@ -21,3 +21,12 @@ __pycache__/
 .eggs/
 
 dev
+log.txt
+
+
+..gitignore.kate-swp
+.travis.yml
+for_dev.rst
+.pytest_cache
+
+pydgrid.egg-info

@@ -22,10 +22,11 @@ from copy import deepcopy
 ## to-do
 # add meter
 # improve load documentation (3-ph loads are not clear)
-# kersting example is failing!
+# compute powers as S = v_ag*conj(i_a) + v_bg*conj(i_b) + v_cg*conj(i_c)  + v_ng*conj(i_n) 
+# 2 loads in same bus are not supported
 ## done
 # with pi lines line currents are not well displaied 
-
+# kersting example is failing! (1000 ft is 1 mile???)
 class grid(object):
     '''   
     P+N : 1
@@ -558,7 +559,8 @@ class grid(object):
                 if 'C_1_muF' in line_data:  data_type='PIR1X1C1'
                 if 'R' in line_data:  data_type='ZRX'  
                 if 'X' in line_data:  data_type='ZRX'      
-                if 'B_mu' in line_data:  data_type='PIRXC'  
+                if 'B_mu' in line_data:  data_type='PIRXC'
+                if 'B1_mu' in line_data:  data_type='PIR1X1B1mu'  
                 if 'Rph' in line_data:  data_type='ZRphXph'
                 if 'Rn' in line_data:  data_type='ZRphXphRnXn'  
                 if 'rho_20_m' in line_data:  data_type='ZrhoX'  
@@ -567,7 +569,7 @@ class grid(object):
                 
                 if data_type in ['ZR1X1', 'ZRX', 'ZRphXph','ZrhoX' ,'RX90pf'  ]:
                     line['type'] = 'z'
-                if data_type in ['PIR1X1C1', 'PIRXC'  ]:
+                if data_type in ['PIR1X1C1', 'PIRXC','PIR1X1B1mu'  ]:
                     line['type'] = 'pi'                    
                 
                 if data_type=='ZR1X1':
@@ -606,6 +608,32 @@ class grid(object):
                     self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
                     self.line_codes_lib[line_code].update({'Y':Y.tolist()})
 
+                if data_type=='PIR1X1B1mu':
+                    line['type'] = 'pi'
+                    Z_1 = line_data['R1'] + 1j*line_data['X1']
+                    Z_2 = Z_1
+                    if 'X0' in line_data:
+                        Z_0 = line_data['R0'] + 1j*line_data['X0'] 
+                    else:
+                        Z_0 = 3*Z_1
+                        
+                    B_1 = line_data['B1_mu'] /1.0e6
+                    B_2 = B_1
+                    if 'B0_mu' in line_data:
+                        B_0 = line_data['B0_mu']/1.0e6
+                    else:
+                        B_0 = B_1
+                        
+                    Z_012 = np.array([[Z_0,0,0],[0,Z_1,0],[0,0,Z_2]])
+                    Z = A_a0 @ Z_012 @ A_0a
+              
+                    Y_012 = np.array([[B_0,0,0],[0,B_1,0],[0,0,B_2]])
+                    Y = A_a0 @ Y_012 @ A_0a
+                    
+                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
+                    self.line_codes_lib[line_code].update({'Y':Y.tolist()})
+                    
+                    
                 if data_type=='ZRX':
                     line['type'] = 'z'
                     R = np.array(data['line_codes'][line_code]['R'])
