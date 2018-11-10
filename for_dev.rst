@@ -38,7 +38,7 @@ make changes
 
 change version in /pydrgid/__init__.py
 
-git add . 
+git add -A 
 git commit -m '
 python setup.py sdist upload
 

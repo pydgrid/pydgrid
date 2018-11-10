@@ -1,0 +1,31 @@
+{     
+        "buses":[
+                 {"bus": "B1",  "pos_x":   0, "pos_y":   0, "units": "m", "U_kV":20.0},
+                 {"bus": "B2",  "pos_x":  10, "pos_y":   0, "units": "m", "U_kV":0.4},
+                 {"bus": "B3",  "pos_x": 100, "pos_y":  0, "units": "m", "U_kV":0.4}
+                ],
+        "grid_formers":[
+                        {"bus": "B1",
+                        "bus_nodes": [1, 2, 3], "deg": [0, -120, -240],
+                        "kV": [11.547, 11.547, 11.547]}
+                       ],
+        "transformers":[
+                        {"bus_j": "B1",  "bus_k": "B2",  "S_n_kVA": 160.0, "U_j_kV":22.0, "U_k_kV":0.44,
+                         "R_cc_pu": 0.0, "X_cc_pu":0.06, "connection": "Dyn11",   "conductors_j": 3, "conductors_k": 4},
+                       ],
+        "lines":[
+                 {"bus_j": "B2",  "bus_k": "B3",  "code": "lv_cu_150", "m": 175.0},
+                ],
+        "loads":[
+                 {"bus": "B3" , "kVA": 0.0, "pf": 0.85,"type":"3P+N"}
+                ],
+        "shunts":[
+                 {"bus": "B2" , "R": 0.001, "X": 0.0, "bus_nodes": [4,0]},
+                 {"bus": "B3" , "R": 0.000001, "X": 0.0, "bus_nodes": [1,2]},
+                # {"bus": "B2" , "R": 0.000001, "X": 0.0, "bus_nodes": [2,3]}
+                 ],
+        "line_codes":{
+    "lv_cu_150":  {"u90_pf10":0.27,"u90_pf08":0.31, 'T_deg':90.0, 'alpha':0.004},
+    "lv_cu_240":  {"u90_pf10":0.17,"u90_pf08":0.27, 'T_deg':90.0, 'alpha':0.004}
+            }
+       }  
