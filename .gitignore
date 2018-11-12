@@ -30,3 +30,5 @@ for_dev.rst
 .pytest_cache
 
 pydgrid.egg-info
+
+generate
