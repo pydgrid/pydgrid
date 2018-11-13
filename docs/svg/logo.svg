@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100.00802"
+   height="89.013336"
+   id="svg15106"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
+  <defs
+     id="defs15108">
+    <marker
+       style="overflow:visible"
+       id="marker7868"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path7870"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker7868-6"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path7870-7"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker7868-5"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path7870-6"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker7868-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path7870-70"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker7868-62"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         transform="scale(-0.6,-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path7870-61"
+         inkscape:connector-curvature="0" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.959798"
+     inkscape:cx="41.765934"
+     inkscape:cy="22.688715"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     fit-margin-top="0"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid15157"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="-1e-05px"
+       originy="30.013317px" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata15111">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-219.5985,-392.92417)">
+    <rect
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect95475"
+       width="105"
+       height="95"
+       x="-9.9999997e-06"
+       y="-0.99998081"
+       transform="translate(219.5985,392.92417)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 239.59849,436.92416 15,0 0,-4.00002"
+       id="path15365"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       id="g4601"
+       transform="matrix(0,1,-1,0,426.96038,367.92416)"
+       style="fill:#d9534f"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <g
+         id="g16145-1-5"
+         transform="matrix(0,1,-1,0,422.36218,122.36218)"
+         style="fill:#d9534f">
+        <g
+           id="g15315-0-9"
+           transform="translate(-35,2.6171874e-6)"
+           style="fill:#d9534f">
+          <path
+             d="m 75.000005,392.36103 c 0,2.7603 2.238606,5.00114 4.999707,5.00114 2.761102,0 5.000284,-2.24084 5.000284,-5.00114 0,-2.76031 -2.239182,-4.99885 -5.000284,-4.99885 -2.761101,0 -4.999707,2.23854 -4.999707,4.99885"
+             style="fill:#d9534f;display:inline"
+             id="path70904-5-5"
+             inkscape:connector-curvature="0" />
+          <g
+             id="g70398-5-5"
+             transform="matrix(1.1522065,0,0,1.25,67.784307,75.27218)"
+             style="fill:#d9534f" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g40949"
+       transform="matrix(0,1,-1,0,426.96067,342.92416)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 60,167.36218 8.999999,0"
+         id="path4610"
+         inkscape:connector-curvature="0" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 65,157.36218 0,20"
+         id="path4612"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       id="g15159"
+       transform="matrix(0,0.65517237,-0.65517237,0,544.86963,221.19607)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         inkscape:connector-curvature="0"
+         id="path70904-5-5-8"
+         style="fill:none;stroke:#000000;stroke-width:1.52631593;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none;display:inline"
+         d="m 298.11292,428.41428 c -3.86443,0 -7.00161,3.13404 -7.00161,6.99959 0,3.86555 3.13718,7.00041 7.00161,7.00041 3.86443,0 6.99839,-3.13486 6.99839,-7.00041 0,-3.86555 -3.13396,-6.99959 -6.99839,-6.99959" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path70904-5-5-8-6"
+         style="fill:none;stroke:#000000;stroke-width:1.52631593;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:6;stroke-opacity:1;stroke-dasharray:none;display:inline"
+         d="m 307.11292,428.41469 c -3.86443,0 -7.00161,3.13404 -7.00161,6.99959 0,3.86555 3.13718,7.00041 7.00161,7.00041 3.86443,0 6.99839,-3.13486 6.99839,-7.00041 0,-3.86555 -3.13396,-6.99959 -6.99839,-6.99959" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:1.52631581px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 314.11131,435.41428 6,0"
+         id="path4610-8-4"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 269.59849,431.92415 -20,0"
+       id="path4612-3"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       id="g15210"
+       transform="matrix(0,1,-1,0,730.01277,201.81285)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 265.11131,460.41428 0,20"
+         id="path4612-2-5"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 259.59849,431.92415 0,50.00001"
+       id="path15214"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       id="g15210-2"
+       transform="matrix(0,1,-1,0,730.01277,181.81285)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 265.11131,460.41428 0,20"
+         id="path4612-2-5-9"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 264.5985,446.92416 0,10 35,0 0,10"
+       id="path15246"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <g
+       id="g15210-9"
+       transform="matrix(0,1,-1,0,770.01277,201.81285)"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 265.11131,460.41428 0,20"
+         id="path4612-2-5-3"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       d="m 239.59849,436.92416 c 0,-2.7603 -2.23861,-5.00114 -4.99971,-5.00114 -2.7611,0 -5.00028,2.24084 -5.00028,5.00114 0,2.76031 2.23918,4.99885 5.00028,4.99885 2.7611,0 4.99971,-2.23854 4.99971,-4.99885"
+       style="fill:#5cb85c;display:inline"
+       id="path70904-5-5-23"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 259.59849,481.92416 0,-10"
+       id="path15367"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 299.59849,466.92416 0,10"
+       id="path15369"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       d="m 304.59819,476.92416 c 0,-2.7603 -2.23861,-5.00114 -4.99971,-5.00114 -2.7611,0 -5.00028,2.24084 -5.00028,5.00114 0,2.76031 2.23918,4.99885 5.00028,4.99885 2.7611,0 4.99971,-2.23854 4.99971,-4.99885"
+       style="fill:#d9534f;display:inline"
+       id="path70904-5-5-2"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+    <path
+       d="m 264.5982,476.9253 c 0,-2.7603 -2.23861,-5.00114 -4.99971,-5.00114 -2.7611,0 -5.00028,2.24084 -5.00028,5.00114 0,2.76031 2.23918,4.99885 5.00028,4.99885 2.7611,0 4.99971,-2.23854 4.99971,-4.99885"
+       style="fill:#337ab7;display:inline"
+       id="path70904-5-5-7"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydgrid/docs/source/png/logo.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
+  </g>
+</svg>

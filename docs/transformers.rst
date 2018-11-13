@@ -18,8 +18,22 @@ Dyn11
 .. code:: python
 
 	 	"transformers":[
-	                     {"bus_j": "Bus_0",  "bus_k": "Bus_1",  "S_n_kVA": 2500.0, "U_j_kV":20, "U_k_kV":0.69,
-	                      "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": "Dyg11_3w",   "conductors_j": 3, "conductors_k": 3},
+                 {"bus_j": "Bus_0",  "bus_k": "Bus_1",  "S_n_kVA": 1000.0, "U_j_kV":20, "U_k_kV":0.42,
+                  "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": "Dyn11",   "conductors_j": 3, "conductors_k": 4},
+	 			],
+
+
+Dyn1
+''''
+
+.. image:: ./png/Dyn1.png
+   :width: 450 px
+
+.. code:: python
+
+	 	"transformers":[
+                 {"bus_j": "Bus_0",  "bus_k": "Bus_1",  "S_n_kVA": 1000.0, "U_j_kV":20, "U_k_kV":0.42,
+                  "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": "Dyn1",   "conductors_j": 3, "conductors_k": 4},
 	 			],
 
 

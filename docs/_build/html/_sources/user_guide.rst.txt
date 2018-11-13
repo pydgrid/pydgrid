@@ -98,15 +98,6 @@ Execute power flow
     grid_1.pf()
 
 
-Post process results
---------------------
-
-.. code-block:: python
-
-    grid_1.get_v()
-    grid_1.get_i()
-
-
 Plot results
 ------------
 

@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="793.70081"
+   height="1122.5197"
+   id="svg19718"
+   version="1.1"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="profiles.svg">
+  <defs
+     id="defs19720">
+    <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="marker5799"
+       style="overflow:visible;"
+       inkscape:isstock="true">
+      <path
+         id="path5563"
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#d9534f;stroke-opacity:1;fill:#d9534f;fill-opacity:1"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(0.6) rotate(180) translate(0,0)" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         d="M -5.5798962,-2.5815905 1.4126653,-0.01024849 -5.5798966,2.561093 c 1.117119,-1.518119 1.1106821,-3.5951692 4e-7,-5.1426835 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.40000001;stroke-linejoin:round"
+         id="path8281"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker7868"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         d="M -5.5798962,-2.5815905 1.4126653,-0.01024849 -5.5798966,2.561093 c 1.117119,-1.518119 1.1106821,-3.5951692 4e-7,-5.1426835 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.40000001;stroke-linejoin:round"
+         id="path7870"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker19657"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         d="M -5.5798962,-2.5815905 1.4126653,-0.01024849 -5.5798966,2.561093 c 1.117119,-1.518119 1.1106821,-3.5951692 4e-7,-5.1426835 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.40000001;stroke-linejoin:round"
+         id="path19659"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker19661"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         d="M -5.5798962,-2.5815905 1.4126653,-0.01024849 -5.5798966,2.561093 c 1.117119,-1.518119 1.1106821,-3.5951692 4e-7,-5.1426835 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.40000001;stroke-linejoin:round"
+         id="path19663"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker19665"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         d="M -5.5798962,-2.5815905 1.4126653,-0.01024849 -5.5798966,2.561093 c 1.117119,-1.518119 1.1106821,-3.5951692 4e-7,-5.1426835 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.40000001;stroke-linejoin:round"
+         id="path19667"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-4"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         d="M -5.5798962,-2.5815905 1.4126653,-0.01024849 -5.5798966,2.561093 c 1.117119,-1.518119 1.1106821,-3.5951692 4e-7,-5.1426835 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.40000001;stroke-linejoin:round"
+         id="path8281-9"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-8"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         d="M -5.5798962,-2.5815905 1.4126653,-0.01024849 -5.5798966,2.561093 c 1.117119,-1.518119 1.1106821,-3.5951692 4e-7,-5.1426835 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.40000001;stroke-linejoin:round"
+         id="path8281-6"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-2"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         d="M -5.5798962,-2.5815905 1.4126653,-0.01024849 -5.5798966,2.561093 c 1.117119,-1.518119 1.1106821,-3.5951692 4e-7,-5.1426835 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.40000001;stroke-linejoin:round"
+         id="path8281-5"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-27"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         d="M -5.5798962,-2.5815905 1.4126653,-0.01024849 -5.5798966,2.561093 c 1.117119,-1.518119 1.1106821,-3.5951692 4e-7,-5.1426835 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.40000001;stroke-linejoin:round"
+         id="path8281-3"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend-0"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend">
+      <path
+         d="M -5.5798962,-2.5815905 1.4126653,-0.01024849 -5.5798966,2.561093 c 1.117119,-1.518119 1.1106821,-3.5951692 4e-7,-5.1426835 z"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.40000001;stroke-linejoin:round"
+         id="path8281-1"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5799-2"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5563-3"
+         style="fill:#5cb85c;fill-opacity:1;fill-rule:evenodd;stroke:#5cb85c;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="scale(-0.6)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker5799-2-5"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5563-3-9"
+         style="fill:#337ab7;fill-opacity:1;fill-rule:evenodd;stroke:#337ab7;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="scale(-0.6)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="320.10323"
+     inkscape:cy="508.00569"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:snap-object-midpoints="false"
+     inkscape:snap-center="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1021"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     showguides="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid19849"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="0"
+       originy="0"
+       spacingx="1.0666667"
+       spacingy="1.0666667" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata19723">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80000019px;line-height:0%;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.06666672"
+       x="293.90393"
+       y="614.77417"
+       id="text22021"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="614.77417"
+         id="tspan22051"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672">shapes = [<tspan
+   style="fill:#d9534f"
+   id="tspan5265">s</tspan><tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';fill:#d9534f;stroke-width:1.06666672"
+   id="tspan22142">[0]</tspan>,</tspan><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="621.78784"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672"
+         id="tspan5255" /><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="627.22113"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672"
+         id="tspan5257">          <tspan
+   style="fill:#d9534f"
+   id="tspan5269">s[1]</tspan>,</tspan><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="639.66809"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672"
+         id="tspan5263">          <tspan
+   style="fill:#d9534f"
+   id="tspan5271">s[2]</tspan>,</tspan><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="646.68182"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672"
+         id="tspan5259" /><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="646.68182"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672"
+         id="tspan5273" /><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="646.68182"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672"
+         id="tspan5275" /><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="652.11511"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672"
+         id="tspan5261">          <tspan
+   style="fill:#5cb85c"
+   id="tspan5382">s[0]</tspan>,</tspan><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="664.56207"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672"
+         id="tspan5281">          <tspan
+   style="fill:#5cb85c"
+   id="tspan5384">s[1]</tspan>,</tspan><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="677.00903"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672"
+         id="tspan5283">          <tspan
+   style="fill:#337ab7"
+   id="tspan5386">s[0]</tspan>,</tspan><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="689.45605"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672"
+         id="tspan5285">          <tspan
+   style="fill:#337ab7"
+   id="tspan5388">s[1]</tspan>,</tspan><tspan
+         sodipodi:role="line"
+         x="293.90393"
+         y="701.90302"
+         id="tspan22136"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';stroke-width:1.06666672">          <tspan
+   style="fill:#337ab7"
+   id="tspan5390">s[2]</tspan>]</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80000019px;line-height:0%;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.06666672;"
+       x="340.75815"
+       y="669.16321"
+       id="text22138"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         id="tspan22140"
+         x="340.75815"
+         y="669.16321"
+         style="font-size:12.80000019px;line-height:1.25;stroke-width:1.06666672;-inkscape-font-specification:'Latin Modern Mono';font-family:'Latin Modern Mono';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;"> </tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80000019px;line-height:0%;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#d9534f;fill-opacity:1;stroke:none;stroke-width:1.06666672"
+       x="396.71082"
+       y="615.70459"
+       id="text22021-3"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         x="396.71082"
+         y="615.70459"
+         id="tspan22136-1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';fill:#d9534f;stroke-width:1.06666672">initials[0] = 0</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80000019px;line-height:0%;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#5cb85c;fill-opacity:1;stroke:none;stroke-width:1.06666672"
+       x="396.98459"
+       y="652.45276"
+       id="text22021-3-7"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         x="396.98459"
+         y="652.45276"
+         id="tspan22136-1-9"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';fill:#5cb85c;stroke-width:1.06666672">initials[0] = 3</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.80000019px;line-height:0%;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#337ab7;fill-opacity:1;stroke:none;stroke-width:1.06666672"
+       x="398.99652"
+       y="675.65515"
+       id="text22021-3-7-2"
+       inkscape:export-filename="/home/jmmauricio/Documents/public/workspace/pydss/doc/source/orden_nodos.png"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300"><tspan
+         sodipodi:role="line"
+         x="398.99652"
+         y="675.65515"
+         id="tspan22136-1-9-0"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.95758057px;line-height:1.25;font-family:'Latin Modern Mono';-inkscape-font-specification:'Latin Modern Mono';fill:#337ab7;stroke-width:1.06666672">initials[0] = 5</tspan></text>
+    <path
+       style="fill:#d9534f;stroke:#d9534f;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker5799)"
+       d="m 394.66668,612.65297 h -16"
+       id="path5534"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#5cb85c;stroke:#5cb85c;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker5799-2)"
+       d="m 389.33334,649.9863 h -16"
+       id="path5534-7"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:#337ab7;stroke:#337ab7;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker5799-2-5)"
+       d="m 389.33334,674.51964 h -16"
+       id="path5534-7-2"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
