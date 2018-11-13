@@ -1,0 +1,9 @@
+certifi
+llvmlite
+mkl-fft
+mkl-random
+numba
+numpy
+pydgrid
+scipy
+nbsphinx
