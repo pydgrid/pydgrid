@@ -1,3 +1,3 @@
 0 transformer to read 
-Transformers read in: 0.000 sYs calc 0.022
-inv_Y_ii 0.000
+Transformers read in: 0.000 sYs calc 0.089
+inv_Y_ii 0.008
