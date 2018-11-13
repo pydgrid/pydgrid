@@ -1,13 +1,18 @@
 .. pydgrid
-Python Distribution System Simulator
+pydgrid: Python Distribution Grid simulator
 
 
 
-:Name: pydss
+:Name: pydgrid
 :Website: https://pydgrid.github.io/
 :Author: Juan Manuel Mauricio |orcid|
-:Version: 0.3.1
+:Version: 0.4.4
 
+
+.. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
+   :target: https://github.com/pydgrid/pydgrid/raw/master/COPYING
+   
+   
 .. |orcid| image:: https://img.shields.io/badge/id-0000--0002--2187--161X-a6ce39.svg
    :target: http://orcid.org/0000-0002-5702-0198
 
