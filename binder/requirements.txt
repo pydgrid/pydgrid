@@ -3,3 +3,4 @@ numpy
 pydgrid
 scipy
 pandas
+bokeh
