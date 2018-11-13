@@ -1,0 +1,201 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>User guide &#8212; Read the Docs Template 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Getting started" href="getting_started.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="getting_started.html" title="Getting started"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Read the Docs Template 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="user-guide">
+<h1>User guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
+<p>The simplest use can be understood with an example. Suppose we want to calculate the power flow of the following system:</p>
+<a class="reference internal image-reference" href="_images/trafo_line_load.png"><img alt="_images/trafo_line_load.png" src="_images/trafo_line_load.png" style="width: 600px;" /></a>
+<p>The following steps should be considered:</p>
+<ol class="arabic simple">
+<li>Import modules</li>
+<li>Define or load grid parameters</li>
+<li>Generate a grid instance</li>
+<li>Read grid parameters</li>
+<li>Run power flow</li>
+<li>Post process results</li>
+<li>Plot results</li>
+</ol>
+<div class="section" id="import-modules">
+<h2>Import modules<a class="headerlink" href="#import-modules" title="Permalink to this headline">¶</a></h2>
+<p>First of all, we have to import the relevant modules and classes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">pydgrid</span> <span class="kn">import</span> <span class="n">grid</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="define-or-write-grid-parameters">
+<h2>Define or write grid parameters<a class="headerlink" href="#define-or-write-grid-parameters" title="Permalink to this headline">¶</a></h2>
+<p>The network can be introduced in two ways:</p>
+<ul class="simple">
+<li>Python dictionary</li>
+<li>json file with the same structure as in the case of the previous python dictionary</li>
+</ul>
+<p>For the proposed system example the following elemnts from pydgrid should be considered:</p>
+<a class="reference internal image-reference" href="_images/trafo_line_load_pydgrid.png"><img alt="_images/trafo_line_load_pydgrid.png" src="_images/trafo_line_load_pydgrid.png" style="width: 600px;" /></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;buses&quot;</span><span class="p">:[</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>  <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span>   <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span>   <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;U_kV&quot;</span><span class="p">:</span><span class="mf">20.0</span><span class="p">},</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>  <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span>  <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span>   <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;U_kV&quot;</span><span class="p">:</span><span class="mf">0.4</span><span class="p">},</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B3&quot;</span><span class="p">,</span>  <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span>  <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;U_kV&quot;</span><span class="p">:</span><span class="mf">0.4</span><span class="p">}</span>
+                <span class="p">],</span>
+        <span class="s2">&quot;grid_formers&quot;</span><span class="p">:[</span>
+                        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;deg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mi">240</span><span class="p">],</span>
+                        <span class="s2">&quot;kV&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">11.547</span><span class="p">,</span> <span class="mf">11.547</span><span class="p">,</span> <span class="mf">11.547</span><span class="p">]}</span>
+                       <span class="p">],</span>
+        <span class="s2">&quot;transformers&quot;</span><span class="p">:[</span>
+                        <span class="p">{</span><span class="s2">&quot;bus_j&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>  <span class="s2">&quot;bus_k&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>  <span class="s2">&quot;S_n_kVA&quot;</span><span class="p">:</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="s2">&quot;U_j_kV&quot;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;U_k_kV&quot;</span><span class="p">:</span><span class="mf">0.42</span><span class="p">,</span>
+                         <span class="s2">&quot;R_cc_pu&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;X_cc_pu&quot;</span><span class="p">:</span><span class="mf">0.04</span><span class="p">,</span> <span class="s2">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;Dyn11&quot;</span><span class="p">,</span>   <span class="s2">&quot;conductors_j&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;conductors_k&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+                       <span class="p">],</span>
+        <span class="s2">&quot;lines&quot;</span><span class="p">:[</span>
+                 <span class="p">{</span><span class="s2">&quot;bus_j&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>  <span class="s2">&quot;bus_k&quot;</span><span class="p">:</span> <span class="s2">&quot;B3&quot;</span><span class="p">,</span>  <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="s2">&quot;lv_cu_150&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">},</span>
+                <span class="p">],</span>
+        <span class="s2">&quot;loads&quot;</span><span class="p">:[</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B3&quot;</span> <span class="p">,</span> <span class="s2">&quot;kVA&quot;</span><span class="p">:</span> <span class="mf">300.0</span><span class="p">,</span> <span class="s2">&quot;pf&quot;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;3P+N&quot;</span><span class="p">}</span>
+                <span class="p">],</span>
+        <span class="s2">&quot;shunts&quot;</span><span class="p">:[</span>
+                 <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">0.001</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">]}</span>
+                 <span class="p">],</span>
+        <span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
+            <span class="p">{</span><span class="s2">&quot;lv_cu_150&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;Rph&quot;</span><span class="p">:</span><span class="mf">0.167</span><span class="p">,</span><span class="s2">&quot;Xph&quot;</span><span class="p">:</span><span class="mf">0.08</span><span class="p">,</span> <span class="s2">&quot;Rn&quot;</span><span class="p">:</span><span class="mf">0.167</span><span class="p">,</span> <span class="s2">&quot;Xn&quot;</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">}</span>
+            <span class="p">}</span>
+       <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-a-grid-instance">
+<h2>Generate a grid instance<a class="headerlink" href="#generate-a-grid-instance" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grid_1</span> <span class="o">=</span> <span class="n">grid</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-grid-parameters">
+<h2>Read grid parameters<a class="headerlink" href="#read-grid-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grid_1</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="execute-power-flow">
+<h2>Execute power flow<a class="headerlink" href="#execute-power-flow" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grid_1</span><span class="o">.</span><span class="n">pf</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="post-process-results">
+<h2>Post process results<a class="headerlink" href="#post-process-results" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grid_1</span><span class="o">.</span><span class="n">get_v</span><span class="p">()</span>
+<span class="n">grid_1</span><span class="o">.</span><span class="n">get_i</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plot-results">
+<h2>Plot results<a class="headerlink" href="#plot-results" title="Permalink to this headline">¶</a></h2>
+<p>In the case of using jupyter notebook results can be visualized with a bokeh plot that includes hover tools.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydgrid.plot_bokeh</span> <span class="kn">import</span> <span class="n">plot_results</span>
+<span class="n">plot_results</span><span class="p">(</span><span class="n">grid_1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An on-line working jupyter notebook with the same example can be obtained here:</p>
+<a class="reference external image-reference" href="https://mybinder.org/v2/gh/pydgrid/pydgrid/master?filepath=%2Fexamples%2Ftutorial%2FExample%201.ipynb"><img alt="https://mybinder.org/badge.svg" src="https://mybinder.org/badge.svg" /></a>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">User guide</a><ul>
+<li><a class="reference internal" href="#import-modules">Import modules</a></li>
+<li><a class="reference internal" href="#define-or-write-grid-parameters">Define or write grid parameters</a></li>
+<li><a class="reference internal" href="#generate-a-grid-instance">Generate a grid instance</a></li>
+<li><a class="reference internal" href="#read-grid-parameters">Read grid parameters</a></li>
+<li><a class="reference internal" href="#execute-power-flow">Execute power flow</a></li>
+<li><a class="reference internal" href="#post-process-results">Post process results</a></li>
+<li><a class="reference internal" href="#plot-results">Plot results</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="getting_started.html"
+                        title="previous chapter">Getting started</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/user_guide.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="getting_started.html" title="Getting started"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Read the Docs Template 1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Read the Docs.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>

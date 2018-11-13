@@ -34,6 +34,7 @@ browser using binder, a cloud Jupyter notebook server:
    :caption: Contents:
 
    getting_started
+   user_guide
 
 
 
