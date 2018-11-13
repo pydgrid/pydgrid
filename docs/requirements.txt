@@ -7,3 +7,7 @@ numpy
 pydgrid
 scipy
 nbsphinx
+pandas
+bokeh
+IPython
+
