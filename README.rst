@@ -6,7 +6,7 @@ pydgrid: Python Distribution Grid simulator
 :Name: pydgrid
 :Website: https://pydgrid.github.io/
 :Author: Juan Manuel Mauricio |orcid|
-:Version: 0.4.4
+:Version: 0.4.5
 
 
 .. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
