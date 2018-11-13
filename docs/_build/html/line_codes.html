@@ -1,49 +1,201 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Line codes &#8212; Read the Docs Template 1.0 documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Line codes &mdash; Read the Docs Template 0.4.5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
     
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Transformers" href="transformers.html" />
     <link rel="prev" title="Lines" href="lines.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="transformers.html" title="Transformers"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="lines.html" title="Lines"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Read the Docs Template 1.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="elements.html" accesskey="U">Elements</a> &#187;</li> 
-      </ul>
-    </div>  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Read the Docs Template
+          
+
+          
+          </a>
+
+          
             
-  <div class="section" id="line-codes">
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="elements.html">Elements</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="buses.html">Buses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lines.html">Lines</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Line codes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#serie-impedance-sequence-parameters">Serie impedance sequence parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sequence-coordinates">Sequence coordinates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#primitive-matrices">Primitive matrices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitary-voltage-drop">Unitary voltage drop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pi-section-sequence-parameters">PI section sequence parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#serie-impedance-primitives">Serie impedance primitives</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">PI section sequence parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="transformers.html">Transformers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grid_formers.html">Grid formers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loads.html">Loads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="grid_feeders.html">Grid feeders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shunts.html">Shunt elements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter_notebook.html">Jupyter Notebooks</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Read the Docs Template</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="elements.html">Elements</a> &raquo;</li>
+        
+      <li>Line codes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/line_codes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="line-codes">
 <h1>Line codes<a class="headerlink" href="#line-codes" title="Permalink to this headline">¶</a></h1>
 <p>Two types of lines models can be considered:</p>
 <ul class="simple">
@@ -60,7 +212,7 @@
 <h2>Serie impedance sequence parameters<a class="headerlink" href="#serie-impedance-sequence-parameters" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="sequence-coordinates">
 <h3>Sequence coordinates<a class="headerlink" href="#sequence-coordinates" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
     <span class="p">{</span><span class="s2">&quot;mv_al_50&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;R1&quot;</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span>    <span class="s2">&quot;X1&quot;</span><span class="p">:</span>       <span class="mf">0.148</span><span class="p">,</span> <span class="s2">&quot;R0&quot;</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span>   <span class="s2">&quot;X0&quot;</span><span class="p">:</span>        <span class="mf">0.148</span><span class="p">},</span>
      <span class="s2">&quot;mv_al_95&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;R1&quot;</span><span class="p">:</span><span class="mf">0.403</span><span class="p">,</span>  <span class="s2">&quot;X1&quot;</span><span class="p">:</span>       <span class="mf">0.129</span><span class="p">,</span> <span class="s2">&quot;R0&quot;</span><span class="p">:</span><span class="mf">0.403</span><span class="p">,</span> <span class="s2">&quot;X0&quot;</span><span class="p">:</span>        <span class="mf">0.129</span><span class="p">},</span>
      <span class="s2">&quot;mv_al_120&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;R1&quot;</span><span class="p">:</span><span class="mf">0.321</span><span class="p">,</span>  <span class="s2">&quot;X1&quot;</span><span class="p">:</span>       <span class="mf">0.123</span><span class="p">,</span> <span class="s2">&quot;R0&quot;</span><span class="p">:</span><span class="mf">0.321</span><span class="p">,</span> <span class="s2">&quot;X0&quot;</span><span class="p">:</span>        <span class="mf">0.321</span><span class="p">},</span>
@@ -79,7 +231,7 @@
 </div>
 <div class="section" id="primitive-matrices">
 <h3>Primitive matrices<a class="headerlink" href="#primitive-matrices" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
   <span class="p">{</span><span class="s2">&quot;UG1&quot;</span><span class="p">:</span>
     <span class="p">{</span><span class="s2">&quot;R&quot;</span><span class="p">:[[</span> <span class="mf">0.211</span><span class="p">,</span>  <span class="mf">0.049</span><span class="p">,</span>  <span class="mf">0.049</span><span class="p">,</span>  <span class="mf">0.049</span><span class="p">],</span>
           <span class="p">[</span> <span class="mf">0.049</span><span class="p">,</span>  <span class="mf">0.211</span><span class="p">,</span>  <span class="mf">0.049</span><span class="p">,</span>  <span class="mf">0.049</span><span class="p">],</span>
@@ -111,7 +263,7 @@
 </div>
 <div class="section" id="unitary-voltage-drop">
 <h3>Unitary voltage drop<a class="headerlink" href="#unitary-voltage-drop" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
     <span class="p">{</span>
     <span class="s2">&quot;lv_cu_150&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;u90_pf10&quot;</span><span class="p">:</span><span class="mf">0.27</span><span class="p">,</span><span class="s2">&quot;u90_pf08&quot;</span><span class="p">:</span><span class="mf">0.31</span><span class="p">,</span> <span class="s1">&#39;T_deg&#39;</span><span class="p">:</span><span class="mf">90.0</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">:</span><span class="mf">0.004</span><span class="p">},</span>
     <span class="s2">&quot;lv_cu_240&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;u90_pf10&quot;</span><span class="p">:</span><span class="mf">0.17</span><span class="p">,</span><span class="s2">&quot;u90_pf08&quot;</span><span class="p">:</span><span class="mf">0.27</span><span class="p">,</span> <span class="s1">&#39;T_deg&#39;</span><span class="p">:</span><span class="mf">90.0</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">:</span><span class="mf">0.004</span><span class="p">}</span>
@@ -128,7 +280,7 @@
 </div>
 <div class="section" id="pi-section-sequence-parameters">
 <h3>PI section sequence parameters<a class="headerlink" href="#pi-section-sequence-parameters" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
     <span class="p">{</span>
      <span class="s2">&quot;mv_cu_50_pi&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;R1&quot;</span><span class="p">:</span><span class="mf">0.387</span><span class="p">,</span>  <span class="s2">&quot;X1&quot;</span><span class="p">:</span>    <span class="mf">0.152</span><span class="p">,</span> <span class="s2">&quot;R0&quot;</span><span class="p">:</span><span class="mf">0.387</span><span class="p">,</span> <span class="s2">&quot;X0&quot;</span><span class="p">:</span>        <span class="mf">0.152</span><span class="p">,</span> <span class="s2">&quot;C_1_muF&quot;</span><span class="p">:</span><span class="mf">0.135</span><span class="p">,</span> <span class="s2">&quot;C_0_muF&quot;</span><span class="p">:</span><span class="mf">0.135</span><span class="p">},</span>
      <span class="s2">&quot;mv_cu_95_pi&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;R1&quot;</span><span class="p">:</span><span class="mf">0.193</span><span class="p">,</span>  <span class="s2">&quot;X1&quot;</span><span class="p">:</span>    <span class="mf">0.136</span><span class="p">,</span> <span class="s2">&quot;R0&quot;</span><span class="p">:</span><span class="mf">0.193</span><span class="p">,</span> <span class="s2">&quot;X0&quot;</span><span class="p">:</span>        <span class="mf">0.136</span><span class="p">,</span> <span class="s2">&quot;C_1_muF&quot;</span><span class="p">:</span><span class="mf">0.175</span><span class="p">,</span> <span class="s2">&quot;C_0_muF&quot;</span><span class="p">:</span><span class="mf">0.175</span><span class="p">},</span>
@@ -153,7 +305,7 @@
 </div>
 <div class="section" id="id1">
 <h3>PI section sequence parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
 <span class="p">{</span>
  <span class="s2">&quot;K1&quot;</span><span class="p">:</span>
     <span class="p">{</span><span class="s2">&quot;R&quot;</span><span class="p">:[[</span><span class="mf">0.8667</span><span class="p">,</span> <span class="mf">0.2955</span><span class="p">,</span> <span class="mf">0.2907</span><span class="p">],</span>
@@ -179,75 +331,62 @@
 </div>
 
 
+           </div>
+           
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Line codes</a><ul>
-<li><a class="reference internal" href="#serie-impedance-sequence-parameters">Serie impedance sequence parameters</a><ul>
-<li><a class="reference internal" href="#sequence-coordinates">Sequence coordinates</a></li>
-<li><a class="reference internal" href="#primitive-matrices">Primitive matrices</a></li>
-<li><a class="reference internal" href="#unitary-voltage-drop">Unitary voltage drop</a></li>
-<li><a class="reference internal" href="#pi-section-sequence-parameters">PI section sequence parameters</a></li>
-<li><a class="reference internal" href="#serie-impedance-primitives">Serie impedance primitives</a></li>
-<li><a class="reference internal" href="#id1">PI section sequence parameters</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="transformers.html" class="btn btn-neutral float-right" title="Transformers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="lines.html" class="btn btn-neutral" title="Lines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="lines.html"
-                        title="previous chapter">Lines</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="transformers.html"
-                        title="next chapter">Transformers</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/line_codes.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Read the Docs
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="transformers.html" title="Transformers"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="lines.html" title="Lines"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Read the Docs Template 1.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="elements.html" >Elements</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2014, Read the Docs.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>
