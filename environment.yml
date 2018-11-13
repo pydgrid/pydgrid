@@ -17,3 +17,5 @@ dependencies:
   - sphinx
   - sphinx_rtd_theme
   - qgrid
+pip:
+ -pydgrid
