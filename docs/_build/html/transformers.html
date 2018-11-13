@@ -1,0 +1,152 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Transformers &#8212; Read the Docs Template 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Grid formers" href="grid_formers.html" />
+    <link rel="prev" title="Line codes" href="line_codes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="grid_formers.html" title="Grid formers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="line_codes.html" title="Line codes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Read the Docs Template 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="elements.html" accesskey="U">Elements</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="transformers">
+<h1>Transformers<a class="headerlink" href="#transformers" title="Permalink to this headline">¶</a></h1>
+<p>Transformers are modeled as in <a class="reference internal" href="#t1" id="id1">[T1]</a>.</p>
+<div class="section" id="dyn11">
+<h2>Dyn11<a class="headerlink" href="#dyn11" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/Dyn11.png"><img alt="_images/Dyn11.png" src="_images/Dyn11.png" style="width: 450px;" /></a>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transformers&quot;</span><span class="p">:[</span>
+             <span class="p">{</span><span class="s2">&quot;bus_j&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_0&quot;</span><span class="p">,</span>  <span class="s2">&quot;bus_k&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_1&quot;</span><span class="p">,</span>  <span class="s2">&quot;S_n_kVA&quot;</span><span class="p">:</span> <span class="mf">2500.0</span><span class="p">,</span> <span class="s2">&quot;U_j_kV&quot;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;U_k_kV&quot;</span><span class="p">:</span><span class="mf">0.69</span><span class="p">,</span>
+              <span class="s2">&quot;R_cc_pu&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;X_cc_pu&quot;</span><span class="p">:</span><span class="mf">0.04</span><span class="p">,</span> <span class="s2">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;Dyg11_3w&quot;</span><span class="p">,</span>   <span class="s2">&quot;conductors_j&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;conductors_k&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+                <span class="p">],</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ygd11-3w">
+<h2>Ygd11_3w<a class="headerlink" href="#ygd11-3w" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/Ygd11_3w.png"><img alt="_images/Ygd11_3w.png" src="_images/Ygd11_3w.png" style="width: 450px;" /></a>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;transformers&quot;</span><span class="p">:[</span>
+            <span class="p">{</span><span class="s2">&quot;bus_j&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_0&quot;</span><span class="p">,</span>  <span class="s2">&quot;bus_k&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_1&quot;</span><span class="p">,</span>  <span class="s2">&quot;S_n_kVA&quot;</span><span class="p">:</span> <span class="mf">2500.0</span><span class="p">,</span> <span class="s2">&quot;U_j_kV&quot;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;U_k_kV&quot;</span><span class="p">:</span><span class="mf">0.69</span><span class="p">,</span>
+             <span class="s2">&quot;R_cc_pu&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;X_cc_pu&quot;</span><span class="p">:</span><span class="mf">0.04</span><span class="p">,</span> <span class="s2">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;Ygd11_3w&quot;</span><span class="p">,</span>   <span class="s2">&quot;conductors_j&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;conductors_k&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+                <span class="p">],</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">&quot;bus_j&quot;</span></code>: name of the j bus</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;bus_k&quot;</span></code>: name of the k bus</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;pos_x&quot;</span></code>: x position of the bus</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;pos_y&quot;</span></code>: y position of the bus</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;S_n_kVA&quot;</span></code>: based power in kVA</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;U_j_kV&quot;</span></code>: HV side nominal RMS phase-phase voltage in kV</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;U_k_kV&quot;</span></code>: LV side nominal RMS phase-phase voltage in kV</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;connection&quot;</span></code>: connection type (see available connections)</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;conductors_j&quot;</span></code>: HV side conductors</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;conductors_k&quot;</span></code>: LV side conductors</li>
+</ul>
+<table class="docutils citation" frame="void" id="t1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[T1]</a></td><td>Dugan, R. C., &amp; Santoso, S. (2003). An example of 3-phase transformer modeling for distribution system analysis. 2003 IEEE PES Transmission and Distribution Conference and Exposition (IEEE Cat. No.03CH37495), 3, 1028–1032. <a class="reference external" href="https://doi.org/10.1109/TDC.2003.1335084">https://doi.org/10.1109/TDC.2003.1335084</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Transformers</a><ul>
+<li><a class="reference internal" href="#dyn11">Dyn11</a></li>
+<li><a class="reference internal" href="#ygd11-3w">Ygd11_3w</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="line_codes.html"
+                        title="previous chapter">Line codes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="grid_formers.html"
+                        title="next chapter">Grid formers</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/transformers.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="grid_formers.html" title="Grid formers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="line_codes.html" title="Line codes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Read the Docs Template 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="elements.html" >Elements</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Read the Docs.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>

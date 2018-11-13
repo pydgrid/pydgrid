@@ -1,0 +1,123 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Loads &#8212; Read the Docs Template 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Grid feeders" href="grid_feeders.html" />
+    <link rel="prev" title="Grid formers" href="grid_formers.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="grid_feeders.html" title="Grid feeders"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="grid_formers.html" title="Grid formers"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Read the Docs Template 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="elements.html" accesskey="U">Elements</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="loads">
+<h1>Loads<a class="headerlink" href="#loads" title="Permalink to this headline">¶</a></h1>
+<p>Loads.</p>
+<a class="reference internal image-reference" href="_images/loads.png"><img alt="_images/loads.png" src="_images/loads.png" style="width: 600px;" /></a>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;loads&quot;</span><span class="p">:[</span>
+         <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_2&quot;</span> <span class="p">,</span> <span class="s2">&quot;kVA&quot;</span><span class="p">:</span> <span class="mf">50.0</span><span class="p">,</span> <span class="s2">&quot;pf&quot;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;1P+N&quot;</span><span class="p">,</span><span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">]},</span>
+         <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_2&quot;</span> <span class="p">,</span> <span class="s2">&quot;kVA&quot;</span><span class="p">:</span> <span class="mf">30.0</span><span class="p">,</span> <span class="s2">&quot;pf&quot;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;1P+N&quot;</span><span class="p">,</span><span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]},</span>
+         <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;Bus_2&quot;</span> <span class="p">,</span> <span class="s2">&quot;kVA&quot;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">,</span> <span class="s2">&quot;pf&quot;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;1P+N&quot;</span><span class="p">,</span><span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]}</span>
+        <span class="p">],</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">&quot;bus&quot;</span></code>: name of the bus</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;bus_nodes&quot;</span></code>: list of nodes where the load is connected</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;type&quot;</span></code>: available types are:
+- <code class="docutils literal notranslate"><span class="pre">&quot;3P+N&quot;</span></code>: three phase load with neutral
+- <code class="docutils literal notranslate"><span class="pre">&quot;3P&quot;</span></code>: three phase load without neutral
+- <code class="docutils literal notranslate"><span class="pre">&quot;1P+N&quot;</span></code>: single phase load connected between one phase and other or neutral</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;kVA&quot;</span></code>: aparent power (kW)</li>
+<li><code class="docutils literal notranslate"><span class="pre">&quot;pf&quot;</span></code>: load power factor</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="grid_formers.html"
+                        title="previous chapter">Grid formers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="grid_feeders.html"
+                        title="next chapter">Grid feeders</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/loads.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="grid_feeders.html" title="Grid feeders"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="grid_formers.html" title="Grid formers"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Read the Docs Template 1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="elements.html" >Elements</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2014, Read the Docs.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
+    </div>
+  </body>
+</html>

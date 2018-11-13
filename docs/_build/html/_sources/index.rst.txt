@@ -35,8 +35,8 @@ browser using binder, a cloud Jupyter notebook server:
 
    getting_started
    user_guide
-
-
+   definitions
+   elements
 
 
 
