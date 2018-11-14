@@ -1794,7 +1794,7 @@ class grid(object):
         
         self.transformer_tooltip = '''
             <div>
-            line id = @trafo_id  
+            transformer id = @trafo_id  
             <table border="5">
                 <tr >
                     <td>I<sub>1a</sub> =  @i_1a_m &ang; @deg_1a </td>

@@ -14,3 +14,4 @@ Jupyter Notebooks
    jupyter_notebooks/nb_3bus_4wire_trafo.ipynb
    jupyter_notebooks/nb_n1_f1_load_shapes.ipynb
    jupyter_notebooks/cigre_europe_residential.ipynb
+   jupyter_notebooks/mv_short_circuit
