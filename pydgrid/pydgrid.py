@@ -2167,9 +2167,9 @@ def trafo_yprim(S_n,U_1n,U_2n,Z_cc,connection='Dyg11'):
     '''
 
     if connection=='Dyn1':
-        z_a = Z_cc*1.0**2/S_n
-        z_b = Z_cc*1.0**2/S_n
-        z_c = Z_cc*1.0**2/S_n
+        z_a = 3*Z_cc*1.0**2/S_n
+        z_b = 3*Z_cc*1.0**2/S_n
+        z_c = 3*Z_cc*1.0**2/S_n
         U_1 = U_1n
         U_2 = U_2n/np.sqrt(3)
         Z_B = np.array([[z_a, 0.0, 0.0],
@@ -2213,9 +2213,9 @@ def trafo_yprim(S_n,U_1n,U_2n,Z_cc,connection='Dyg11'):
 
 
     if connection=='Dyn5':
-        z_a = Z_cc*1.0**2/S_n
-        z_b = Z_cc*1.0**2/S_n
-        z_c = Z_cc*1.0**2/S_n
+        z_a = Z_cc*1.0**2/S_n*3
+        z_b = Z_cc*1.0**2/S_n*3
+        z_c = Z_cc*1.0**2/S_n*3
         U_1 = U_1n
         U_2 = U_2n/np.sqrt(3)
         Z_B = np.array([[z_a, 0.0, 0.0],
@@ -2736,7 +2736,7 @@ def opendss2pydgrid(self,files_dict):
 
 if __name__ == "__main__":
     import time 
-    test ='cigre_lv'
+    test ='trafo'
 
     if test=='luna_1': 
         sys1 = grid()

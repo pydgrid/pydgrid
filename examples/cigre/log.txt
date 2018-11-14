@@ -1,4 +1,4 @@
 1 transformer to read 
-Transformer Dyn1 read  
-Transformers read in: 0.000 sYs calc 0.011
-inv_Y_ii 0.000
+Transformer Dyn5 read  
+Transformers read in: 0.000 sYs calc 0.022
+inv_Y_ii 0.001
