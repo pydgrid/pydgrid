@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>CIGRE LV European System &mdash; pydgrid 0.4.5 documentation</title>
+  <title>Short circuits in MV line &mdash; pydgrid 0.4.5 documentation</title>
   
 
   
@@ -28,8 +28,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Short circuits in MV line" href="mv_short_circuit.html" />
-    <link rel="prev" title="907 bus 3 wire system with transformer" href="nb_n1_f1_load_shapes.html" /> 
+    <link rel="prev" title="CIGRE LV European System" href="cigre_europe_residential.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -92,12 +91,15 @@
 <li class="toctree-l2"><a class="reference internal" href="kersting_ex_6.1.html">Kersting book example 6.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nb_3bus_4wire_trafo.html">3 bus 4 wire system with transformer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nb_n1_f1_load_shapes.html">907 bus 3 wire system with transformer</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">CIGRE LV European System</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Graph-with-obtained-results">Graph with obtained results</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Analysis-using-Pandas">Analysis using Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cigre_europe_residential.html">CIGRE LV European System</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Short circuits in MV line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#System">System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Three-phase-short-circuit">Three phase short circuit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phase-ground-fault-(isolated-neutral)">Phase ground fault (isolated neutral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phase-ground-fault-(grounded-neutral)">Phase ground fault (grounded neutral)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Phase-ground-fault-(grounded-neutral)">Phase ground fault (grounded neutral)</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="mv_short_circuit.html">Short circuits in MV line</a></li>
 </ul>
 </li>
 </ul>
@@ -147,13 +149,13 @@
         
           <li><a href="../jupyter_notebooks.html">Jupyter Notebooks</a> &raquo;</li>
         
-      <li>CIGRE LV European System</li>
+      <li>Short circuits in MV line</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/jupyter_notebooks/cigre_europe_residential.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/jupyter_notebooks/mv_short_circuit.ipynb.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -349,41 +351,17 @@ div.nboutput div.output_area.stderr {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="nbinput nblast docutils container">
+<div class="section" id="Short-circuits-in-MV-line">
+<h1>Short circuits in MV line<a class="headerlink" href="#Short-circuits-in-MV-line" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [11]:
+<span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">pydgrid.pydgrid</span> <span class="kn">import</span> <span class="n">grid</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="CIGRE-LV-European-System">
-<h1>CIGRE LV European System<a class="headerlink" href="#CIGRE-LV-European-System" title="Permalink to this headline">¶</a></h1>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [14]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">grid_1</span> <span class="o">=</span> <span class="n">grid</span><span class="p">()</span>
-<span class="n">grid_1</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;cigre_europe_residential.json&#39;</span><span class="p">)</span>  <span class="c1"># Load data</span>
-<span class="n">grid_1</span><span class="o">.</span><span class="n">pf</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="Graph-with-obtained-results">
-<h2>Graph with obtained results<a class="headerlink" href="#Graph-with-obtained-results" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [15]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pydgrid.plot_bokeh</span> <span class="kn">import</span> <span class="n">plot_results</span>
-<span class="n">plot_results</span><span class="p">(</span><span class="n">grid_1</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pydgrid</span> <span class="kn">import</span> <span class="n">grid</span>
+<span class="kn">from</span> <span class="nn">pydgrid.plot_bokeh</span> <span class="kn">import</span> <span class="n">plot_results</span>
 </pre></div>
 </div>
 </div>
@@ -393,10 +371,10 @@ div.nboutput div.output_area.stderr {
 <div class="output_area docutils container">
 <div class="bk-root">
     <a href="https://bokeh.pydata.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
-    <span id="1308">Loading BokehJS ...</span>
+    <span id="1001">Loading BokehJS ...</span>
 </div></div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -562,7 +540,7 @@ var element = document.currentScript.previousSibling.previousSibling;
      "</div>"}};
 
   function display_loaded() {
-    var el = document.getElementById("1308");
+    var el = document.getElementById("1001");
     if (el != null) {
       el.textContent = "BokehJS is loading...";
     }
@@ -616,9 +594,9 @@ var element = document.currentScript.previousSibling.previousSibling;
       console.log("Bokeh: injecting script tag for BokehJS library: ", url);
       document.getElementsByTagName("head")[0].appendChild(s);
     }
-  };var element = document.getElementById("1308");
+  };var element = document.getElementById("1001");
   if (element == null) {
-    console.log("Bokeh: ERROR: autoload.js configured with elementid '1308' but no matching script tag was found. ")
+    console.log("Bokeh: ERROR: autoload.js configured with elementid '1001' but no matching script tag was found. ")
     return false;
   }
 
@@ -922,7 +900,7 @@ var element = document.currentScript.previousSibling.previousSibling;
       console.log("Bokeh: BokehJS failed to load within specified timeout.");
       root._bokeh_failed_load = true;
     } else if (force !== true) {
-      var cell = $(document.getElementById("1308")).parents('.cell').data().cell;
+      var cell = $(document.getElementById("1001")).parents('.cell').data().cell;
       cell.output_area.append_execute_result(NB_LOAD_WARNING)
     }
 
@@ -940,13 +918,84 @@ var element = document.currentScript.previousSibling.previousSibling;
 }(window));
 </script></div>
 </div>
+<div class="figure" id="id2">
+<img alt="mv_short_circuits" src="../_images/mv_short_circuits.png" />
+<p class="caption"><span class="caption-text">mv_short_circuits</span></p>
+</div>
+<div class="section" id="System">
+<h2>System<a class="headerlink" href="#System" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s2">&quot;transformers&quot;</span><span class="p">:[</span>
+        <span class="p">{</span><span class="s2">&quot;bus_j&quot;</span><span class="p">:</span> <span class="s2">&quot;B0&quot;</span><span class="p">,</span>  <span class="s2">&quot;bus_k&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>  <span class="s2">&quot;S_n_kVA&quot;</span><span class="p">:</span> <span class="mf">250000.0</span><span class="p">,</span> <span class="s2">&quot;U_j_kV&quot;</span><span class="p">:</span><span class="mf">66.0</span><span class="p">,</span> <span class="s2">&quot;U_k_kV&quot;</span><span class="p">:</span><span class="mf">20.0</span><span class="p">,</span>
+        <span class="s2">&quot;R_cc_pu&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s2">&quot;X_cc_pu&quot;</span><span class="p">:</span><span class="mf">0.08</span><span class="p">,</span> <span class="s2">&quot;connection&quot;</span><span class="p">:</span> <span class="s2">&quot;Dyn1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;conductors_1&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;conductors_2&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+        <span class="p">],</span>
+<span class="s2">&quot;lines&quot;</span><span class="p">:[</span>
+        <span class="p">{</span><span class="s2">&quot;bus_j&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>  <span class="s2">&quot;bus_k&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>  <span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="s2">&quot;mv_al_120&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">:</span> <span class="mf">200.0</span><span class="p">}</span>
+        <span class="p">],</span>
+<span class="s2">&quot;buses&quot;</span><span class="p">:[</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B0&quot;</span><span class="p">,</span>  <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;U_kV&quot;</span><span class="p">:</span><span class="mf">66.0</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span><span class="p">,</span>  <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span>  <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;U_kV&quot;</span><span class="p">:</span><span class="mf">20.0</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span>  <span class="s2">&quot;pos_x&quot;</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span> <span class="s2">&quot;pos_y&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;U_kV&quot;</span><span class="p">:</span><span class="mf">20.0</span><span class="p">}</span>
+        <span class="p">],</span>
+<span class="s2">&quot;grid_formers&quot;</span><span class="p">:[</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;deg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mi">240</span><span class="p">],</span>
+        <span class="s2">&quot;kV&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">38.105</span><span class="p">,</span> <span class="mf">38.105</span><span class="p">,</span> <span class="mf">38.105</span><span class="p">]}</span>
+        <span class="p">],</span>
+<span class="s2">&quot;grid_feeders&quot;</span><span class="p">:[{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span><span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+                <span class="s2">&quot;kW&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;kvar&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+                <span class="s2">&quot;kA&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;phi_deg&quot;</span><span class="p">:[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">]}</span>
+                <span class="p">],</span>
+    <span class="s2">&quot;line_codes&quot;</span><span class="p">:</span>
+        <span class="p">{</span><span class="s2">&quot;mv_al_50&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;R1&quot;</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span>    <span class="s2">&quot;X1&quot;</span><span class="p">:</span>   <span class="mf">0.148</span><span class="p">,</span> <span class="s2">&quot;R0&quot;</span><span class="p">:</span><span class="mf">0.8</span><span class="p">,</span>   <span class="s2">&quot;X0&quot;</span><span class="p">:</span>        <span class="mf">0.148</span><span class="p">},</span>
+         <span class="s2">&quot;mv_al_95&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s2">&quot;R1&quot;</span><span class="p">:</span><span class="mf">0.403</span><span class="p">,</span>  <span class="s2">&quot;X1&quot;</span><span class="p">:</span>   <span class="mf">0.129</span><span class="p">,</span> <span class="s2">&quot;R0&quot;</span><span class="p">:</span><span class="mf">0.403</span><span class="p">,</span> <span class="s2">&quot;X0&quot;</span><span class="p">:</span>        <span class="mf">0.129</span><span class="p">},</span>
+         <span class="s2">&quot;mv_al_120&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;R1&quot;</span><span class="p">:</span><span class="mf">0.321</span><span class="p">,</span>  <span class="s2">&quot;X1&quot;</span><span class="p">:</span>   <span class="mf">0.123</span><span class="p">,</span> <span class="s2">&quot;R0&quot;</span><span class="p">:</span><span class="mf">0.321</span><span class="p">,</span> <span class="s2">&quot;X0&quot;</span><span class="p">:</span>        <span class="mf">0.321</span><span class="p">},</span>
+         <span class="s2">&quot;mv_al_185&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;R1&quot;</span><span class="p">:</span><span class="mf">0.209</span><span class="p">,</span>  <span class="s2">&quot;X1&quot;</span><span class="p">:</span>   <span class="mf">0.113</span><span class="p">,</span> <span class="s2">&quot;R0&quot;</span><span class="p">:</span><span class="mf">0.209</span><span class="p">,</span> <span class="s2">&quot;X0&quot;</span><span class="p">:</span>        <span class="mf">0.209</span><span class="p">},</span>
+         <span class="s2">&quot;mv_al_300&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;R1&quot;</span><span class="p">:</span><span class="mf">0.128</span><span class="p">,</span>  <span class="s2">&quot;X1&quot;</span><span class="p">:</span>   <span class="mf">0.105</span><span class="p">,</span> <span class="s2">&quot;R0&quot;</span><span class="p">:</span><span class="mf">0.128</span><span class="p">,</span> <span class="s2">&quot;X0&quot;</span><span class="p">:</span>        <span class="mf">0.128</span><span class="p">}</span>
+         <span class="p">},</span>
+<span class="s2">&quot;shunts&quot;</span><span class="p">:[</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">1e12</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]},</span> <span class="c1"># applied fault</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]},</span> <span class="c1"># applied fault</span>
+        <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Three-phase-short-circuit">
+<h2>Three phase short circuit<a class="headerlink" href="#Three-phase-short-circuit" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id3">
+<img alt="mv_short_circuits" src="../_images/mv_short_circuits_3ph.png" />
+<p class="caption"><span class="caption-text">mv_short_circuits</span></p>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">grid_1</span> <span class="o">=</span> <span class="n">grid</span><span class="p">()</span>
+<span class="n">grid_1</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># Load data</span>
+<span class="n">grid_1</span><span class="o">.</span><span class="n">pf</span><span class="p">()</span>  <span class="c1"># solve power flow</span>
+<span class="n">p</span><span class="o">=</span><span class="n">plot_results</span><span class="p">(</span><span class="n">grid_1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="bk-root" id="101ee150-dfc5-4a77-b9cc-2183b3cca6e4"></div></div>
+<div class="bk-root" id="d4974517-acd9-4ebf-8438-bf954063e8b7"></div></div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -956,8 +1005,8 @@ var element = document.currentScript.previousSibling.previousSibling;
 (function(root) {
   function embed_document(root) {
 
-  var docs_json = {"caff575c-dabe-4913-a9ef-1c6c7c35bd92":{"roots":{"references":[{"attributes":{"below":[{"id":"1320","type":"LinearAxis"}],"left":[{"id":"1325","type":"LinearAxis"}],"plot_height":400,"renderers":[{"id":"1320","type":"LinearAxis"},{"id":"1324","type":"Grid"},{"id":"1325","type":"LinearAxis"},{"id":"1329","type":"Grid"},{"id":"1338","type":"BoxAnnotation"},{"id":"1349","type":"GlyphRenderer"},{"id":"1355","type":"GlyphRenderer"},{"id":"1361","type":"GlyphRenderer"}],"title":{"id":"1309","type":"Title"},"toolbar":{"id":"1336","type":"Toolbar"},"x_range":{"id":"1312","type":"DataRange1d"},"x_scale":{"id":"1316","type":"LinearScale"},"y_range":{"id":"1314","type":"DataRange1d"},"y_scale":{"id":"1318","type":"LinearScale"}},"id":"1310","subtype":"Figure","type":"Plot"},{"attributes":{},"id":"1403","type":"Selection"},{"attributes":{},"id":"1335","type":"HelpTool"},{"attributes":{"callback":null},"id":"1314","type":"DataRange1d"},{"attributes":{},"id":"1333","type":"SaveTool"},{"attributes":{},"id":"1395","type":"BasicTickFormatter"},{"attributes":{},"id":"1402","type":"UnionRenderers"},{"attributes":{"data_source":{"id":"1357","type":"ColumnDataSource"},"glyph":{"id":"1359","type":"Circle"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1360","type":"Circle"},"selection_glyph":null,"view":{"id":"1362","type":"CDSView"}},"id":"1361","type":"GlyphRenderer"},{"attributes":{},"id":"1401","type":"Selection"},{"attributes":{},"id":"1331","type":"WheelZoomTool"},{"attributes":{"data_source":{"id":"1351","type":"ColumnDataSource"},"glyph":{"id":"1353","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1354","type":"MultiLine"},"selection_glyph":null,"view":{"id":"1356","type":"CDSView"}},"id":"1355","type":"GlyphRenderer"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"green"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1347","type":"MultiLine"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto","tools":[{"id":"1330","type":"PanTool"},{"id":"1331","type":"WheelZoomTool"},{"id":"1332","type":"BoxZoomTool"},{"id":"1333","type":"SaveTool"},{"id":"1334","type":"ResetTool"},{"id":"1335","type":"HelpTool"},{"id":"1363","type":"HoverTool"},{"id":"1365","type":"HoverTool"},{"id":"1367","type":"HoverTool"}]},"id":"1336","type":"Toolbar"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1360","type":"Circle"},{"attributes":{"callback":null,"renderers":[{"id":"1355","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            line id = @line_id \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>ja</sub> =  @i_j_a_m &ang; @deg_j_a </td>\n                    <td>I<sub>ka</sub> =  @i_k_a_m &ang; @deg_k_a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jb</sub> =  @i_j_b_m &ang; @deg_j_b </td>\n                    <td >I<sub>kb</sub> =  @i_k_b_m &ang; @deg_k_b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jc</sub> =  @i_j_c_m &ang; @deg_j_c </td>\n                    <td >I<sub>kc</sub> =  @i_k_c_m &ang; @deg_k_c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jn</sub> =  @i_j_n_m &ang; @deg_j_n </td>\n                    <td >I<sub>kn</sub> =  @i_k_n_m &ang; @deg_k_n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"1365","type":"HoverTool"},{"attributes":{},"id":"1318","type":"LinearScale"},{"attributes":{},"id":"1330","type":"PanTool"},{"attributes":{"source":{"id":"1351","type":"ColumnDataSource"}},"id":"1356","type":"CDSView"},{"attributes":{"formatter":{"id":"1395","type":"BasicTickFormatter"},"plot":{"id":"1310","subtype":"Figure","type":"Plot"},"ticker":{"id":"1321","type":"BasicTicker"}},"id":"1320","type":"LinearAxis"},{"attributes":{"callback":null},"id":"1312","type":"DataRange1d"},{"attributes":{"callback":null,"data":{"bus_id":["R0","R1","R2","R3","R4","R5","R6","R7","R8","R9","R10","R11","R12","R13","R14","R15","R16","R17","R18"],"deg_an":["0.00","-31.70","-31.73","-31.75","-31.77","-31.79","-31.80","-31.81","-31.82","-31.83","-31.83","-31.71","-31.63","-31.48","-31.33","-31.17","-31.66","-31.74","-31.71"],"deg_bn":["-120.00","-151.69","-151.81","-151.93","-152.04","-152.12","-152.21","-152.26","-152.31","-152.36","-152.39","-151.90","-151.93","-151.82","-151.70","-151.58","-152.10","-152.29","-152.30"],"deg_cn":["120.00","88.32","88.23","88.15","88.07","88.01","87.95","87.92","87.88","87.85","87.83","88.18","88.19","88.32","88.45","88.58","88.07","87.92","87.93"],"deg_ng":["0.00","102.20","102.42","-80.75","-78.31","-78.21","-78.16","-78.14","-78.13","-78.08","-78.07","-79.67","-77.54","-77.05","-76.69","-76.43","-77.82","-77.89","-77.79"],"p_a":["133.23","-63.33","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","-4.75","0.00","0.00","0.00","-16.47","-17.42","-11.08","-14.88"],"p_abc":["398.28","-190.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","-14.25","0.00","0.00","0.00","-49.40","-52.25","-33.25","-44.65"],"p_b":["132.22","-63.33","-0.00","-0.00","-0.00","-0.00","-0.00","-0.00","-0.00","-0.00","-0.00","-4.75","-0.00","-0.00","-0.00","-16.47","-17.42","-11.08","-14.88"],"p_c":["132.82","-63.33","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","-4.75","0.00","0.00","0.00","-16.47","-17.42","-11.08","-14.88"],"q_a":["48.53","-20.82","-0.00","-0.00","-0.00","-0.00","-0.00","-0.00","-0.00","-0.00","-0.00","-1.56","-0.00","-0.00","-0.00","-5.41","-5.72","-3.64","-4.89"],"q_abc":["144.57","-62.45","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","-4.68","0.00","0.00","0.00","-16.24","-17.17","-10.93","-14.68"],"q_b":["48.42","-20.82","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","-1.56","0.00","0.00","0.00","-5.41","-5.72","-3.64","-4.89"],"q_c":["47.61","-20.82","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","0.00","-1.56","0.00","0.00","0.00","-5.41","-5.72","-3.64","-4.89"],"s_color":["red","green","blue","blue","blue","blue","blue","blue","blue","blue","blue","green","blue","blue","blue","green","green","green","green"],"s_radio":[6.509244242762035,4.472135954999575,1,1,1,1,1,1,1,1,1,1.224744871402174,1,1,1,2.280350849861267,2.3452078799061584,1.8708286933980969,2.167948338863769],"u_avg_pu":["1.000","0.981","0.972","0.964","0.956","0.950","0.944","0.941","0.937","0.934","0.932","0.961","0.946","0.936","0.926","0.916","0.935","0.928","0.924"],"v_ab":[19999.99067499782,392.3152486603027,388.6564333946699,384.9978351836022,381.59834764141283,379.14312199088755,376.68799576399937,375.2114115240865,373.73486334591917,372.2583675265013,371.4103924277302,383.87854604861286,377.5059384217937,373.41577090637435,369.32792803293506,365.24247912213707,373.0612799574431,369.9292853549172,368.26775764818325],"v_an":["11547.00","226.52","224.12","221.71","219.48","217.86","216.25","215.28","214.30","213.33","212.77","221.04","217.02","214.56","212.10","209.65","214.07","211.93","210.87"],"v_an_pu":["1.0000","0.9809","0.9705","0.9600","0.9504","0.9434","0.9364","0.9322","0.9280","0.9237","0.9213","0.9571","0.9397","0.9291","0.9184","0.9078","0.9269","0.9177","0.9131"],"v_bc":[19999.990674997825,392.3471838214266,389.19625967499127,386.0458121821575,383.12045778103806,381.00913325754993,378.89802711266907,377.63020306862643,376.36245814017974,375.0948044619932,374.3670794581892,384.9657709828923,379.1976081449789,375.27679406113066,371.3580861149162,367.4415453543161,375.4235057632738,372.870812094438,371.3691257345643],"v_bn":["11547.00","226.51","224.48","222.44","220.55","219.19","217.83","217.01","216.19","215.37","214.90","221.80","218.22","215.88","213.55","211.22","215.76","214.04","213.11"],"v_bn_pu":["1.0000","0.9808","0.9720","0.9632","0.9550","0.9491","0.9432","0.9397","0.9361","0.9326","0.9305","0.9604","0.9449","0.9348","0.9247","0.9146","0.9343","0.9268","0.9228"],"v_ca":[19999.99067499783,392.4131814328287,388.8887256923714,385.3659440041877,382.09542006585195,379.73452983481525,377.3744336421559,375.9566861685269,374.5392339977259,373.12208049516715,372.3085523214768,384.256428170595,378.0526344385829,374.0112819082394,369.97140943778606,365.9330660464471,373.79057316564933,370.82361897393156,369.20852643233155],"v_cn":["11547.00","226.55","225.02","223.50","222.08","221.06","220.04","219.43","218.82","218.21","217.86","222.90","219.92","217.75","215.58","213.42","218.12","216.98","216.21"],"v_cn_pu":["1.0000","0.9810","0.9744","0.9678","0.9616","0.9572","0.9528","0.9502","0.9475","0.9449","0.9433","0.9652","0.9523","0.9429","0.9335","0.9241","0.9445","0.9396","0.9362"],"v_ng":["0.00","0.49","0.23","0.04","0.28","0.46","0.63","0.74","0.85","0.96","1.02","0.06","0.37","0.45","0.54","0.63","0.71","1.01","1.09"],"v_unb":["0.0","0.0","0.2","0.4","0.6","0.8","0.9","1.0","1.1","1.2","1.2","0.4","0.7","0.8","0.9","0.9","1.0","1.2","1.3"],"x":[0,0,0,0,0,0,0,0,0,0,0,-30,35,70,105,105,-35,30,-30],"y":[20,0,-35,-70,-105,-140,-175,-210,-245,-280,-315,-70,-105,-105,-105,-140,-175,-280,-315]},"selected":{"id":"1403","type":"Selection"},"selection_policy":{"id":"1404","type":"UnionRenderers"}},"id":"1357","type":"ColumnDataSource"},{"attributes":{"fill_alpha":{"value":0.5},"fill_color":{"value":"navy"},"line_alpha":{"value":0.5},"line_color":{"value":"navy"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1359","type":"Circle"},{"attributes":{},"id":"1400","type":"UnionRenderers"},{"attributes":{},"id":"1334","type":"ResetTool"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1354","type":"MultiLine"},{"attributes":{"callback":null,"renderers":[{"id":"1349","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            line id = @trafo_id  \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>1a</sub> =  @i_1a_m &ang; @deg_1a </td>\n                    <td>I<sub>2a</sub> =  @i_2a_m &ang; @deg_2a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1b</sub> =  @i_1b_m &ang; @deg_1b </td>\n                    <td >I<sub>2b</sub> =  @i_2b_m &ang; @deg_2b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1c</sub> =  @i_1c_m &ang; @deg_1c </td>\n                    <td >I<sub>2c</sub> =  @i_2c_m &ang; @deg_2c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1n</sub> =  @i_1n_m &ang; @deg_1n </td>\n                    <td >I<sub>2n</sub> =  @i_2n_m &ang; @deg_2n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"1363","type":"HoverTool"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"red"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1353","type":"MultiLine"},{"attributes":{},"id":"1404","type":"UnionRenderers"},{"attributes":{"callback":null,"data":{"deg_1a":[-20.016658314580173],"deg_1b":[-140.11405368518962],"deg_1c":[100.27961120253106],"deg_1n":[123.69006752597979],"deg_2a":[130.17438803489802],"deg_2b":[9.936131173956483],"deg_2c":[-109.96223531122955],"deg_2n":[-68.5631935573234],"i_1a_m":[12.279686229300108],"i_1b_m":[12.19477598653347],"i_1c_m":[12.219433366534677],"i_1n_m":[5.123796534383003e-14],"i_2a_m":[614.588676087868],"i_2b_m":[611.9093224978338],"i_2c_m":[608.191630167863],"i_2n_m":[3.7951735136448597],"trafo_id":["R0-R1"],"x_s":[[0,0]],"y_s":[[20,0]]},"selected":{"id":"1399","type":"Selection"},"selection_policy":{"id":"1400","type":"UnionRenderers"}},"id":"1345","type":"ColumnDataSource"},{"attributes":{"source":{"id":"1357","type":"ColumnDataSource"}},"id":"1362","type":"CDSView"},{"attributes":{"formatter":{"id":"1397","type":"BasicTickFormatter"},"plot":{"id":"1310","subtype":"Figure","type":"Plot"},"ticker":{"id":"1326","type":"BasicTicker"}},"id":"1325","type":"LinearAxis"},{"attributes":{},"id":"1397","type":"BasicTickFormatter"},{"attributes":{"plot":null,"text":"Results"},"id":"1309","type":"Title"},{"attributes":{"callback":null,"renderers":[{"id":"1361","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            bus_id = @bus_id &nbsp &nbsp |  u<sub>avg</sub>= @u_avg_pu pu |  u<sub>unb</sub>= @v_unb %\n            <table border=\"1\">\n                <tr>\n                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a kVA</td>\n                </tr>\n                      <tr>\n                      <td> </td> <td>v<sub>ab</sub>= @v_ab V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b kVA</td>\n                </tr>\n                      <tr>\n                      <td> </td><td>v<sub>bc</sub>= @v_bc V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c kVA </td>\n                </tr> \n                    <tr>\n                     <td> </td> <td>v<sub>ca</sub>= @v_ca V</td>\n                    </tr>\n               <tr>\n                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc kVA </td>\n              </tr>\n            </table>\n            </div>\n            "},"id":"1367","type":"HoverTool"},{"attributes":{"plot":{"id":"1310","subtype":"Figure","type":"Plot"},"ticker":{"id":"1321","type":"BasicTicker"}},"id":"1324","type":"Grid"},{"attributes":{"data_source":{"id":"1345","type":"ColumnDataSource"},"glyph":{"id":"1347","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1348","type":"MultiLine"},"selection_glyph":null,"view":{"id":"1350","type":"CDSView"}},"id":"1349","type":"GlyphRenderer"},{"attributes":{"source":{"id":"1345","type":"ColumnDataSource"}},"id":"1350","type":"CDSView"},{"attributes":{},"id":"1399","type":"Selection"},{"attributes":{},"id":"1326","type":"BasicTicker"},{"attributes":{},"id":"1316","type":"LinearScale"},{"attributes":{"overlay":{"id":"1338","type":"BoxAnnotation"}},"id":"1332","type":"BoxZoomTool"},{"attributes":{},"id":"1321","type":"BasicTicker"},{"attributes":{"callback":null,"data":{"deg_j_a":[-49.758854409457896,-49.75885440962079,-49.74787770246978,-49.89531618137995,-49.89531618141617,-49.91884177744564,-49.91884177577002,-49.91884177665756,-49.907686315254416,-49.903300982906174,-49.36449318937813,-49.364493189087355,-49.36449318937463,-49.36449318932122,-49.85978615641465,-49.93389663393812,-49.907686314957985],"deg_j_b":[-170.22855633537313,-170.22855633512435,-170.23903326618534,-170.41596974018358,-170.4159697396058,-170.49310976683208,-170.49310976756485,-170.4931097665085,-170.4961047515065,-170.09142827819227,-169.7797967845249,-169.7797967847753,-169.77979678421354,-169.77979678456316,-170.29974952434736,-170.4890703326506,-170.49610475014345],"deg_j_c":[69.95843877232564,69.95843877234365,69.9561191561199,69.78970444957667,69.78970444875402,69.73334985795725,69.73334985716095,69.73334985861479,69.73599681911907,69.98858123853398,70.3869880605705,70.38698806005759,70.38698806016778,70.38698806036678,69.87433914186079,69.72978262306609,69.73599682122817],"deg_j_n":[113.88706736165305,113.90484320854952,114.01253559056892,114.08818543717662,114.08818543061093,114.32656540884591,114.32656546489197,114.17893091692679,114.30981817205596,110.4858245572562,113.67097811022937,113.67097814219392,113.52935495813543,113.52935493749031,113.43087741573316,113.99490834001355,114.01577318011037],"deg_k_a":[-49.758854409457896,-49.75885440962079,-49.74787770246978,-49.89531618137995,-49.89531618141617,-49.91884177744564,-49.91884177577002,-49.91884177665756,-49.907686315254416,-49.903300982906174,-49.36449318937813,-49.364493189087355,-49.36449318937463,-49.36449318932122,-49.85978615641465,-49.93389663393812,-49.907686314957985],"deg_k_b":[-170.22855633537313,-170.22855633512435,-170.23903326618534,-170.41596974018358,-170.4159697396058,-170.49310976683208,-170.49310976756485,-170.4931097665085,-170.4961047515065,-170.09142827819227,-169.7797967845249,-169.7797967847753,-169.77979678421354,-169.77979678456316,-170.29974952434736,-170.4890703326506,-170.49610475014345],"deg_k_c":[69.95843877232564,69.95843877234365,69.9561191561199,69.78970444957667,69.78970444875402,69.73334985795725,69.73334985716095,69.73334985861479,69.73599681911907,69.98858123853398,70.3869880605705,70.38698806005759,70.38698806016778,70.38698806036678,69.87433914186079,69.72978262306609,69.73599682122817],"deg_k_n":[113.88706736165305,113.90484320854952,114.01253559056892,114.08818543717662,114.08818543061093,114.32656540884591,114.32656546489197,114.17893091692679,114.30981817205596,110.4858245572562,113.67097811022937,113.67097814219392,113.52935495813543,113.52935493749031,113.43087741573316,113.99490834001355,114.01577318011037],"i_j_a_m":[320.2835330178838,320.2835330173182,297.6636860324195,214.98772663308037,214.98772663101104,129.34450753667238,129.34450753842918,129.34450753769406,74.29375912664821,22.61992432904671,82.6785221145594,82.67852211448384,82.67852211402143,82.67852211415229,85.64324646416551,55.05075171656347,74.29375912851613],"i_j_b_m":[317.5940277082969,317.59402770566976,295.051401265233,212.99192245688872,212.99192245828908,128.02009763434435,128.0200976357457,128.02009763580347,73.51408741716065,22.542695939618667,82.06313039280069,82.06313039333418,82.0631303927383,82.06313039270277,84.97211565866418,54.50601045352897,73.51408741770956],"i_j_c_m":[313.92400639361034,313.92400639462664,291.49220186941534,210.27869204046848,210.27869204047317,126.22862845256685,126.2286284491155,126.22862845139885,72.46101217425183,22.431807868009034,81.21669324329204,81.21669324395374,81.2166932435406,81.21669324318472,84.05021634614194,53.76761645485799,72.46101217675702],"i_j_n_m":[3.6213763423892873,3.6158445406301225,3.5055634624794525,2.6697573055534587,2.669757307403205,1.7553167781007717,1.755316780175547,1.7760444675661162,1.0378636811427169,0.1104839198279659,0.8426801809206925,0.8426801801008388,0.8538248897303061,0.8538248892419646,0.9300235615891834,0.7381873030418796,1.0627289175553332],"i_k_a_m":[320.2835330178838,320.2835330173182,297.6636860324195,214.98772663308037,214.98772663101104,129.34450753667238,129.34450753842918,129.34450753769406,74.29375912664821,22.61992432904671,82.6785221145594,82.67852211448384,82.67852211402143,82.67852211415229,85.64324646416551,55.05075171656347,74.29375912851613],"i_k_b_m":[317.5940277082969,317.59402770566976,295.051401265233,212.99192245688872,212.99192245828908,128.02009763434435,128.0200976357457,128.02009763580347,73.51408741716065,22.542695939618667,82.06313039280069,82.06313039333418,82.0631303927383,82.06313039270277,84.97211565866418,54.50601045352897,73.51408741770956],"i_k_c_m":[313.92400639361034,313.92400639462664,291.49220186941534,210.27869204046848,210.27869204047317,126.22862845256685,126.2286284491155,126.22862845139885,72.46101217425183,22.431807868009034,81.21669324329204,81.21669324395374,81.2166932435406,81.21669324318472,84.05021634614194,53.76761645485799,72.46101217675702],"i_k_n_m":[3.6213763423892873,3.6158445406301225,3.5055634624794525,2.6697573055534587,2.669757307403205,1.7553167781007717,1.755316780175547,1.7760444675661162,1.0378636811427169,0.1104839198279659,0.8426801809206925,0.8426801801008388,0.8538248897303061,0.8538248892419646,0.9300235615891834,0.7381873030418796,1.0627289175553332],"line_id":["R1-R2","R2-R3","R3-R4","R4-R5","R5-R6","R6-R7","R7-R8","R8-R9","R9-R10","R3-R11","R4-R12","R12-R13","R13-R14","R14-R15","R6-R16","R9-R17","R10-R18"],"x_s":[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,-30],[0,35],[35,70],[70,105],[105,105],[0,-35],[0,30],[0,-30]],"y_s":[[0,-35],[-35,-70],[-70,-105],[-105,-140],[-140,-175],[-175,-210],[-210,-245],[-245,-280],[-280,-315],[-70,-70],[-105,-105],[-105,-105],[-105,-105],[-105,-140],[-175,-175],[-280,-280],[-315,-315]]},"selected":{"id":"1401","type":"Selection"},"selection_policy":{"id":"1402","type":"UnionRenderers"}},"id":"1351","type":"ColumnDataSource"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1348","type":"MultiLine"},{"attributes":{"dimension":1,"plot":{"id":"1310","subtype":"Figure","type":"Plot"},"ticker":{"id":"1326","type":"BasicTicker"}},"id":"1329","type":"Grid"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"1338","type":"BoxAnnotation"}],"root_ids":["1310"]},"title":"Bokeh Application","version":"1.0.1"}};
-  var render_items = [{"docid":"caff575c-dabe-4913-a9ef-1c6c7c35bd92","roots":{"1310":"101ee150-dfc5-4a77-b9cc-2183b3cca6e4"}}];
+  var docs_json = {"e599fa38-4c32-4d1d-a91d-8afd1bcc9430":{"roots":{"references":[{"attributes":{"below":[{"id":"1013","type":"LinearAxis"}],"left":[{"id":"1018","type":"LinearAxis"}],"plot_height":400,"renderers":[{"id":"1013","type":"LinearAxis"},{"id":"1017","type":"Grid"},{"id":"1018","type":"LinearAxis"},{"id":"1022","type":"Grid"},{"id":"1031","type":"BoxAnnotation"},{"id":"1042","type":"GlyphRenderer"},{"id":"1048","type":"GlyphRenderer"},{"id":"1054","type":"GlyphRenderer"}],"title":{"id":"1002","type":"Title"},"toolbar":{"id":"1029","type":"Toolbar"},"x_range":{"id":"1005","type":"DataRange1d"},"x_scale":{"id":"1009","type":"LinearScale"},"y_range":{"id":"1007","type":"DataRange1d"},"y_scale":{"id":"1011","type":"LinearScale"}},"id":"1003","subtype":"Figure","type":"Plot"},{"attributes":{"callback":null,"data":{"deg_1a":[-82.87498085344409],"deg_1b":[157.1250182597351],"deg_1c":[37.12501856259008],"deg_1n":[-26.56505117707799],"deg_2a":[127.1250190528523],"deg_2b":[7.125017560321595],"deg_2c":[-112.87498064429279],"deg_2n":[97.12501634890182],"i_1a_m":[27125.479742706586],"i_1b_m":[27125.479819543827],"i_1c_m":[27125.479417527353],"i_1n_m":[4.067383956680332e-12],"i_2a_m":[89514.08285814238],"i_2b_m":[89514.08260457934],"i_2c_m":[89514.08317054491],"i_2n_m":[0.002838929777279857],"trafo_id":["B0-B1"],"x_s":[[0,30]],"y_s":[[0,0]]},"selected":{"id":"1067","type":"Selection"},"selection_policy":{"id":"1068","type":"UnionRenderers"}},"id":"1038","type":"ColumnDataSource"},{"attributes":{"callback":null},"id":"1005","type":"DataRange1d"},{"attributes":{},"id":"1019","type":"BasicTicker"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"red"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1046","type":"MultiLine"},{"attributes":{},"id":"1070","type":"UnionRenderers"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto","tools":[{"id":"1023","type":"PanTool"},{"id":"1024","type":"WheelZoomTool"},{"id":"1025","type":"BoxZoomTool"},{"id":"1026","type":"SaveTool"},{"id":"1027","type":"ResetTool"},{"id":"1028","type":"HelpTool"},{"id":"1056","type":"HoverTool"},{"id":"1058","type":"HoverTool"},{"id":"1060","type":"HoverTool"}]},"id":"1029","type":"Toolbar"},{"attributes":{"data_source":{"id":"1050","type":"ColumnDataSource"},"glyph":{"id":"1052","type":"Circle"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1053","type":"Circle"},"selection_glyph":null,"view":{"id":"1055","type":"CDSView"}},"id":"1054","type":"GlyphRenderer"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1041","type":"MultiLine"},{"attributes":{"plot":null,"text":"Results"},"id":"1002","type":"Title"},{"attributes":{"callback":null,"renderers":[{"id":"1048","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            line id = @line_id \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>ja</sub> =  @i_j_a_m &ang; @deg_j_a </td>\n                    <td>I<sub>ka</sub> =  @i_k_a_m &ang; @deg_k_a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jb</sub> =  @i_j_b_m &ang; @deg_j_b </td>\n                    <td >I<sub>kb</sub> =  @i_k_b_m &ang; @deg_k_b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jc</sub> =  @i_j_c_m &ang; @deg_j_c </td>\n                    <td >I<sub>kc</sub> =  @i_k_c_m &ang; @deg_k_c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jn</sub> =  @i_j_n_m &ang; @deg_j_n </td>\n                    <td >I<sub>kn</sub> =  @i_k_n_m &ang; @deg_k_n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"1058","type":"HoverTool"},{"attributes":{"data_source":{"id":"1038","type":"ColumnDataSource"},"glyph":{"id":"1040","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1041","type":"MultiLine"},"selection_glyph":null,"view":{"id":"1043","type":"CDSView"}},"id":"1042","type":"GlyphRenderer"},{"attributes":{},"id":"1071","type":"Selection"},{"attributes":{"data_source":{"id":"1044","type":"ColumnDataSource"},"glyph":{"id":"1046","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1047","type":"MultiLine"},"selection_glyph":null,"view":{"id":"1049","type":"CDSView"}},"id":"1048","type":"GlyphRenderer"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"green"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1040","type":"MultiLine"},{"attributes":{},"id":"1024","type":"WheelZoomTool"},{"attributes":{},"id":"1072","type":"UnionRenderers"},{"attributes":{"source":{"id":"1044","type":"ColumnDataSource"}},"id":"1049","type":"CDSView"},{"attributes":{},"id":"1027","type":"ResetTool"},{"attributes":{},"id":"1023","type":"PanTool"},{"attributes":{"dimension":1,"plot":{"id":"1003","subtype":"Figure","type":"Plot"},"ticker":{"id":"1019","type":"BasicTicker"}},"id":"1022","type":"Grid"},{"attributes":{"callback":null,"data":{"bus_id":["B0","B1","B2"],"deg_an":["0.00","-63.43","-80.54"],"deg_bn":["-120.00","180.00","-158.20"],"deg_cn":["120.00","53.13","33.69"],"deg_ng":["0.00","-135.00","0.00"],"p_a":["128204.39","0.00","0.00"],"p_abc":["384613.13","0.00","0.00"],"p_b":["128204.37","0.00","-0.00"],"p_c":["128204.37","0.00","0.00"],"q_a":["1025634.69","-0.00","-0.00"],"q_abc":["3076904.05","0.00","0.00"],"q_b":["1025634.69","0.00","0.00"],"q_c":["1025634.68","0.00","0.00"],"s_color":["red","blue","blue"],"s_radio":[20,1,1],"u_avg_pu":["1.000","0.000","0.000"],"v_ab":[65999.79602241206,0.0006905339660024879,0.0008802615418613255],"v_an":["38105.00","0.00","0.00"],"v_an_pu":["1.0000","0.0000","0.0000"],"v_bc":[65999.79602241206,0.000781631376639752,0.0010918300671385692],"v_bn":["38105.00","0.00","0.00"],"v_bn_pu":["1.0000","0.0000","0.0000"],"v_ca":[65999.79602241208,0.0009841623227903502,0.0010066175843793117],"v_cn":["38105.00","0.00","0.00"],"v_cn_pu":["1.0000","0.0000","0.0000"],"v_ng":["0.00","0.00","0.00"],"v_unb":["0.0","47.7","28.2"],"x":[0,30,200],"y":[0,0,0]},"selected":{"id":"1071","type":"Selection"},"selection_policy":{"id":"1072","type":"UnionRenderers"}},"id":"1050","type":"ColumnDataSource"},{"attributes":{"source":{"id":"1038","type":"ColumnDataSource"}},"id":"1043","type":"CDSView"},{"attributes":{"formatter":{"id":"1065","type":"BasicTickFormatter"},"plot":{"id":"1003","subtype":"Figure","type":"Plot"},"ticker":{"id":"1019","type":"BasicTicker"}},"id":"1018","type":"LinearAxis"},{"attributes":{"overlay":{"id":"1031","type":"BoxAnnotation"}},"id":"1025","type":"BoxZoomTool"},{"attributes":{"callback":null,"renderers":[{"id":"1042","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            transformer id = @trafo_id  \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>1a</sub> =  @i_1a_m &ang; @deg_1a </td>\n                    <td>I<sub>2a</sub> =  @i_2a_m &ang; @deg_2a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1b</sub> =  @i_1b_m &ang; @deg_1b </td>\n                    <td >I<sub>2b</sub> =  @i_2b_m &ang; @deg_2b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1c</sub> =  @i_1c_m &ang; @deg_1c </td>\n                    <td >I<sub>2c</sub> =  @i_2c_m &ang; @deg_2c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1n</sub> =  @i_1n_m &ang; @deg_1n </td>\n                    <td >I<sub>2n</sub> =  @i_2n_m &ang; @deg_2n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"1056","type":"HoverTool"},{"attributes":{"fill_alpha":{"value":0.5},"fill_color":{"value":"navy"},"line_alpha":{"value":0.5},"line_color":{"value":"navy"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1052","type":"Circle"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1047","type":"MultiLine"},{"attributes":{"plot":{"id":"1003","subtype":"Figure","type":"Plot"},"ticker":{"id":"1014","type":"BasicTicker"}},"id":"1017","type":"Grid"},{"attributes":{"source":{"id":"1050","type":"ColumnDataSource"}},"id":"1055","type":"CDSView"},{"attributes":{},"id":"1026","type":"SaveTool"},{"attributes":{"callback":null,"renderers":[{"id":"1054","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            bus_id = @bus_id &nbsp &nbsp |  u<sub>avg</sub>= @u_avg_pu pu |  u<sub>unb</sub>= @v_unb %\n            <table border=\"1\">\n                <tr>\n                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a kVA</td>\n                </tr>\n                      <tr>\n                      <td> </td> <td>v<sub>ab</sub>= @v_ab V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b kVA</td>\n                </tr>\n                      <tr>\n                      <td> </td><td>v<sub>bc</sub>= @v_bc V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c kVA </td>\n                </tr> \n                    <tr>\n                     <td> </td> <td>v<sub>ca</sub>= @v_ca V</td>\n                    </tr>\n               <tr>\n                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc kVA </td>\n              </tr>\n            </table>\n            </div>\n            "},"id":"1060","type":"HoverTool"},{"attributes":{},"id":"1014","type":"BasicTicker"},{"attributes":{},"id":"1063","type":"BasicTickFormatter"},{"attributes":{},"id":"1065","type":"BasicTickFormatter"},{"attributes":{"formatter":{"id":"1063","type":"BasicTickFormatter"},"plot":{"id":"1003","subtype":"Figure","type":"Plot"},"ticker":{"id":"1014","type":"BasicTicker"}},"id":"1013","type":"LinearAxis"},{"attributes":{},"id":"1067","type":"Selection"},{"attributes":{},"id":"1011","type":"LinearScale"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1053","type":"Circle"},{"attributes":{},"id":"1009","type":"LinearScale"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"1031","type":"BoxAnnotation"},{"attributes":{},"id":"1068","type":"UnionRenderers"},{"attributes":{"callback":null},"id":"1007","type":"DataRange1d"},{"attributes":{},"id":"1028","type":"HelpTool"},{"attributes":{"callback":null,"data":{"deg_j_a":[144.5232286592735],"deg_j_b":[-11.287451787423434],"deg_j_c":[152.49765451064556],"deg_j_n":[135.00000000000003],"deg_k_a":[144.5232286592735],"deg_k_b":[-11.287451787423434],"deg_k_c":[152.49765451064556],"deg_k_n":[135.00000000000003],"i_j_a_m":[0.0014569400709719856],"i_j_b_m":[0.002171490608094155],"i_j_c_m":[0.003206832972345683],"i_j_n_m":[0.0026889951947137386],"i_k_a_m":[0.0014569400709719856],"i_k_b_m":[0.002171490608094155],"i_k_c_m":[0.003206832972345683],"i_k_n_m":[0.0026889951947137386],"line_id":["B1-B2"],"x_s":[[30,200]],"y_s":[[0,0]]},"selected":{"id":"1069","type":"Selection"},"selection_policy":{"id":"1070","type":"UnionRenderers"}},"id":"1044","type":"ColumnDataSource"},{"attributes":{},"id":"1069","type":"Selection"}],"root_ids":["1003"]},"title":"Bokeh Application","version":"1.0.1"}};
+  var render_items = [{"docid":"e599fa38-4c32-4d1d-a91d-8afd1bcc9430","roots":{"1003":"d4974517-acd9-4ebf-8438-bf954063e8b7"}}];
   root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
 
   }
@@ -980,586 +1029,227 @@ var element = document.currentScript.previousSibling.previousSibling;
 })(window);
 </script></div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[15]:
-</pre></div>
 </div>
-<div class="output_area docutils container">
-<div style="display: table;"><div style="display: table-row;"><div style="display: table-cell;"><b title="bokeh.plotting.figure.Figure">Figure</b>(</div><div style="display: table-cell;">id&nbsp;=&nbsp;'1310', <span id="1478" style="cursor: pointer;">&hellip;)</span></div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">above&nbsp;=&nbsp;[],</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">aspect_scale&nbsp;=&nbsp;1,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">background_fill_alpha&nbsp;=&nbsp;{'value': 1.0},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">background_fill_color&nbsp;=&nbsp;{'value': '#ffffff'},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">below&nbsp;=&nbsp;[LinearAxis(id='1320', ...)],</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">border_fill_alpha&nbsp;=&nbsp;{'value': 1.0},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">border_fill_color&nbsp;=&nbsp;{'value': '#ffffff'},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">css_classes&nbsp;=&nbsp;[],</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">disabled&nbsp;=&nbsp;False,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">extra_x_ranges&nbsp;=&nbsp;{},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">extra_y_ranges&nbsp;=&nbsp;{},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">h_symmetry&nbsp;=&nbsp;True,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">height&nbsp;=&nbsp;None,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">hidpi&nbsp;=&nbsp;True,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">js_event_callbacks&nbsp;=&nbsp;{},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">js_property_callbacks&nbsp;=&nbsp;{},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">left&nbsp;=&nbsp;[LinearAxis(id='1325', ...)],</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">lod_factor&nbsp;=&nbsp;10,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">lod_interval&nbsp;=&nbsp;300,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">lod_threshold&nbsp;=&nbsp;2000,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">lod_timeout&nbsp;=&nbsp;500,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">match_aspect&nbsp;=&nbsp;False,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">min_border&nbsp;=&nbsp;5,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">min_border_bottom&nbsp;=&nbsp;None,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">min_border_left&nbsp;=&nbsp;None,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">min_border_right&nbsp;=&nbsp;None,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">min_border_top&nbsp;=&nbsp;None,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">name&nbsp;=&nbsp;None,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">outline_line_alpha&nbsp;=&nbsp;{'value': 1.0},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">outline_line_cap&nbsp;=&nbsp;'butt',</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">outline_line_color&nbsp;=&nbsp;{'value': '#e5e5e5'},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">outline_line_dash&nbsp;=&nbsp;[],</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">outline_line_dash_offset&nbsp;=&nbsp;0,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">outline_line_join&nbsp;=&nbsp;'bevel',</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">outline_line_width&nbsp;=&nbsp;{'value': 1},</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">output_backend&nbsp;=&nbsp;'canvas',</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">plot_height&nbsp;=&nbsp;400,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">plot_width&nbsp;=&nbsp;600,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">renderers&nbsp;=&nbsp;[LinearAxis(id='1320', ...), Grid(id='1324', ...), LinearAxis(id='1325', ...), Grid(id='1329', ...), BoxAnnotation(id='1338', ...), GlyphRenderer(id='1349', ...), GlyphRenderer(id='1355', ...), GlyphRenderer(id='1361', ...)],</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">right&nbsp;=&nbsp;[],</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">sizing_mode&nbsp;=&nbsp;'fixed',</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">subscribed_events&nbsp;=&nbsp;[],</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">tags&nbsp;=&nbsp;[],</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">title&nbsp;=&nbsp;Title(id='1309', ...),</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">title_location&nbsp;=&nbsp;'above',</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">toolbar&nbsp;=&nbsp;Toolbar(id='1336', ...),</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">toolbar_location&nbsp;=&nbsp;'right',</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">toolbar_sticky&nbsp;=&nbsp;True,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">v_symmetry&nbsp;=&nbsp;False,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">width&nbsp;=&nbsp;None,</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">x_range&nbsp;=&nbsp;DataRange1d(id='1312', ...),</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">x_scale&nbsp;=&nbsp;LinearScale(id='1316', ...),</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">y_range&nbsp;=&nbsp;DataRange1d(id='1314', ...),</div></div><div class="1477" style="display: none;"><div style="display: table-cell;"></div><div style="display: table-cell;">y_scale&nbsp;=&nbsp;LinearScale(id='1318', ...))</div></div></div>
-<script>
-(function() {
-  var expanded = false;
-  var ellipsis = document.getElementById("1478");
-  ellipsis.addEventListener("click", function() {
-    var rows = document.getElementsByClassName("1477");
-    for (var i = 0; i < rows.length; i++) {
-      var el = rows[i];
-      el.style.display = expanded ? "none" : "table-row";
-    }
-    ellipsis.innerHTML = expanded ? "&hellip;)" : "&lsaquo;&lsaquo;&lsaquo;";
-    expanded = !expanded;
-  });
-})();
-</script></div>
+<div class="section" id="Phase-ground-fault-(isolated-neutral)">
+<h2>Phase ground fault (isolated neutral)<a class="headerlink" href="#Phase-ground-fault-(isolated-neutral)" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id4">
+<img alt="mv_short_circuits" src="../_images/mv_short_circuits_ph_g.png" />
+<p class="caption"><span class="caption-text">mv_short_circuits</span></p>
 </div>
-</div>
-<div class="section" id="Analysis-using-Pandas">
-<h2>Analysis using Pandas<a class="headerlink" href="#Analysis-using-Pandas" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [16]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;shunts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">1e12</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]},</span> <span class="c1"># applied fault</span>
+<span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [17]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;nodes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sys1</span><span class="o">.</span><span class="n">nodes</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;I_node_m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sys1</span><span class="o">.</span><span class="n">I_node</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;V_node_m&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sys1</span><span class="o">.</span><span class="n">V_node</span><span class="p">)</span>
-<span class="c1">#df[&#39;phi&#39;] = np.angle(sys1.I_node, deg=True) - np.angle(sys1.V_node, deg=True)</span>
-<span class="n">s</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(</span><span class="n">sys1</span><span class="o">.</span><span class="n">I_node</span><span class="p">)</span><span class="o">*</span><span class="n">sys1</span><span class="o">.</span><span class="n">V_node</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;p_kW&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">real</span><span class="o">/</span><span class="mi">1000</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;q_kVA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">imag</span><span class="o">/</span><span class="mi">1000</span>
-
-<span class="n">df</span>
+<span></span><span class="n">grid_ph_g</span> <span class="o">=</span> <span class="n">grid</span><span class="p">()</span>
+<span class="n">grid_ph_g</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># Load data</span>
+<span class="n">grid_ph_g</span><span class="o">.</span><span class="n">pf</span><span class="p">()</span>  <span class="c1"># solve power flow</span>
+<span class="n">p</span><span class="o">=</span><span class="n">plot_results</span><span class="p">(</span><span class="n">grid_ph_g</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[17]:
-</pre></div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>nodes</th>
-      <th>I_node_m</th>
-      <th>V_node_m</th>
-      <th>p_kW</th>
-      <th>q_kVA</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>R0.1</td>
-      <td>12.279686</td>
-      <td>11547.000000</td>
-      <td>133.228235</td>
-      <td>48.534983</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>R0.2</td>
-      <td>12.194776</td>
-      <td>11547.000000</td>
-      <td>132.224879</td>
-      <td>48.424213</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>R0.3</td>
-      <td>12.219433</td>
-      <td>11547.000000</td>
-      <td>132.822486</td>
-      <td>47.610666</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>R1.1</td>
-      <td>294.305597</td>
-      <td>226.183736</td>
-      <td>-63.206394</td>
-      <td>-20.883865</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>R1.2</td>
-      <td>294.318022</td>
-      <td>226.377454</td>
-      <td>-63.338571</td>
-      <td>-20.673117</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>R1.3</td>
-      <td>294.268246</td>
-      <td>227.024469</td>
-      <td>-63.455017</td>
-      <td>-20.892937</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>R1.4</td>
-      <td>0.129777</td>
-      <td>0.488038</td>
-      <td>-0.000018</td>
-      <td>-0.000061</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>R11.1</td>
-      <td>22.619924</td>
-      <td>221.082177</td>
-      <td>-4.751117</td>
-      <td>-1.560611</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>R11.2</td>
-      <td>22.542696</td>
-      <td>221.818706</td>
-      <td>-4.749990</td>
-      <td>-1.562532</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>R11.3</td>
-      <td>22.431808</td>
-      <td>222.842141</td>
-      <td>-4.748898</td>
-      <td>-1.560605</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>R11.4</td>
-      <td>0.111885</td>
-      <td>0.056907</td>
-      <td>0.000006</td>
-      <td>-0.000001</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>R15.1</td>
-      <td>82.678522</td>
-      <td>210.089330</td>
-      <td>-16.512848</td>
-      <td>-5.388732</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>R15.2</td>
-      <td>82.063130</td>
-      <td>211.381109</td>
-      <td>-16.463661</td>
-      <td>-5.463720</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>R15.3</td>
-      <td>81.216693</td>
-      <td>212.814945</td>
-      <td>-16.424028</td>
-      <td>-5.384451</td>
-    </tr>
-    <tr>
-      <th>14</th>
-      <td>R15.4</td>
-      <td>0.869274</td>
-      <td>0.627272</td>
-      <td>0.000537</td>
-      <td>-0.000093</td>
-    </tr>
-    <tr>
-      <th>15</th>
-      <td>R16.1</td>
-      <td>85.643246</td>
-      <td>214.560691</td>
-      <td>-17.470587</td>
-      <td>-5.695963</td>
-    </tr>
-    <tr>
-      <th>16</th>
-      <td>R16.2</td>
-      <td>84.972116</td>
-      <td>215.951166</td>
-      <td>-17.414043</td>
-      <td>-5.785090</td>
-    </tr>
-    <tr>
-      <th>17</th>
-      <td>R16.3</td>
-      <td>84.050216</td>
-      <td>217.432385</td>
-      <td>-17.366033</td>
-      <td>-5.692562</td>
-    </tr>
-    <tr>
-      <th>18</th>
-      <td>R16.4</td>
-      <td>0.947507</td>
-      <td>0.712773</td>
-      <td>0.000663</td>
-      <td>-0.000129</td>
-    </tr>
-    <tr>
-      <th>19</th>
-      <td>R17.1</td>
-      <td>55.050752</td>
-      <td>212.626217</td>
-      <td>-11.132419</td>
-      <td>-3.616867</td>
-    </tr>
-    <tr>
-      <th>20</th>
-      <td>R17.2</td>
-      <td>54.506010</td>
-      <td>214.317220</td>
-      <td>-11.080836</td>
-      <td>-3.697878</td>
-    </tr>
-    <tr>
-      <th>21</th>
-      <td>R17.3</td>
-      <td>53.767616</td>
-      <td>216.004660</td>
-      <td>-11.037499</td>
-      <td>-3.613848</td>
-    </tr>
-    <tr>
-      <th>22</th>
-      <td>R17.4</td>
-      <td>0.762900</td>
-      <td>1.009420</td>
-      <td>0.000755</td>
-      <td>-0.000153</td>
-    </tr>
-    <tr>
-      <th>23</th>
-      <td>R18.1</td>
-      <td>74.293759</td>
-      <td>211.633036</td>
-      <td>-14.954995</td>
-      <td>-4.853998</td>
-    </tr>
-    <tr>
-      <th>24</th>
-      <td>R18.2</td>
-      <td>73.514087</td>
-      <td>213.405120</td>
-      <td>-14.879548</td>
-      <td>-4.972049</td>
-    </tr>
-    <tr>
-      <th>25</th>
-      <td>R18.3</td>
-      <td>72.461012</td>
-      <td>215.150835</td>
-      <td>-14.816623</td>
-      <td>-4.849461</td>
-    </tr>
-    <tr>
-      <th>26</th>
-      <td>R18.4</td>
-      <td>1.089448</td>
-      <td>1.091264</td>
-      <td>0.001165</td>
-      <td>-0.000237</td>
-    </tr>
-    <tr>
-      <th>27</th>
-      <td>R2.1</td>
-      <td>0.000000</td>
-      <td>223.960103</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>28</th>
-      <td>R2.2</td>
-      <td>0.000000</td>
-      <td>224.415535</td>
-      <td>-0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>29</th>
-      <td>R2.3</td>
-      <td>0.000000</td>
-      <td>225.243290</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>45</th>
-      <td>R6.3</td>
-      <td>0.000000</td>
-      <td>219.425766</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>46</th>
-      <td>R6.4</td>
-      <td>0.000000</td>
-      <td>0.634712</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>47</th>
-      <td>R7.1</td>
-      <td>0.000000</td>
-      <td>215.787875</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>48</th>
-      <td>R7.2</td>
-      <td>0.000000</td>
-      <td>217.212013</td>
-      <td>-0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>49</th>
-      <td>R7.3</td>
-      <td>0.000000</td>
-      <td>218.710282</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>50</th>
-      <td>R7.4</td>
-      <td>0.000000</td>
-      <td>0.741778</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>51</th>
-      <td>R8.1</td>
-      <td>0.000000</td>
-      <td>214.889967</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>52</th>
-      <td>R8.2</td>
-      <td>0.000000</td>
-      <td>216.422120</td>
-      <td>-0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>53</th>
-      <td>R8.3</td>
-      <td>0.000000</td>
-      <td>217.994913</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>54</th>
-      <td>R8.4</td>
-      <td>0.000000</td>
-      <td>0.848844</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>55</th>
-      <td>R9.1</td>
-      <td>0.000000</td>
-      <td>213.992505</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>56</th>
-      <td>R9.2</td>
-      <td>0.000000</td>
-      <td>215.631806</td>
-      <td>-0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>57</th>
-      <td>R9.3</td>
-      <td>0.000000</td>
-      <td>217.279749</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>58</th>
-      <td>R9.4</td>
-      <td>0.000000</td>
-      <td>0.956068</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>59</th>
-      <td>R10.1</td>
-      <td>0.000000</td>
-      <td>213.476942</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>60</th>
-      <td>R10.2</td>
-      <td>0.000000</td>
-      <td>215.178180</td>
-      <td>-0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>61</th>
-      <td>R10.3</td>
-      <td>0.000000</td>
-      <td>216.869265</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>62</th>
-      <td>R10.4</td>
-      <td>0.000000</td>
-      <td>1.017707</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>63</th>
-      <td>R12.1</td>
-      <td>0.000000</td>
-      <td>217.273533</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>64</th>
-      <td>R12.2</td>
-      <td>0.000000</td>
-      <td>218.317615</td>
-      <td>-0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>65</th>
-      <td>R12.3</td>
-      <td>0.000000</td>
-      <td>219.559931</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>66</th>
-      <td>R12.4</td>
-      <td>0.000000</td>
-      <td>0.367154</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>67</th>
-      <td>R13.1</td>
-      <td>0.000000</td>
-      <td>214.877482</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>68</th>
-      <td>R13.2</td>
-      <td>0.000000</td>
-      <td>216.004358</td>
-      <td>-0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>69</th>
-      <td>R13.3</td>
-      <td>0.000000</td>
-      <td>217.310579</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>70</th>
-      <td>R13.4</td>
-      <td>0.000000</td>
-      <td>0.453609</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>71</th>
-      <td>R14.1</td>
-      <td>0.000000</td>
-      <td>212.482806</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-    <tr>
-      <th>72</th>
-      <td>R14.2</td>
-      <td>0.000000</td>
-      <td>213.692088</td>
-      <td>-0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>73</th>
-      <td>R14.3</td>
-      <td>0.000000</td>
-      <td>215.062258</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>74</th>
-      <td>R14.4</td>
-      <td>0.000000</td>
-      <td>0.540432</td>
-      <td>0.000000</td>
-      <td>-0.000000</td>
-    </tr>
-  </tbody>
-</table>
-<p>75 rows × 5 columns</p>
-</div></div>
+<div class="bk-root" id="93238764-7e69-44d6-b14a-c6b2ddd15a27"></div></div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+(function(root) {
+  function embed_document(root) {
+
+  var docs_json = {"a60ca868-16c1-49a3-a004-a6dd479170d5":{"roots":{"references":[{"attributes":{"below":[{"id":"1157","type":"LinearAxis"}],"left":[{"id":"1162","type":"LinearAxis"}],"plot_height":400,"renderers":[{"id":"1157","type":"LinearAxis"},{"id":"1161","type":"Grid"},{"id":"1162","type":"LinearAxis"},{"id":"1166","type":"Grid"},{"id":"1175","type":"BoxAnnotation"},{"id":"1186","type":"GlyphRenderer"},{"id":"1192","type":"GlyphRenderer"},{"id":"1198","type":"GlyphRenderer"}],"title":{"id":"1146","type":"Title"},"toolbar":{"id":"1173","type":"Toolbar"},"x_range":{"id":"1149","type":"DataRange1d"},"x_scale":{"id":"1153","type":"LinearScale"},"y_range":{"id":"1151","type":"DataRange1d"},"y_scale":{"id":"1155","type":"LinearScale"}},"id":"1147","subtype":"Figure","type":"Plot"},{"attributes":{"fill_alpha":{"value":0.5},"fill_color":{"value":"navy"},"line_alpha":{"value":0.5},"line_color":{"value":"navy"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1196","type":"Circle"},{"attributes":{"overlay":{"id":"1175","type":"BoxAnnotation"}},"id":"1169","type":"BoxZoomTool"},{"attributes":{},"id":"1170","type":"SaveTool"},{"attributes":{},"id":"1168","type":"WheelZoomTool"},{"attributes":{"plot":null,"text":"Results"},"id":"1146","type":"Title"},{"attributes":{},"id":"1172","type":"HelpTool"},{"attributes":{},"id":"1219","type":"BasicTickFormatter"},{"attributes":{},"id":"1228","type":"UnionRenderers"},{"attributes":{"callback":null,"data":{"deg_1a":[57.9946167919165],"deg_1b":[0.0],"deg_1c":[-164.57783868126134],"deg_1n":[90.0],"deg_2a":[180.0],"deg_2b":[161.565051177078],"deg_2c":[100.61965527615514],"deg_2n":[-44.999998922521215],"i_1a_m":[4.290077928115626e-12],"i_1b_m":[4.320099833421409e-12],"i_1c_m":[6.840131826034541e-12],"i_1n_m":[1.8189894035458565e-12],"i_2a_m":[9.094947017729282e-12],"i_2b_m":[4.601719643932854e-11],"i_2c_m":[2.961100216652941e-11],"i_2n_m":[4.115903075375356e-11],"trafo_id":["B0-B1"],"x_s":[[0,30]],"y_s":[[0,0]]},"selected":{"id":"1223","type":"Selection"},"selection_policy":{"id":"1224","type":"UnionRenderers"}},"id":"1182","type":"ColumnDataSource"},{"attributes":{},"id":"1225","type":"Selection"},{"attributes":{"plot":{"id":"1147","subtype":"Figure","type":"Plot"},"ticker":{"id":"1158","type":"BasicTicker"}},"id":"1161","type":"Grid"},{"attributes":{},"id":"1226","type":"UnionRenderers"},{"attributes":{"data_source":{"id":"1182","type":"ColumnDataSource"},"glyph":{"id":"1184","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1185","type":"MultiLine"},"selection_glyph":null,"view":{"id":"1187","type":"CDSView"}},"id":"1186","type":"GlyphRenderer"},{"attributes":{},"id":"1227","type":"Selection"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto","tools":[{"id":"1167","type":"PanTool"},{"id":"1168","type":"WheelZoomTool"},{"id":"1169","type":"BoxZoomTool"},{"id":"1170","type":"SaveTool"},{"id":"1171","type":"ResetTool"},{"id":"1172","type":"HelpTool"},{"id":"1200","type":"HoverTool"},{"id":"1202","type":"HoverTool"},{"id":"1204","type":"HoverTool"}]},"id":"1173","type":"Toolbar"},{"attributes":{},"id":"1224","type":"UnionRenderers"},{"attributes":{"source":{"id":"1194","type":"ColumnDataSource"}},"id":"1199","type":"CDSView"},{"attributes":{},"id":"1167","type":"PanTool"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"1175","type":"BoxAnnotation"},{"attributes":{},"id":"1155","type":"LinearScale"},{"attributes":{},"id":"1221","type":"BasicTickFormatter"},{"attributes":{},"id":"1153","type":"LinearScale"},{"attributes":{"formatter":{"id":"1221","type":"BasicTickFormatter"},"plot":{"id":"1147","subtype":"Figure","type":"Plot"},"ticker":{"id":"1163","type":"BasicTicker"}},"id":"1162","type":"LinearAxis"},{"attributes":{},"id":"1223","type":"Selection"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1185","type":"MultiLine"},{"attributes":{"callback":null},"id":"1151","type":"DataRange1d"},{"attributes":{"formatter":{"id":"1219","type":"BasicTickFormatter"},"plot":{"id":"1147","subtype":"Figure","type":"Plot"},"ticker":{"id":"1158","type":"BasicTicker"}},"id":"1157","type":"LinearAxis"},{"attributes":{"callback":null,"renderers":[{"id":"1192","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            line id = @line_id \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>ja</sub> =  @i_j_a_m &ang; @deg_j_a </td>\n                    <td>I<sub>ka</sub> =  @i_k_a_m &ang; @deg_k_a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jb</sub> =  @i_j_b_m &ang; @deg_j_b </td>\n                    <td >I<sub>kb</sub> =  @i_k_b_m &ang; @deg_k_b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jc</sub> =  @i_j_c_m &ang; @deg_j_c </td>\n                    <td >I<sub>kc</sub> =  @i_k_c_m &ang; @deg_k_c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jn</sub> =  @i_j_n_m &ang; @deg_j_n </td>\n                    <td >I<sub>kn</sub> =  @i_k_n_m &ang; @deg_k_n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"1202","type":"HoverTool"},{"attributes":{"callback":null},"id":"1149","type":"DataRange1d"},{"attributes":{"data_source":{"id":"1188","type":"ColumnDataSource"},"glyph":{"id":"1190","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1191","type":"MultiLine"},"selection_glyph":null,"view":{"id":"1193","type":"CDSView"}},"id":"1192","type":"GlyphRenderer"},{"attributes":{"dimension":1,"plot":{"id":"1147","subtype":"Figure","type":"Plot"},"ticker":{"id":"1163","type":"BasicTicker"}},"id":"1166","type":"Grid"},{"attributes":{"data_source":{"id":"1194","type":"ColumnDataSource"},"glyph":{"id":"1196","type":"Circle"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1197","type":"Circle"},"selection_glyph":null,"view":{"id":"1199","type":"CDSView"}},"id":"1198","type":"GlyphRenderer"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"red"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1190","type":"MultiLine"},{"attributes":{},"id":"1163","type":"BasicTicker"},{"attributes":{"source":{"id":"1188","type":"ColumnDataSource"}},"id":"1193","type":"CDSView"},{"attributes":{},"id":"1158","type":"BasicTicker"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1191","type":"MultiLine"},{"attributes":{"callback":null,"data":{"bus_id":["B0","B1","B2"],"deg_an":["0.00","30.00","-52.47"],"deg_bn":["-120.00","-90.00","-120.00"],"deg_cn":["120.00","150.00","-180.00"],"deg_ng":["0.00","-150.00","0.00"],"p_a":["0.00","0.00","0.00"],"p_abc":["0.00","0.00","0.00"],"p_b":["0.00","0.00","-0.00"],"p_c":["0.00","0.00","-0.00"],"q_a":["0.00","0.00","-0.00"],"q_abc":["-0.00","0.00","0.00"],"q_b":["-0.00","-0.00","0.00"],"q_c":["-0.00","0.00","0.00"],"s_color":["red","blue","blue"],"s_radio":[1,1,1],"u_avg_pu":["1.000","1.000","1.155"],"v_ab":[65999.79602241206,19999.938188609718,19999.938188609718],"v_an":["38105.00","11546.97","0.00"],"v_an_pu":["1.0000","1.0000","0.0000"],"v_bc":[65999.79602241206,19999.93818860972,19999.938188609718],"v_bn":["38105.00","11546.97","19999.94"],"v_bn_pu":["1.0000","1.0000","1.7320"],"v_ca":[65999.79602241208,19999.93818860972,19999.93818860972],"v_cn":["38105.00","11546.97","19999.94"],"v_cn_pu":["1.0000","1.0000","1.7320"],"v_ng":["0.00","11546.97","0.00"],"v_unb":["0.0","0.0","100.0"],"x":[0,30,200],"y":[0,0,0]},"selected":{"id":"1227","type":"Selection"},"selection_policy":{"id":"1228","type":"UnionRenderers"}},"id":"1194","type":"ColumnDataSource"},{"attributes":{"source":{"id":"1182","type":"ColumnDataSource"}},"id":"1187","type":"CDSView"},{"attributes":{"callback":null,"data":{"deg_j_a":[128.56388940883076],"deg_j_b":[-28.43698278690696],"deg_j_c":[-170.7245372778829],"deg_j_n":[143.2388270031848],"deg_k_a":[128.56388940883076],"deg_k_b":[-28.43698278690696],"deg_k_c":[-170.7245372778829],"deg_k_n":[143.2388270031848],"i_j_a_m":[7.498773304014044e-12],"i_j_b_m":[9.585986209248e-13],"i_j_c_m":[2.832073193208366e-12],"i_j_n_m":[8.271674036200874e-12],"i_k_a_m":[7.498773304014044e-12],"i_k_b_m":[9.585986209248e-13],"i_k_c_m":[2.832073193208366e-12],"i_k_n_m":[8.271674036200874e-12],"line_id":["B1-B2"],"x_s":[[30,200]],"y_s":[[0,0]]},"selected":{"id":"1225","type":"Selection"},"selection_policy":{"id":"1226","type":"UnionRenderers"}},"id":"1188","type":"ColumnDataSource"},{"attributes":{"callback":null,"renderers":[{"id":"1198","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            bus_id = @bus_id &nbsp &nbsp |  u<sub>avg</sub>= @u_avg_pu pu |  u<sub>unb</sub>= @v_unb %\n            <table border=\"1\">\n                <tr>\n                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a kVA</td>\n                </tr>\n                      <tr>\n                      <td> </td> <td>v<sub>ab</sub>= @v_ab V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b kVA</td>\n                </tr>\n                      <tr>\n                      <td> </td><td>v<sub>bc</sub>= @v_bc V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c kVA </td>\n                </tr> \n                    <tr>\n                     <td> </td> <td>v<sub>ca</sub>= @v_ca V</td>\n                    </tr>\n               <tr>\n                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc kVA </td>\n              </tr>\n            </table>\n            </div>\n            "},"id":"1204","type":"HoverTool"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"green"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1184","type":"MultiLine"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1197","type":"Circle"},{"attributes":{},"id":"1171","type":"ResetTool"},{"attributes":{"callback":null,"renderers":[{"id":"1186","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            transformer id = @trafo_id  \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>1a</sub> =  @i_1a_m &ang; @deg_1a </td>\n                    <td>I<sub>2a</sub> =  @i_2a_m &ang; @deg_2a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1b</sub> =  @i_1b_m &ang; @deg_1b </td>\n                    <td >I<sub>2b</sub> =  @i_2b_m &ang; @deg_2b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1c</sub> =  @i_1c_m &ang; @deg_1c </td>\n                    <td >I<sub>2c</sub> =  @i_2c_m &ang; @deg_2c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1n</sub> =  @i_1n_m &ang; @deg_1n </td>\n                    <td >I<sub>2n</sub> =  @i_2n_m &ang; @deg_2n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"1200","type":"HoverTool"}],"root_ids":["1147"]},"title":"Bokeh Application","version":"1.0.1"}};
+  var render_items = [{"docid":"a60ca868-16c1-49a3-a004-a6dd479170d5","roots":{"1147":"93238764-7e69-44d6-b14a-c6b2ddd15a27"}}];
+  root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        embed_document(root);
+        clearInterval(timer);
+      }
+      attempts++;
+      if (attempts > 100) {
+        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        clearInterval(timer);
+      }
+    }, 10, root)
+  }
+})(window);
+</script></div>
+</div>
+</div>
+<div class="section" id="Phase-ground-fault-(grounded-neutral)">
+<h2>Phase ground fault (grounded neutral)<a class="headerlink" href="#Phase-ground-fault-(grounded-neutral)" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id5">
+<img alt="mv_short_circuits" src="../_images/mv_short_circuits_ph_g.png" />
+<p class="caption"><span class="caption-text">mv_short_circuits</span></p>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;shunts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]},</span> <span class="c1"># applied fault</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">grid_ph_n</span> <span class="o">=</span> <span class="n">grid</span><span class="p">()</span>
+<span class="n">grid_ph_n</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># Load data</span>
+<span class="n">grid_ph_n</span><span class="o">.</span><span class="n">pf</span><span class="p">()</span>  <span class="c1"># solve power flow</span>
+<span class="n">p</span><span class="o">=</span><span class="n">plot_results</span><span class="p">(</span><span class="n">grid_ph_n</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="bk-root" id="330c0d8e-576e-4dca-9611-8fb295391cf9"></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+(function(root) {
+  function embed_document(root) {
+
+  var docs_json = {"04347762-c74b-4ddd-8be7-ee08bc9d5ec0":{"roots":{"references":[{"attributes":{"below":[{"id":"1313","type":"LinearAxis"}],"left":[{"id":"1318","type":"LinearAxis"}],"plot_height":400,"renderers":[{"id":"1313","type":"LinearAxis"},{"id":"1317","type":"Grid"},{"id":"1318","type":"LinearAxis"},{"id":"1322","type":"Grid"},{"id":"1331","type":"BoxAnnotation"},{"id":"1342","type":"GlyphRenderer"},{"id":"1348","type":"GlyphRenderer"},{"id":"1354","type":"GlyphRenderer"}],"title":{"id":"1302","type":"Title"},"toolbar":{"id":"1329","type":"Toolbar"},"x_range":{"id":"1305","type":"DataRange1d"},"x_scale":{"id":"1309","type":"LinearScale"},"y_range":{"id":"1307","type":"DataRange1d"},"y_scale":{"id":"1311","type":"LinearScale"}},"id":"1303","subtype":"Figure","type":"Plot"},{"attributes":{},"id":"1395","type":"Selection"},{"attributes":{"data_source":{"id":"1344","type":"ColumnDataSource"},"glyph":{"id":"1346","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1347","type":"MultiLine"},"selection_glyph":null,"view":{"id":"1349","type":"CDSView"}},"id":"1348","type":"GlyphRenderer"},{"attributes":{"callback":null},"id":"1307","type":"DataRange1d"},{"attributes":{"source":{"id":"1338","type":"ColumnDataSource"}},"id":"1343","type":"CDSView"},{"attributes":{},"id":"1391","type":"Selection"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1341","type":"MultiLine"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"red"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1346","type":"MultiLine"},{"attributes":{},"id":"1328","type":"HelpTool"},{"attributes":{"data_source":{"id":"1350","type":"ColumnDataSource"},"glyph":{"id":"1352","type":"Circle"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1353","type":"Circle"},"selection_glyph":null,"view":{"id":"1355","type":"CDSView"}},"id":"1354","type":"GlyphRenderer"},{"attributes":{"source":{"id":"1344","type":"ColumnDataSource"}},"id":"1349","type":"CDSView"},{"attributes":{},"id":"1327","type":"ResetTool"},{"attributes":{"formatter":{"id":"1389","type":"BasicTickFormatter"},"plot":{"id":"1303","subtype":"Figure","type":"Plot"},"ticker":{"id":"1319","type":"BasicTicker"}},"id":"1318","type":"LinearAxis"},{"attributes":{},"id":"1387","type":"BasicTickFormatter"},{"attributes":{"callback":null,"renderers":[{"id":"1342","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            transformer id = @trafo_id  \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>1a</sub> =  @i_1a_m &ang; @deg_1a </td>\n                    <td>I<sub>2a</sub> =  @i_2a_m &ang; @deg_2a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1b</sub> =  @i_1b_m &ang; @deg_1b </td>\n                    <td >I<sub>2b</sub> =  @i_2b_m &ang; @deg_2b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1c</sub> =  @i_1c_m &ang; @deg_1c </td>\n                    <td >I<sub>2c</sub> =  @i_2c_m &ang; @deg_2c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1n</sub> =  @i_1n_m &ang; @deg_1n </td>\n                    <td >I<sub>2n</sub> =  @i_2n_m &ang; @deg_2n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"1356","type":"HoverTool"},{"attributes":{},"id":"1324","type":"WheelZoomTool"},{"attributes":{},"id":"1309","type":"LinearScale"},{"attributes":{"source":{"id":"1350","type":"ColumnDataSource"}},"id":"1355","type":"CDSView"},{"attributes":{"callback":null,"renderers":[{"id":"1348","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            line id = @line_id \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>ja</sub> =  @i_j_a_m &ang; @deg_j_a </td>\n                    <td>I<sub>ka</sub> =  @i_k_a_m &ang; @deg_k_a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jb</sub> =  @i_j_b_m &ang; @deg_j_b </td>\n                    <td >I<sub>kb</sub> =  @i_k_b_m &ang; @deg_k_b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jc</sub> =  @i_j_c_m &ang; @deg_j_c </td>\n                    <td >I<sub>kc</sub> =  @i_k_c_m &ang; @deg_k_c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jn</sub> =  @i_j_n_m &ang; @deg_j_n </td>\n                    <td >I<sub>kn</sub> =  @i_k_n_m &ang; @deg_k_n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"1358","type":"HoverTool"},{"attributes":{},"id":"1326","type":"SaveTool"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"1331","type":"BoxAnnotation"},{"attributes":{"plot":null,"text":"Results"},"id":"1302","type":"Title"},{"attributes":{"overlay":{"id":"1331","type":"BoxAnnotation"}},"id":"1325","type":"BoxZoomTool"},{"attributes":{},"id":"1389","type":"BasicTickFormatter"},{"attributes":{"plot":{"id":"1303","subtype":"Figure","type":"Plot"},"ticker":{"id":"1314","type":"BasicTicker"}},"id":"1317","type":"Grid"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1353","type":"Circle"},{"attributes":{"formatter":{"id":"1387","type":"BasicTickFormatter"},"plot":{"id":"1303","subtype":"Figure","type":"Plot"},"ticker":{"id":"1314","type":"BasicTicker"}},"id":"1313","type":"LinearAxis"},{"attributes":{"callback":null,"data":{"deg_j_a":[-48.868116362301166],"deg_j_b":[-177.33148271077798],"deg_j_c":[-177.33148270636013],"deg_j_n":[-66.36577087420474],"deg_k_a":[-48.868116362301166],"deg_k_b":[-177.33148271077798],"deg_k_c":[-177.33148270636013],"deg_k_n":[-66.36577087420474],"i_j_a_m":[1.1643004459789721e-12],"i_j_b_m":[1.874429313636385e-13],"i_j_c_m":[1.874429313378136e-13],"i_j_n_m":[9.762897947986988e-13],"i_k_a_m":[1.1643004459789721e-12],"i_k_b_m":[1.874429313636385e-13],"i_k_c_m":[1.874429313378136e-13],"i_k_n_m":[9.762897947986988e-13],"line_id":["B1-B2"],"x_s":[[30,200]],"y_s":[[0,0]]},"selected":{"id":"1393","type":"Selection"},"selection_policy":{"id":"1394","type":"UnionRenderers"}},"id":"1344","type":"ColumnDataSource"},{"attributes":{},"id":"1396","type":"UnionRenderers"},{"attributes":{"dimension":1,"plot":{"id":"1303","subtype":"Figure","type":"Plot"},"ticker":{"id":"1319","type":"BasicTicker"}},"id":"1322","type":"Grid"},{"attributes":{"data_source":{"id":"1338","type":"ColumnDataSource"},"glyph":{"id":"1340","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1341","type":"MultiLine"},"selection_glyph":null,"view":{"id":"1343","type":"CDSView"}},"id":"1342","type":"GlyphRenderer"},{"attributes":{},"id":"1394","type":"UnionRenderers"},{"attributes":{},"id":"1319","type":"BasicTicker"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"green"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1340","type":"MultiLine"},{"attributes":{"callback":null,"renderers":[{"id":"1354","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            bus_id = @bus_id &nbsp &nbsp |  u<sub>avg</sub>= @u_avg_pu pu |  u<sub>unb</sub>= @v_unb %\n            <table border=\"1\">\n                <tr>\n                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a kVA</td>\n                </tr>\n                      <tr>\n                      <td> </td> <td>v<sub>ab</sub>= @v_ab V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b kVA</td>\n                </tr>\n                      <tr>\n                      <td> </td><td>v<sub>bc</sub>= @v_bc V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c kVA </td>\n                </tr> \n                    <tr>\n                     <td> </td> <td>v<sub>ca</sub>= @v_ca V</td>\n                    </tr>\n               <tr>\n                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc kVA </td>\n              </tr>\n            </table>\n            </div>\n            "},"id":"1360","type":"HoverTool"},{"attributes":{},"id":"1392","type":"UnionRenderers"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto","tools":[{"id":"1323","type":"PanTool"},{"id":"1324","type":"WheelZoomTool"},{"id":"1325","type":"BoxZoomTool"},{"id":"1326","type":"SaveTool"},{"id":"1327","type":"ResetTool"},{"id":"1328","type":"HelpTool"},{"id":"1356","type":"HoverTool"},{"id":"1358","type":"HoverTool"},{"id":"1360","type":"HoverTool"}]},"id":"1329","type":"Toolbar"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1347","type":"MultiLine"},{"attributes":{"callback":null,"data":{"deg_1a":[-52.87498365021675],"deg_1b":[127.1250163497833],"deg_1c":[34.43898930880361],"deg_1n":[-69.44395478041653],"deg_2a":[127.12501634978328],"deg_2b":[90.0],"deg_2c":[-110.55604521958347],"deg_2n":[-52.87498365021672],"i_1a_m":[15660.902935732394],"i_1b_m":[15660.902935732394],"i_1c_m":[9.649327318549215e-12],"i_1n_m":[1.9426815345735873e-12],"i_2a_m":[89514.08260440717],"i_2b_m":[3.637978807091713e-12],"i_2c_m":[1.55414522765887e-11],"i_2n_m":[89514.08260440716],"trafo_id":["B0-B1"],"x_s":[[0,30]],"y_s":[[0,0]]},"selected":{"id":"1391","type":"Selection"},"selection_policy":{"id":"1392","type":"UnionRenderers"}},"id":"1338","type":"ColumnDataSource"},{"attributes":{},"id":"1323","type":"PanTool"},{"attributes":{},"id":"1311","type":"LinearScale"},{"attributes":{"fill_alpha":{"value":0.5},"fill_color":{"value":"navy"},"line_alpha":{"value":0.5},"line_color":{"value":"navy"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1352","type":"Circle"},{"attributes":{},"id":"1393","type":"Selection"},{"attributes":{},"id":"1314","type":"BasicTicker"},{"attributes":{"callback":null,"data":{"bus_id":["B0","B1","B2"],"deg_an":["0.00","-52.87","-52.88"],"deg_bn":["-120.00","-90.00","-90.00"],"deg_cn":["120.00","150.00","150.00"],"deg_ng":["0.00","127.13","0.00"],"p_a":["360177.40","0.00","0.00"],"p_abc":["128204.34","0.00","0.00"],"p_b":["-231973.06","0.00","-0.00"],"p_c":["0.00","0.00","0.00"],"q_a":["475807.94","-0.00","-0.00"],"q_abc":["1025634.69","0.00","0.00"],"q_b":["549826.75","-0.00","0.00"],"q_c":["0.00","0.00","0.00"],"s_color":["red","blue","blue"],"s_radio":[20,1,1],"u_avg_pu":["1.000","0.667","0.667"],"v_ab":[65999.79602241206,11546.96969682695,11546.96969682695],"v_an":["38105.00","0.00","0.00"],"v_an_pu":["1.0000","0.0000","0.0000"],"v_bc":[65999.79602241206,19999.93818860971,19999.93818860971],"v_bn":["38105.00","11546.97","11546.97"],"v_bn_pu":["1.0000","1.0000","1.0000"],"v_ca":[65999.79602241208,11546.969697134644,11546.969697134642],"v_cn":["38105.00","11546.97","11546.97"],"v_cn_pu":["1.0000","1.0000","1.0000"],"v_ng":["0.00","0.00","0.00"],"v_unb":["0.0","100.0","100.0"],"x":[0,30,200],"y":[0,0,0]},"selected":{"id":"1395","type":"Selection"},"selection_policy":{"id":"1396","type":"UnionRenderers"}},"id":"1350","type":"ColumnDataSource"},{"attributes":{"callback":null},"id":"1305","type":"DataRange1d"}],"root_ids":["1303"]},"title":"Bokeh Application","version":"1.0.1"}};
+  var render_items = [{"docid":"04347762-c74b-4ddd-8be7-ee08bc9d5ec0","roots":{"1303":"330c0d8e-576e-4dca-9611-8fb295391cf9"}}];
+  root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        embed_document(root);
+        clearInterval(timer);
+      }
+      attempts++;
+      if (attempts > 100) {
+        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        clearInterval(timer);
+      }
+    }, 10, root)
+  }
+})(window);
+</script></div>
+</div>
+</div>
+<div class="section" id="Phase-ground-fault-(grounded-neutral)">
+<h2>Phase ground fault (grounded neutral)<a class="headerlink" href="#Phase-ground-fault-(grounded-neutral)" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id6">
+<img alt="mv_short_circuits" src="../_images/mv_short_circuits_ph_g.png" />
+<p class="caption"><span class="caption-text">mv_short_circuits</span></p>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;shunts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">12.0</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s2">&quot;bus&quot;</span><span class="p">:</span> <span class="s2">&quot;B1&quot;</span> <span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span> <span class="mf">1e-12</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;bus_nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]},</span> <span class="c1"># applied fault</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">grid_ph_n</span> <span class="o">=</span> <span class="n">grid</span><span class="p">()</span>
+<span class="n">grid_ph_n</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>  <span class="c1"># Load data</span>
+<span class="n">grid_ph_n</span><span class="o">.</span><span class="n">pf</span><span class="p">()</span>  <span class="c1"># solve power flow</span>
+<span class="n">p</span><span class="o">=</span><span class="n">plot_results</span><span class="p">(</span><span class="n">grid_ph_n</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="bk-root" id="9f352535-312f-4bff-a5fc-f407b14e1b82"></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+(function(root) {
+  function embed_document(root) {
+
+  var docs_json = {"1f4755f5-f7c3-4c72-beee-645c367f9a81":{"roots":{"references":[{"attributes":{"below":[{"id":"1481","type":"LinearAxis"}],"left":[{"id":"1486","type":"LinearAxis"}],"plot_height":400,"renderers":[{"id":"1481","type":"LinearAxis"},{"id":"1485","type":"Grid"},{"id":"1486","type":"LinearAxis"},{"id":"1490","type":"Grid"},{"id":"1499","type":"BoxAnnotation"},{"id":"1510","type":"GlyphRenderer"},{"id":"1516","type":"GlyphRenderer"},{"id":"1522","type":"GlyphRenderer"}],"title":{"id":"1470","type":"Title"},"toolbar":{"id":"1497","type":"Toolbar"},"x_range":{"id":"1473","type":"DataRange1d"},"x_scale":{"id":"1477","type":"LinearScale"},"y_range":{"id":"1475","type":"DataRange1d"},"y_scale":{"id":"1479","type":"LinearScale"}},"id":"1471","subtype":"Figure","type":"Plot"},{"attributes":{},"id":"1575","type":"Selection"},{"attributes":{},"id":"1487","type":"BasicTicker"},{"attributes":{"fill_alpha":{"value":0.5},"fill_color":{"value":"navy"},"line_alpha":{"value":0.5},"line_color":{"value":"navy"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1520","type":"Circle"},{"attributes":{},"id":"1482","type":"BasicTicker"},{"attributes":{"data_source":{"id":"1512","type":"ColumnDataSource"},"glyph":{"id":"1514","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1515","type":"MultiLine"},"selection_glyph":null,"view":{"id":"1517","type":"CDSView"}},"id":"1516","type":"GlyphRenderer"},{"attributes":{"formatter":{"id":"1569","type":"BasicTickFormatter"},"plot":{"id":"1471","subtype":"Figure","type":"Plot"},"ticker":{"id":"1487","type":"BasicTicker"}},"id":"1486","type":"LinearAxis"},{"attributes":{},"id":"1569","type":"BasicTickFormatter"},{"attributes":{"source":{"id":"1512","type":"ColumnDataSource"}},"id":"1517","type":"CDSView"},{"attributes":{},"id":"1576","type":"UnionRenderers"},{"attributes":{"data_source":{"id":"1518","type":"ColumnDataSource"},"glyph":{"id":"1520","type":"Circle"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1521","type":"Circle"},"selection_glyph":null,"view":{"id":"1523","type":"CDSView"}},"id":"1522","type":"GlyphRenderer"},{"attributes":{"plot":{"id":"1471","subtype":"Figure","type":"Plot"},"ticker":{"id":"1482","type":"BasicTicker"}},"id":"1485","type":"Grid"},{"attributes":{},"id":"1491","type":"PanTool"},{"attributes":{},"id":"1495","type":"ResetTool"},{"attributes":{"source":{"id":"1518","type":"ColumnDataSource"}},"id":"1523","type":"CDSView"},{"attributes":{"active_drag":"auto","active_inspect":"auto","active_multi":null,"active_scroll":"auto","active_tap":"auto","tools":[{"id":"1491","type":"PanTool"},{"id":"1492","type":"WheelZoomTool"},{"id":"1493","type":"BoxZoomTool"},{"id":"1494","type":"SaveTool"},{"id":"1495","type":"ResetTool"},{"id":"1496","type":"HelpTool"},{"id":"1524","type":"HoverTool"},{"id":"1526","type":"HoverTool"},{"id":"1528","type":"HoverTool"}]},"id":"1497","type":"Toolbar"},{"attributes":{"plot":null,"text":"Results"},"id":"1470","type":"Title"},{"attributes":{"callback":null,"data":{"bus_id":["B0","B1","B2"],"deg_an":["0.00","29.39","29.39"],"deg_bn":["-120.00","-90.00","-120.28"],"deg_cn":["120.00","150.00","179.67"],"deg_ng":["0.00","-150.61","0.00"],"p_a":["5581.61","0.00","0.00"],"p_abc":["11094.99","0.00","0.00"],"p_b":["5513.38","0.00","-0.00"],"p_c":["0.00","0.00","0.00"],"q_a":["-3143.75","0.00","0.00"],"q_abc":["118.19","0.00","0.00"],"q_b":["3261.94","-0.00","0.00"],"q_c":["0.00","0.00","0.00"],"s_color":["red","blue","blue"],"s_radio":[20,1,1],"u_avg_pu":["1.000","1.000","1.154"],"v_ab":[65999.79602241206,19924.317723487184,19924.317723487187],"v_an":["38105.00","11530.94","0.00"],"v_an_pu":["1.0000","0.9986","0.0000"],"v_bc":[65999.79602241206,19999.938188609718,19999.93818860972],"v_bn":["38105.00","11546.97","19924.32"],"v_bn_pu":["1.0000","1.0000","1.7255"],"v_ca":[65999.79602241208,20047.230718227453,20047.230718227453],"v_cn":["38105.00","11546.97","20047.23"],"v_cn_pu":["1.0000","1.0000","1.7361"],"v_ng":["0.00","11530.94","0.00"],"v_unb":["0.0","0.1","100.0"],"x":[0,30,200],"y":[0,0,0]},"selected":{"id":"1575","type":"Selection"},"selection_policy":{"id":"1576","type":"UnionRenderers"}},"id":"1518","type":"ColumnDataSource"},{"attributes":{"bottom_units":"screen","fill_alpha":{"value":0.5},"fill_color":{"value":"lightgrey"},"left_units":"screen","level":"overlay","line_alpha":{"value":1.0},"line_color":{"value":"black"},"line_dash":[4,4],"line_width":{"value":2},"plot":null,"render_mode":"css","right_units":"screen","top_units":"screen"},"id":"1499","type":"BoxAnnotation"},{"attributes":{"overlay":{"id":"1499","type":"BoxAnnotation"}},"id":"1493","type":"BoxZoomTool"},{"attributes":{"callback":null,"renderers":[{"id":"1510","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            transformer id = @trafo_id  \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>1a</sub> =  @i_1a_m &ang; @deg_1a </td>\n                    <td>I<sub>2a</sub> =  @i_2a_m &ang; @deg_2a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1b</sub> =  @i_1b_m &ang; @deg_1b </td>\n                    <td >I<sub>2b</sub> =  @i_2b_m &ang; @deg_2b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1c</sub> =  @i_1c_m &ang; @deg_1c </td>\n                    <td >I<sub>2c</sub> =  @i_2c_m &ang; @deg_2c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>1n</sub> =  @i_1n_m &ang; @deg_1n </td>\n                    <td >I<sub>2n</sub> =  @i_2n_m &ang; @deg_2n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"1524","type":"HoverTool"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"green"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1508","type":"MultiLine"},{"attributes":{"line_alpha":{"value":0.5},"line_color":{"value":"red"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1514","type":"MultiLine"},{"attributes":{},"id":"1494","type":"SaveTool"},{"attributes":{},"id":"1496","type":"HelpTool"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"#1f77b4"},"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"size":{"units":"screen","value":15},"x":{"field":"x"},"y":{"field":"y"}},"id":"1521","type":"Circle"},{"attributes":{},"id":"1492","type":"WheelZoomTool"},{"attributes":{"data_source":{"id":"1506","type":"ColumnDataSource"},"glyph":{"id":"1508","type":"MultiLine"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1509","type":"MultiLine"},"selection_glyph":null,"view":{"id":"1511","type":"CDSView"}},"id":"1510","type":"GlyphRenderer"},{"attributes":{},"id":"1574","type":"UnionRenderers"},{"attributes":{"source":{"id":"1506","type":"ColumnDataSource"}},"id":"1511","type":"CDSView"},{"attributes":{"dimension":1,"plot":{"id":"1471","subtype":"Figure","type":"Plot"},"ticker":{"id":"1487","type":"BasicTicker"}},"id":"1490","type":"Grid"},{"attributes":{"callback":null},"id":"1473","type":"DataRange1d"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1515","type":"MultiLine"},{"attributes":{"callback":null},"id":"1475","type":"DataRange1d"},{"attributes":{"callback":null,"renderers":[{"id":"1522","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            bus_id = @bus_id &nbsp &nbsp |  u<sub>avg</sub>= @u_avg_pu pu |  u<sub>unb</sub>= @v_unb %\n            <table border=\"1\">\n                <tr>\n                <td>v<sub>an</sub> =  @v_an  &ang; @deg_an V </td> <td> S<sub>a</sub> = @p_a + j@q_a kVA</td>\n                </tr>\n                      <tr>\n                      <td> </td> <td>v<sub>ab</sub>= @v_ab V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>bn</sub> = @v_bn &ang; @deg_bn V </td><td> S<sub>b</sub> = @p_b + j@q_b kVA</td>\n                </tr>\n                      <tr>\n                      <td> </td><td>v<sub>bc</sub>= @v_bc V</td>\n                      </tr>\n                <tr>\n                <td>v<sub>cn</sub>  = @v_cn &ang; @deg_cn V </td>  <td>S<sub>c</sub> = @p_c + j@q_c kVA </td>\n                </tr> \n                    <tr>\n                     <td> </td> <td>v<sub>ca</sub>= @v_ca V</td>\n                    </tr>\n               <tr>\n                <td>v<sub>ng</sub>    = @v_ng &ang; @deg_ng V</td>  <td>S<sub>abc</sub> = @p_abc + j@q_abc kVA </td>\n              </tr>\n            </table>\n            </div>\n            "},"id":"1528","type":"HoverTool"},{"attributes":{},"id":"1567","type":"BasicTickFormatter"},{"attributes":{"line_alpha":{"value":0.1},"line_color":{"value":"#1f77b4"},"line_width":{"value":5},"xs":{"field":"x_s"},"ys":{"field":"y_s"}},"id":"1509","type":"MultiLine"},{"attributes":{},"id":"1572","type":"UnionRenderers"},{"attributes":{},"id":"1571","type":"Selection"},{"attributes":{},"id":"1573","type":"Selection"},{"attributes":{},"id":"1477","type":"LinearScale"},{"attributes":{"callback":null,"data":{"deg_1a":[29.389681891361622],"deg_1b":[-150.6103181086366],"deg_1c":[82.8749836510982],"deg_1n":[0.0],"deg_2a":[-150.61031810863525],"deg_2b":[180.0],"deg_2c":[-57.9946167919165],"deg_2n":[29.38968189136485],"i_1a_m":[168.11594253889487],"i_1b_m":[168.11594253889658],"i_1c_m":[5.499435529803952e-12],"i_1n_m":[1.8189894035458565e-12],"i_2a_m":[960.9116683310144],"i_2b_m":[2.9103830456733704e-11],"i_2c_m":[1.7160311712462504e-11],"i_2n_m":[960.9116683310534],"trafo_id":["B0-B1"],"x_s":[[0,30]],"y_s":[[0,0]]},"selected":{"id":"1571","type":"Selection"},"selection_policy":{"id":"1572","type":"UnionRenderers"}},"id":"1506","type":"ColumnDataSource"},{"attributes":{"callback":null,"data":{"deg_j_a":[-100.30591018258387],"deg_j_b":[18.243394572442465],"deg_j_c":[-110.85103872874471],"deg_j_n":[-0.2995214941309881],"deg_k_a":[-100.30591018258387],"deg_k_b":[18.243394572442465],"deg_k_c":[-110.85103872874471],"deg_k_n":[-0.2995214941309881],"i_j_a_m":[1.4390497070362097e-11],"i_j_b_m":[9.168077260488866e-11],"i_j_c_m":[1.600271841642322e-11],"i_j_n_m":[7.880302206935505e-11],"i_k_a_m":[1.4390497070362097e-11],"i_k_b_m":[9.168077260488866e-11],"i_k_c_m":[1.600271841642322e-11],"i_k_n_m":[7.880302206935505e-11],"line_id":["B1-B2"],"x_s":[[30,200]],"y_s":[[0,0]]},"selected":{"id":"1573","type":"Selection"},"selection_policy":{"id":"1574","type":"UnionRenderers"}},"id":"1512","type":"ColumnDataSource"},{"attributes":{"callback":null,"renderers":[{"id":"1516","type":"GlyphRenderer"}],"tooltips":"\n            <div>\n            line id = @line_id \n            <table border=\"5\">\n                <tr >\n                    <td>I<sub>ja</sub> =  @i_j_a_m &ang; @deg_j_a </td>\n                    <td>I<sub>ka</sub> =  @i_k_a_m &ang; @deg_k_a </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jb</sub> =  @i_j_b_m &ang; @deg_j_b </td>\n                    <td >I<sub>kb</sub> =  @i_k_b_m &ang; @deg_k_b </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jc</sub> =  @i_j_c_m &ang; @deg_j_c </td>\n                    <td >I<sub>kc</sub> =  @i_k_c_m &ang; @deg_k_c </td>\n                </tr>\n                <tr>\n                    <td >I<sub>jn</sub> =  @i_j_n_m &ang; @deg_j_n </td>\n                    <td >I<sub>kn</sub> =  @i_k_n_m &ang; @deg_k_n </td>\n                </tr>\n            </table>            \n            </div>\n            "},"id":"1526","type":"HoverTool"},{"attributes":{"formatter":{"id":"1567","type":"BasicTickFormatter"},"plot":{"id":"1471","subtype":"Figure","type":"Plot"},"ticker":{"id":"1482","type":"BasicTicker"}},"id":"1481","type":"LinearAxis"},{"attributes":{},"id":"1479","type":"LinearScale"}],"root_ids":["1471"]},"title":"Bokeh Application","version":"1.0.1"}};
+  var render_items = [{"docid":"1f4755f5-f7c3-4c72-beee-645c367f9a81","roots":{"1471":"9f352535-312f-4bff-a5fc-f407b14e1b82"}}];
+  root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+
+  }
+  if (root.Bokeh !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined) {
+        embed_document(root);
+        clearInterval(timer);
+      }
+      attempts++;
+      if (attempts > 100) {
+        console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        clearInterval(timer);
+      }
+    }, 10, root)
+  }
+})(window);
+</script></div>
+</div>
+<p>Run this notebook in binder:</p>
+<p><a class="reference external" href="https://mybinder.org/v2/gh/pydgrid/pydgrid/master?filepath=/docs/jupyter_notebooks/mv_short_circuit.ipynb"><img alt="Documentation Status" src="https://mybinder.org/badge.svg" /></a></p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [ ]:
@@ -1581,10 +1271,8 @@ var element = document.currentScript.previousSibling.previousSibling;
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="mv_short_circuit.html" class="btn btn-neutral float-right" title="Short circuits in MV line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="nb_n1_f1_load_shapes.html" class="btn btn-neutral" title="907 bus 3 wire system with transformer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cigre_europe_residential.html" class="btn btn-neutral" title="CIGRE LV European System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
