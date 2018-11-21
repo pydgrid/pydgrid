@@ -5,10 +5,7 @@
   "tests/test_monitor.py::test_monitor1",
   "tests/test_mv_2bus.py::test_line_sequence_z",
   "tests/test_mv_2bus.py::test_pr_mt_h",
-  "tests/test_transformers.py::test_Dyn11_OC",
-  "tests/test_transformers.py::test_Dyn11_SC",
-  "tests/test_transformers.py::test_Ygd11_3w_OC",
-  "tests/test_transformers.py::test_Ygd11_3w_SC",
+  "tests/test_transformers.py::test_trafos_OC",
   "tests/test_unitary_voltage_drop.py::test_manufacturer_1",
   "tests/test_vsc_pf.py::test_vsc_leon"
 ]
