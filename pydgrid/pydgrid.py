@@ -19,14 +19,21 @@ import time
 from scipy import sparse
 from scipy.sparse import linalg as sla
 from copy import deepcopy
+from pydgrid.transformers import trafo_yprim
+from pydgrid.lines import get_line_codes, new_line_code
+
+
 ## to-do
-# add meter
-# improve load documentation (3-ph loads are not clear)
-# compute powers as S = v_ag*conj(i_a) + v_bg*conj(i_b) + v_cg*conj(i_c)  + v_ng*conj(i_n) 
+# if grid_feeders nodes are not given, put nodes "bus_nodes": [1, 2, 3] by default
 # 2 loads in same bus are not supported
+
 ## done
+# add meter
 # with pi lines line currents are not well displaied 
 # kersting example is failing! (1000 ft is 1 mile???)
+# improve load documentation (3-ph loads are not clear)
+# compute powers as S = v_ag*conj(i_a) + v_bg*conj(i_b) + v_cg*conj(i_c)  + v_ng*conj(i_n) 
+
 class grid(object):
     '''   
     P+N : 1
@@ -43,57 +50,7 @@ class grid(object):
         self.s_radio_min = 1
         self.pf_solver = 1
         
-        self.line_codes_lib = {
-              'OH1':{'Z': [[0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j],
-                         [0.049 + 0.505j, 0.540 + 0.777j, 0.049 + 0.505j, 0.049 + 0.462j],
-                         [0.049 + 0.462j, 0.049 + 0.505j, 0.540 + 0.777j, 0.049 + 0.505j],
-                         [0.049 + 0.436j, 0.049 + 0.462j, 0.049 + 0.505j, 0.540 + 0.777j]]},
-              'OH2':{'Z': [[1.369 + 0.812j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j], 
-                         [0.049 + 0.505j, 1.369 + 0.812j, 0.049 + 0.505j, 0.049 + 0.462j], 
-                         [0.049 + 0.462j, 0.049 + 0.505j, 1.369 + 0.812j, 0.049 + 0.505j], 
-                         [0.049 + 0.436j, 0.049 + 0.462j, 0.049 + 0.505j, 1.369 + 0.812j]]},
-              'OH3':{'Z': [[2.065 + 0.825j, 0.049 + 0.505j, 0.049 + 0.462j, 0.049 + 0.436j], 
-                         [0.049 + 0.505j, 2.065 + 0.825j, 0.049 + 0.505j, 0.049 + 0.462j], 
-                         [0.049 + 0.462j, 0.049 + 0.505j, 2.065 + 0.825j, 0.049 + 0.505j], 
-                         [0.049 + 0.436j, 0.049 + 0.462j, 0.049 + 0.505j, 2.065 + 0.825j]]}, 
-              'UG1':{'Z': [[0.211 + 0.747j, 0.049 + 0.673j, 0.049 + 0.651j, 0.049 + 0.673j], 
-                         [0.049 + 0.673j, 0.211 + 0.747j, 0.049 + 0.673j, 0.049 + 0.651j], 
-                         [0.049 + 0.651j, 0.049 + 0.673j, 0.211 + 0.747j, 0.049 + 0.673j], 
-                         [0.049 + 0.673j, 0.049 + 0.651j, 0.049 + 0.673j, 0.211 + 0.747j]]},
-         'UG1_luna':{'Z': [[0.211 + 0.747j, 0.049 +0.6657j, 0.049 +0.6657j, 0.049 +0.6657j], 
-                         [0.049 +0.6657j, 0.211 + 0.747j, 0.049 +0.6657j, 0.049 +0.6657j], 
-                         [0.049 +0.6657j, 0.049 +0.6657j, 0.211 + 0.747j, 0.049 +0.6657j], 
-                         [0.049 +0.6657j, 0.049 +0.6657j, 0.049 +0.6657j, 0.211 + 0.747j]]},
-              'UG2':{'Z': [[0.314 + 0.762j, 0.049 + 0.687j,0.049 + 0.665j, 0.049 + 0.687j], 
-                         [0.049 + 0.687j, 0.314 + 0.762j, 0.049 + 0.687j, 0.049 + 0.665j], 
-                         [0.049 + 0.665j, 0.049 + 0.687j, 0.314 + 0.762j, 0.049 + 0.687j], 
-                         [0.049 + 0.687j, 0.049 + 0.665j, 0.049 + 0.687j, 0.314 + 0.762j]]}, 
-              'UG3':{'Z': [[0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.697j, 0.049 + 0.719j], 
-                         [0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.697j], 
-                         [0.049 + 0.697j, 0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j], 
-                         [0.049 + 0.719j, 0.049 + 0.697j, 0.049 + 0.719j, 0.871 + 0.797j]]},
-              'EQU':{'Z': [[0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.719j, 0.049 + 0.719j], 
-                         [0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.719j], 
-                         [0.049 + 0.719j, 0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j], 
-                         [0.049 + 0.719j, 0.049 + 0.719j, 0.049 + 0.719j, 0.871 + 0.797j]]},
-              'TR1':{'Z': [[0.0032+0.0128j, 0.000j, 0.000j, 0.000j], 
-                         [0.000j, 0.0032+0.0128j, 0.000j, 0.000j], 
-                         [0.000j, 0.000j, 0.0032+0.0128j, 0.000j],  
-                         [0.000j, 0.000j, 0.000j, 0.0032+0.0128j]]},
-              'PN1':{'Z': [[0.314 + 0.762j, 0.049 + 0.687j], 
-                         [0.049 + 0.687j, 0.314 + 0.762j]]},
-              'NN1':{'Z': [[0.871 + 0.797j, 0.049 + 0.719j, 0.049 + 0.719j], 
-                         [0.049 + 0.719j, 0.871 + 0.797j, 0.049 + 0.719j], 
-                         [0.049 + 0.719j, 0.049 + 0.719j, 0.871 + 0.797j]]},
-              'UG1w3':{'Z': [
-                          [ 0.28700247+0.16535143j,  0.12115403+0.11008501j,0.12500247+0.06935143j],
-                          [ 0.12115403+0.11008501j,  0.27947509+0.20221853j,0.12115403+0.11008501j],
-                          [ 0.12500247+0.06935143j,  0.12115403+0.11008501j,0.28700247+0.16535143j]]},
-              'UG3w3':{'Z': [
-                          [ 1.15225232+0.45874501j, 0.32098424+0.39046333j, 0.33025232+0.35874501j],
-                          [ 0.32098424+0.39046333j, 1.13401861+0.4779049j, 0.32098424+0.39046333j],
-                          [ 0.33025232+0.35874501j,  0.32098424+0.39046333j,1.15225232+0.45874501j]]}                       
-              }
+        self.line_codes_lib = get_line_codes()
 
 
 
@@ -252,9 +209,6 @@ class grid(object):
         self.gformer_v_abcn    = np.array(gformer_v_abcn_list)
         self.gformer_id    = gformer_id_list
 
-
-                  
-                  
         N_nz_nodes += N_v_known
         
         ## Known currents
@@ -284,7 +238,7 @@ class grid(object):
                 pq_3pn_int_list += [list(it_node_i + np.array([0,1,2,3]))]
                 it_node_i += 4
                 if 'kVA' in load:
-                    if type(load['kVA']) == int or float:
+                    if type(load['kVA']) == int or type(load['kVA']) == float:
                         S = -1000.0*load['kVA']*np.exp(1j*np.arccos(load['pf'])*np.sign(load['pf']))
                         pq_3pn_list += [[S/3,S/3,S/3]]
                     if type(load['kVA']) == list:
@@ -292,7 +246,18 @@ class grid(object):
                         for s,fp in zip(load['kVA'],load['pf']):                            
                             pq += [-1000.0*s*np.exp(1j*np.arccos(fp)*np.sign(fp))]
                         pq_3pn_list += [pq]
-                                               
+
+                if 'kW' in load:
+                    if type(load['kW']) == int or type(load['kW']) == float:
+                        S = -1000.0*(load['kW'] + 1j*load['kvar'])
+                        pq_3pn_list += [[S/3,S/3,S/3]]
+                    if type(load['kW']) == list:
+                        pq = []
+                        for p,q in zip(load['kW'],load['kvar']):                            
+                            pq += [-1000.0*(p+1j*q)]
+                        pq_3pn_list += [pq]
+
+
             if load['type'] == '3P':
                 pq_3p_int_list += [list(it_node_i + np.array([0,1,2]))]
                 it_node_i += 3
@@ -551,186 +516,12 @@ class grid(object):
                 if 'Y' in self.line_codes_lib[line_code]: line['type'] = 'pi'
                 if "B_mu" in self.line_codes_lib[line_code]: line['type'] = 'pi'
             
-                
             if not  data_type=='GLOBAL':
+                Z,Y = new_line_code(data,line_code,line,self.Freq)
+                self.line_codes_lib.update({line_code:{'Z':Z.tolist()}}) 
+                if len(Y)>1:
+                    self.line_codes_lib[line_code]['Y'] = Y.tolist() 
 
-                line_data = data['line_codes'][line_code]
-                if 'X1' in line_data:  data_type='ZR1X1'
-                if 'C_1_muF' in line_data:  data_type='PIR1X1C1'
-                if 'R' in line_data:  data_type='ZRX'  
-                if 'X' in line_data:  data_type='ZRX'      
-                if 'B_mu' in line_data:  data_type='PIRXC'
-                if 'B1_mu' in line_data:  data_type='PIR1X1B1mu'  
-                if 'Rph' in line_data:  data_type='ZRphXph'
-                if 'Rn' in line_data:  data_type='ZRphXphRnXn'  
-                if 'rho_20_m' in line_data:  data_type='ZrhoX'  
-                if 'u90_pf08' in line_data:  data_type='RX90pf'  # like in manufacturer catalog
-                #if 'u70_pf08' in line_data:  data_type='RX70pf'  # like in manufacturer catalog
-                
-                if data_type in ['ZR1X1', 'ZRX', 'ZRphXph','ZrhoX' ,'RX90pf'  ]:
-                    line['type'] = 'z'
-                if data_type in ['PIR1X1C1', 'PIRXC','PIR1X1B1mu'  ]:
-                    line['type'] = 'pi'                    
-                
-                if data_type=='ZR1X1':
-                    line['type'] = 'z'
-                    Z_1 = line_data['R1'] + 1j*line_data['X1']
-                    Z_2 = Z_1
-                    if 'X0' in line_data:
-                        Z_0 = line_data['R0'] + 1j*line_data['X0'] 
-                    else:
-                        Z_0 = 3*Z_1
-                    Z_012 = np.array([[Z_0,0,0],[0,Z_1,0],[0,0,Z_2]])
-                    Z = A_a0 @ Z_012 @ A_0a
-                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
-                    
-                if data_type=='PIR1X1C1':
-                    line['type'] = 'pi'
-                    Z_1 = line_data['R1'] + 1j*line_data['X1']
-                    Z_2 = Z_1
-                    if 'X0' in line_data:
-                        Z_0 = line_data['R0'] + 1j*line_data['X0'] 
-                    else:
-                        Z_0 = 3*Z_1
-                    Z_012 = np.array([[Z_0,0,0],[0,Z_1,0],[0,0,Z_2]])
-                    Z = A_a0 @ Z_012 @ A_0a
-                    C_km = line_data['C_1_muF']*1e-6 
-                    B_1 = -1j*2*np.pi*self.Freq*C_km
-                    B_2 = B_1
-                    if 'C_0_muF' in line_data:
-                        B_0 =  -1j*2*np.pi*self.Freq*line_data['C_0_muF']*1e-6
-                    else:
-                        B_0 =  3.0*B_1                  
-
-                    Y_012 = np.array([[B_0,0,0],[0,B_1,0],[0,0,B_2]])
-                    Y = A_a0 @ Y_012 @ A_0a
-                    
-                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
-                    self.line_codes_lib[line_code].update({'Y':Y.tolist()})
-
-                if data_type=='PIR1X1B1mu':
-                    line['type'] = 'pi'
-                    Z_1 = line_data['R1'] + 1j*line_data['X1']
-                    Z_2 = Z_1
-                    if 'X0' in line_data:
-                        Z_0 = line_data['R0'] + 1j*line_data['X0'] 
-                    else:
-                        Z_0 = 3*Z_1
-                        
-                    B_1 = line_data['B1_mu'] /1.0e6
-                    B_2 = B_1
-                    if 'B0_mu' in line_data:
-                        B_0 = line_data['B0_mu']/1.0e6
-                    else:
-                        B_0 = B_1
-                        
-                    Z_012 = np.array([[Z_0,0,0],[0,Z_1,0],[0,0,Z_2]])
-                    Z = A_a0 @ Z_012 @ A_0a
-              
-                    Y_012 = np.array([[B_0,0,0],[0,B_1,0],[0,0,B_2]])
-                    Y = A_a0 @ Y_012 @ A_0a
-                    
-                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
-                    self.line_codes_lib[line_code].update({'Y':Y.tolist()})
-                    
-                    
-                if data_type=='ZRX':
-                    line['type'] = 'z'
-                    R = np.array(data['line_codes'][line_code]['R'])
-                    X = np.array(data['line_codes'][line_code]['X'])
-                    Z = R + 1j*X
-                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
-
-                if data_type=='PIRXC':
-                    lenght_convertion = 1.0
-                    line['type'] = 'pi'
-
-                    
-                    if "unit" in data['line_codes'][line_code]: 
-                        if  data['line_codes'][line_code]['unit'] == 'miles': lenght_convertion = 1.0/1.60934
-                        
-                    R = np.array(data['line_codes'][line_code]['R'])
-                    X = np.array(data['line_codes'][line_code]['X'])
-                    Z = (R + 1j*X)*lenght_convertion              
-                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
-                    Y = -1j*np.array(data['line_codes'][line_code]['B_mu'])*1e-6*lenght_convertion
-                    self.line_codes_lib[line_code].update({'Y':Y.tolist()})
-                    
-
-                if data_type == 'ZRphXphRnXn':
-                    line['type'] = 'z'
-                    R_ph = np.array(data['line_codes'][line_code]['Rph'])
-                    X_ph = np.array(data['line_codes'][line_code]['Xph'])
-                    R_n = np.array(data['line_codes'][line_code]['Rn'])
-                    X_n = np.array(data['line_codes'][line_code]['Xn'])
-                    Z = np.zeros((4,4),dtype=np.complex128)
-                    Z[0,0] = R_ph+1j*X_ph
-                    Z[1,1] = R_ph+1j*X_ph
-                    Z[2,2] = R_ph+1j*X_ph
-                    Z[3,3] = R_n+1j*X_n
-                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})
-
-                if data_type == 'ZrhoX':
-                    line['type'] = 'z'
-                    rho_20 = np.array(data['line_codes'][line_code]['rho_20_m'])*1000.0
-                    alpha = np.array(data['line_codes'][line_code]['alpha'])
-                    X_ph = np.array(data['line_codes'][line_code]['Xph'])
-                    T_deg = np.array(data['line_codes'][line_code]['T_deg'])
-                    section = np.array(data['line_codes'][line_code]['section'])
-                    
-                    R_ph_20  = rho_20/section  # resistamce per km at 20ºC
-                    DT = T_deg-20.0                      # temperature increment
-                    R_ph  = R_ph_20*(1.0+alpha*DT) # resistamce per km at  90ºC
-                    R_n = R_ph
-                    X_n = X_ph
-                    Z = np.zeros((4,4),dtype=np.complex128)
-                    Z[0,0] = R_ph+1j*X_ph
-                    Z[1,1] = R_ph+1j*X_ph
-                    Z[2,2] = R_ph+1j*X_ph
-                    Z[3,3] = R_n+1j*X_n
-                    
-                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})                      
-
-                if data_type == 'RX90pf':
-                    
-                    line['type'] = 'z'
-                    
-                    u90_pf08 = np.array(data['line_codes'][line_code]['u90_pf08'])
-                    u90_pf10 = np.array(data['line_codes'][line_code]['u90_pf10'])
-                    
-                    if 'T_deg' in data['line_codes'][line_code]: 
-                        T_deg = np.array(data['line_codes'][line_code]['T_deg'])
-                    else: T_deg = 90.0
-                    
-                    if 'alpha' in  data['line_codes'][line_code]: 
-                        alpha = np.array(data['line_codes'][line_code]['alpha'])
-                    else: alpha = 0.004
-
-                    
-                    # u = sqrt(3) * (r*cos(phi) + x*sin(phi))
-
-                    r90 = u90_pf10/np.sqrt(3)
-                    x90 = (u90_pf08/np.sqrt(3) - 0.8*r90)/0.6
-                    
- 
- 
-                    DT = T_deg-90.0 
-                    
-                    R_ph  = r90*(1.0+alpha*DT) # resistamce per km at  T_deg
-                    X_ph  = x90  
-
-                    R_n = R_ph
-                    X_n = X_ph
-                    Z = np.zeros((4,4),dtype=np.complex128)
-                    Z[0,0] = R_ph+1j*X_ph
-                    Z[1,1] = R_ph+1j*X_ph
-                    Z[2,2] = R_ph+1j*X_ph
-                    Z[3,3] = R_n+1j*X_n
-                    
-                    self.line_codes_lib.update({line_code:{'Z':Z.tolist()}})    
-
-                    
-                
             N_conductors = len(self.line_codes_lib[line['code']]['Z'])
             if line['type'] == 'z':
                 A_n_cols += N_conductors
@@ -1311,7 +1102,8 @@ class grid(object):
 		Compute phase-neutral and phase-phase voltages from power flow solution and put values 
 		in buses dictionary.		
         '''
-		
+
+        res = {} 
         V_sorted = []
         I_sorted = []
         S_sorted = []
@@ -1367,6 +1159,11 @@ class grid(object):
                 bus.update({'q_a':s_a.imag,
                             'q_b':s_b.imag,
                             'q_c':s_c.imag})
+                tup = namedtuple('tup',['v_ag', 'v_bg', 'v_cg'])
+
+                res.update({bus['bus']:tup(v_ag,v_bg,v_cg)})
+                
+            
             if N_nodes==4:   # if 3 phases + neutral
                 v_ag = V_sorted[start_node+0,0]
                 v_bg = V_sorted[start_node+1,0]
@@ -1403,7 +1200,14 @@ class grid(object):
                             'q_c':s_c.imag})
     
                 start_node += 4
+
+                tup = namedtuple('tup',['v_ag', 'v_bg', 'v_cg', 'v_ng','v_an', 'v_bn', 'v_cn'])
+
+                res.update({bus['bus']:tup(v_ag,v_bg,v_cg,v_ng,v_an,v_bn,v_cn)})
+
         self.V = np.array(V_sorted).reshape(len(V_sorted),1) 
+        self.res = res
+        
         return 0 #self.V              
         
     def get_i(self):
@@ -1434,8 +1238,10 @@ class grid(object):
             I_2a = (I_lines[it_single_line+cond_1+0,0])
             I_2b = (I_lines[it_single_line+cond_1+1,0])
             I_2c = (I_lines[it_single_line+cond_1+2,0])
-            I_2n = (I_lines[it_single_line+cond_1+3,0])
-            
+
+            if cond_1>3: I_1n = (I_lines[it_single_line+cond_1+3,0])
+            if cond_2>3: I_2n = (I_lines[it_single_line+cond_2+3,0])
+
             #I_n = (I_lines[it_single_line+3,0])
             if cond_1 <=3:
                 I_1n = I_1a+I_1b+I_1c
@@ -2158,494 +1964,7 @@ def a2n(column):
         num_column += ord(column[it])-65+26*it
     return num_column
 
-def trafo_yprim(S_n,U_1n,U_2n,Z_cc,connection='Dyg11'):
-    '''
-    Trafo primitive as developed in: (in the paper Ynd11)
-    R. C. Dugan and S. Santoso, “An example of 3-phase transformer modeling for distribution system analysis,” 
-    2003 IEEE PES Transm. Distrib. Conf. Expo. (IEEE Cat. No.03CH37495), vol. 3, pp. 1028–1032, 2003. 
-    
-    '''
 
-    if connection=='Dyn1':
-        z_a = 3*Z_cc*1.0**2/S_n
-        z_b = 3*Z_cc*1.0**2/S_n
-        z_c = 3*Z_cc*1.0**2/S_n
-        U_1 = U_1n
-        U_2 = U_2n/np.sqrt(3)
-        Z_B = np.array([[z_a, 0.0, 0.0],
-                        [0.0, z_b, 0.0],
-                        [0.0, 0.0, z_c],])                             
-        N_a = np.array([[ 1/U_1,     0],
-                         [-1/U_1,     0],
-                         [     0, 1/U_2],
-                         [     0,-1/U_2]])           
-        N_row_a = np.hstack((N_a,np.zeros((4,4))))
-        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
-        N_row_c = np.hstack((np.zeros((4,4)),N_a))
-        
-        N = np.vstack((N_row_a,N_row_b,N_row_c))
-
-        B = np.array([[ 1, 0, 0],
-                      [-1, 0, 0],
-                      [ 0, 1, 0],
-                      [ 0,-1, 0],
-                      [ 0, 0, 1],
-                      [ 0, 0,-1]])
-    
-        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
-        Y_w = N @ Y_1 @ N.T
-        A_trafo = np.zeros((7,12))
-
-        A_trafo[0,0] = 1.0
-        A_trafo[0,9] = 1.0
-        A_trafo[1,1] = 1.0
-        A_trafo[1,4] = 1.0
-        A_trafo[2,5] = 1.0
-        A_trafo[2,8] = 1.0
-
-        A_trafo[3,2] = 1.0
-        A_trafo[4,6] = 1.0
-        A_trafo[5,10] = 1.0
-        
-        A_trafo[6,3] = 1.0
-        A_trafo[6,7] = 1.0
-        A_trafo[6,11] = 1.0
-
-
-    if connection=='Dyn5':
-        z_a = Z_cc*1.0**2/S_n*3
-        z_b = Z_cc*1.0**2/S_n*3
-        z_c = Z_cc*1.0**2/S_n*3
-        U_1 = U_1n
-        U_2 = U_2n/np.sqrt(3)
-        Z_B = np.array([[z_a, 0.0, 0.0],
-                        [0.0, z_b, 0.0],
-                        [0.0, 0.0, z_c],])                             
-        N_a = np.array([[ 1/U_1,     0],
-                         [-1/U_1,     0],
-                         [     0, 1/U_2],
-                         [     0,-1/U_2]])           
-        N_row_a = np.hstack((N_a,np.zeros((4,4))))
-        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
-        N_row_c = np.hstack((np.zeros((4,4)),N_a))
-        
-        N = np.vstack((N_row_a,N_row_b,N_row_c))
-
-        B = np.array([[ 1, 0, 0],
-                      [-1, 0, 0],
-                      [ 0, 1, 0],
-                      [ 0,-1, 0],
-                      [ 0, 0, 1],
-                      [ 0, 0,-1]])
-    
-        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
-        Y_w = N @ Y_1 @ N.T
-        A_trafo = np.zeros((7,12))
-
-        A_trafo[0,1] = 1.0
-        A_trafo[0,4] = 1.0
-        A_trafo[1,5] = 1.0
-        A_trafo[1,8] = 1.0
-        A_trafo[2,0] = 1.0
-        A_trafo[2,9] = 1.0
-
-        A_trafo[3,2] = 1.0
-        A_trafo[4,6] = 1.0
-        A_trafo[5,10] = 1.0
-        
-        A_trafo[6,3] = 1.0
-        A_trafo[6,7] = 1.0
-        A_trafo[6,11] = 1.0
-
-
-    if connection=='Dyn11':
-        z_a = Z_cc*1.0**2/S_n*3
-        z_b = Z_cc*1.0**2/S_n*3
-        z_c = Z_cc*1.0**2/S_n*3
-        U_1 = U_1n
-        U_2 = U_2n/np.sqrt(3)
-        Z_B = np.array([[z_a, 0.0, 0.0],
-                        [0.0, z_b, 0.0],
-                        [0.0, 0.0, z_c],])                             
-        N_a = np.array([[ 1/U_1,     0],
-                         [-1/U_1,     0],
-                         [     0, 1/U_2],
-                         [     0,-1/U_2]])           
-        N_row_a = np.hstack((N_a,np.zeros((4,4))))
-        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
-        N_row_c = np.hstack((np.zeros((4,4)),N_a))
-        
-        N = np.vstack((N_row_a,N_row_b,N_row_c))
-
-        B = np.array([[ 1, 0, 0],
-                      [-1, 0, 0],
-                      [ 0, 1, 0],
-                      [ 0,-1, 0],
-                      [ 0, 0, 1],
-                      [ 0, 0,-1]])
-    
-        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
-        Y_w = N @ Y_1 @ N.T
-        A_trafo = np.zeros((7,12))
-
-        A_trafo[0,1] = 1.0
-        A_trafo[0,4] = 1.0
-        A_trafo[1,5] = 1.0
-        A_trafo[1,8] = 1.0
-        A_trafo[2,0] = 1.0
-        A_trafo[2,9] = 1.0
-
-        A_trafo[3,3] = 1.0
-        A_trafo[4,7] = 1.0
-        A_trafo[5,11] = 1.0
-        
-        A_trafo[6,2] = 1.0
-        A_trafo[6,6] = 1.0
-        A_trafo[6,10] = 1.0
-
-
-    if connection=='Ygd5_3w':
-        z_a = Z_cc*1.0**2/S_n
-        z_b = Z_cc*1.0**2/S_n
-        z_c = Z_cc*1.0**2/S_n
-        U_1 = U_1n #
-        U_2 = U_2n*np.sqrt(3)
-        Z_B = np.array([[z_a, 0.0, 0.0],
-                        [0.0, z_b, 0.0],
-                        [0.0, 0.0, z_c],])                             
-        N_a = np.array([[ 1/U_1,     0],
-                         [-1/U_1,     0],
-                         [     0, 1/U_2],
-                         [     0,-1/U_2]])           
-        N_row_a = np.hstack((N_a,np.zeros((4,4))))
-        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
-        N_row_c = np.hstack((np.zeros((4,4)),N_a))
-        
-        N = np.vstack((N_row_a,N_row_b,N_row_c))
-
-        B = np.array([[ 1, 0, 0],
-                      [-1, 0, 0],
-                      [ 0, 1, 0],
-                      [ 0,-1, 0],
-                      [ 0, 0, 1],
-                      [ 0, 0,-1]])
-    
-        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
-        Y_w = N @ Y_1 @ N.T
-        A_trafo = np.zeros((6,12))
-
-        A_trafo[0,0] = 1.0
-        A_trafo[1,4] = 1.0
-        A_trafo[2,8] = 1.0
-        
-        A_trafo[3,3]  = 1.0
-        A_trafo[3,6]  = 1.0
-        A_trafo[4,7]  = 1.0
-        A_trafo[4,10] = 1.0
-        A_trafo[5,2]  = 1.0
-        A_trafo[5,11] = 1.0
-
-    if connection=='Ygd1_3w':
-        z_a = Z_cc*1.0**2/S_n
-        z_b = Z_cc*1.0**2/S_n
-        z_c = Z_cc*1.0**2/S_n
-        U_1 = U_1n #
-        U_2 = U_2n*np.sqrt(3)
-        Z_B = np.array([[z_a, 0.0, 0.0],
-                        [0.0, z_b, 0.0],
-                        [0.0, 0.0, z_c],])                             
-        N_a = np.array([[ 1/U_1,     0],
-                         [-1/U_1,     0],
-                         [     0, 1/U_2],
-                         [     0,-1/U_2]])           
-        N_row_a = np.hstack((N_a,np.zeros((4,4))))
-        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
-        N_row_c = np.hstack((np.zeros((4,4)),N_a))
-        
-        N = np.vstack((N_row_a,N_row_b,N_row_c))
-
-        B = np.array([[ 1, 0, 0],
-                      [-1, 0, 0],
-                      [ 0, 1, 0],
-                      [ 0,-1, 0],
-                      [ 0, 0, 1],
-                      [ 0, 0,-1]])
-    
-        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
-        Y_w = N @ Y_1 @ N.T
-        A_trafo = np.zeros((6,12))
-
-        A_trafo[0,0] = 1.0
-        A_trafo[1,4] = 1.0
-        A_trafo[2,8] = 1.0
-        
-        A_trafo[3,2]  = 1.0
-        A_trafo[3,11]  = 1.0
-        A_trafo[4,3]  = 1.0
-        A_trafo[4,6] = 1.0
-        A_trafo[5,7]  = 1.0
-        A_trafo[5,10] = 1.0
-
-    if connection=='Ygd11_3w':
-        z_a = Z_cc*1.0**2/S_n
-        z_b = Z_cc*1.0**2/S_n
-        z_c = Z_cc*1.0**2/S_n
-        U_1 = U_1n #
-        U_2 = U_2n*np.sqrt(3)
-        Z_B = np.array([[z_a, 0.0, 0.0],
-                        [0.0, z_b, 0.0],
-                        [0.0, 0.0, z_c],])                             
-        N_a = np.array([[ 1/U_1,     0],
-                         [-1/U_1,     0],
-                         [     0, 1/U_2],
-                         [     0,-1/U_2]])           
-        N_row_a = np.hstack((N_a,np.zeros((4,4))))
-        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
-        N_row_c = np.hstack((np.zeros((4,4)),N_a))
-        
-        N = np.vstack((N_row_a,N_row_b,N_row_c))
-
-        B = np.array([[ 1, 0, 0],
-                      [-1, 0, 0],
-                      [ 0, 1, 0],
-                      [ 0,-1, 0],
-                      [ 0, 0, 1],
-                      [ 0, 0,-1]])
-    
-        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
-        Y_w = N @ Y_1 @ N.T
-        A_trafo = np.zeros((6,12))
-
-        A_trafo[0,1] = 1.0
-        A_trafo[1,5] = 1.0
-        A_trafo[2,9] = 1.0
-        
-        A_trafo[3,3]  = 1.0
-        A_trafo[3,6]  = 1.0
-        A_trafo[4,7]  = 1.0
-        A_trafo[4,10] = 1.0
-        A_trafo[5,2]  = 1.0
-        A_trafo[5,11] = 1.0
-
-    if connection=='ZigZag':
-        z_a = Z_cc*1.0**2/S_n*3
-        z_b = Z_cc*1.0**2/S_n*3
-        z_c = Z_cc*1.0**2/S_n*3
-        U_1 = U_1n #
-        U_2 = U_2n
-        Z_B = np.array([[z_a, 0.0, 0.0],
-                        [0.0, z_b, 0.0],
-                        [0.0, 0.0, z_c],])                             
-
-
-        
-        N = np.zeros((12,6))
-        N[0,0] =  1.0/U_1
-        N[1,0] = -1.0/U_1
-        N[6,0] = -1.0/U_1
-        N[7,0] =  1.0/U_1
-
-        N[4,2]  =  1.0/U_1
-        N[5,2]  = -1.0/U_1
-        N[10,2] = -1.0/U_1
-        N[11,2] =  1.0/U_1
-
-        N[8,4] =  1.0/U_1
-        N[9,4] = -1.0/U_1
-        N[2,4] = -1.0/U_1
-        N[3,4] =  1.0/U_1
-        
-        
-        N[2,1] =  1.0/U_2
-        N[3,1] = -1.0/U_2
-    
-        N[6,3] =  1.0/U_2
-        N[7,3] = -1.0/U_2  
-
-        N[10,5] =  1.0/U_2
-        N[11,5] = -1.0/U_2 
-        
-        #          0  1  2  3  4  5
-        # 0 Iw1a   1                   Ia1 0
-        # 1 Iw2a  -1                   Ia2 1
-        # 2 Iw3a      2                Ib1 2
-        # 3 Iw4a     -2                Ib2 3
-        # 4 Iw1b         1             Ic1 4
-        # 5 Iw2b        -1             Ic2 5
-        # 6 Iw3b            2
-        # 7 Iw4b           -2
-        # 8 Iw1c               1
-        # 9 Iw2c              -1
-        #10 Iw3c                  2
-        #11 Iw4c                 -2
-        
-        #          0  1  2  3  4  5
-        # 0 Iw1a   1                   Ia1 0
-        # 1 Iw2a  -1                   Ia2 1
-        # 2 Iw3a      2       -1       Ib1 2
-        # 3 Iw4a     -2       -1       Ib2 3
-        # 4 Iw1b         1             Ic1 4
-        # 5 Iw2b        -1             Ic2 5
-        # 6 Iw3b  -1        2
-        # 7 Iw4b  -1       -2
-        # 8 Iw1c               1 
-        # 9 Iw2c              -1
-        #10 Iw3c        -1        2
-        #11 Iw4c        -1       -2
-        
-        
-        B = np.array([[ 1, 0, 0],
-                      [-1, 0, 0],
-                      [ 0, 1, 0],
-                      [ 0,-1, 0],
-                      [ 0, 0, 1],
-                      [ 0, 0,-1]])
-    
-        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
-        Y_w = N @ Y_1 @ N.T
-        A_trafo = np.zeros((7,12))
-
-        A_trafo[0,0] = 1.0
-        A_trafo[1,4] = 1.0
-        A_trafo[2,8] = 1.0         
-        
-        A_trafo[6,3]  = 1.0
-        A_trafo[6,7]  = 1.0
-        A_trafo[6,11] = 1.0
-        
-
-        
-    if connection=='Dyg11_3w':
-        z_a = Z_cc*1.0**2/S_n
-        z_b = Z_cc*1.0**2/S_n
-        z_c = Z_cc*1.0**2/S_n
-        U_1 = U_1n
-        U_2 = U_2n/np.sqrt(3)
-        Z_B = np.array([[z_a, 0.0, 0.0],
-                        [0.0, z_b, 0.0],
-                        [0.0, 0.0, z_c],])                             
-        N_a = np.array([[ 1/U_1,     0],
-                         [-1/U_1,     0],
-                         [     0, 1/U_2],
-                         [     0,-1/U_2]])           
-        N_row_a = np.hstack((N_a,np.zeros((4,4))))
-        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
-        N_row_c = np.hstack((np.zeros((4,4)),N_a))
-        
-        N = np.vstack((N_row_a,N_row_b,N_row_c))
-
-        B = np.array([[ 1, 0, 0],
-                      [-1, 0, 0],
-                      [ 0, 1, 0],
-                      [ 0,-1, 0],
-                      [ 0, 0, 1],
-                      [ 0, 0,-1]])
-    
-        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
-        Y_w = N @ Y_1 @ N.T
-        A_trafo = np.zeros((6,12))
-
-        A_trafo[0,1] = 1.0
-        A_trafo[0,4] = 1.0
-        A_trafo[1,5] = 1.0
-        A_trafo[1,8] = 1.0
-        A_trafo[2,0] = 1.0
-        A_trafo[2,9] = 1.0
-
-        A_trafo[3,3] = 1.0
-        A_trafo[4,7] = 1.0
-        A_trafo[5,11] = 1.0
-        
-#    if connection=='Dyg11_3w':
-#        z_a = Z_cc*1.0**2/S_n
-#        z_b = Z_cc*1.0**2/S_n
-#        z_c = Z_cc*1.0**2/S_n
-#        U_1 = U_1n/np.sqrt(3)
-#        U_2 = U_2n
-#        Z_B = np.array([[z_a, 0.0, 0.0],
-#                        [0.0, z_b, 0.0],
-#                        [0.0, 0.0, z_c],])                             
-#        N_a = np.array([[ 1/U_1,     0],
-#                         [-1/U_1,     0],
-#                         [     0, 1/U_2],
-#                         [     0,-1/U_2]])           
-#        N_row_a = np.hstack((N_a,np.zeros((4,4))))
-#        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
-#        N_row_c = np.hstack((np.zeros((4,4)),N_a))
-#        
-#        N = np.vstack((N_row_a,N_row_b,N_row_c))
-#
-#        B = np.array([[ 1, 0, 0],
-#                      [-1, 0, 0],
-#                      [ 0, 1, 0],
-#                      [ 0,-1, 0],
-#                      [ 0, 0, 1],
-#                      [ 0, 0,-1]])
-#    
-#        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
-#        Y_w = N @ Y_1 @ N.T
-#        A_trafo = np.zeros((6,12))
-#
-#        A_trafo[0,1] = 1.0
-#        A_trafo[0,4] = 1.0
-#        A_trafo[1,5] = 1.0
-#        A_trafo[1,8] = 1.0
-#        A_trafo[2,0] = 1.0
-#        A_trafo[2,9] = 1.0
-#
-#        A_trafo[3,3] = 1.0
-#        A_trafo[4,7] = 1.0
-#        A_trafo[5,11] = 1.0
-               
-    if connection=='Ynd11':
-        z_a = Z_cc*1.0**2/S_n
-        z_b = Z_cc*1.0**2/S_n
-        z_c = Z_cc*1.0**2/S_n
-        U_1 = U_1n/np.sqrt(3)
-        U_2 = U_2n
-        Z_B = np.array([[z_a, 0.0, 0.0],
-                        [0.0, z_b, 0.0],
-                        [0.0, 0.0, z_c],])   
-
-        B = np.array([[ 1, 0, 0],
-                      [-1, 0, 0],
-                      [ 0, 1, 0],
-                      [ 0,-1, 0],
-                      [ 0, 0, 1],
-                      [ 0, 0,-1]])
-                          
-        N_a = np.array([[ 1/U_1,     0],
-                        [-1/U_1,     0],
-                        [     0, 1/U_2],
-                        [     0,-1/U_2]])           
-        N_row_a = np.hstack((N_a,np.zeros((4,4))))
-        N_row_b = np.hstack((np.zeros((4,2)),N_a,np.zeros((4,2))))
-        N_row_c = np.hstack((np.zeros((4,4)),N_a))
-        
-        N = np.vstack((N_row_a,N_row_b,N_row_c))
-
-        Y_1 = B @ np.linalg.inv(Z_B) @ B.T
-        Y_w = N @ Y_1 @ N.T
-        A_trafo = np.zeros((7,12))
-        A_trafo[0,0] = 1.0
-        A_trafo[1,4] = 1.0
-        A_trafo[2,8] = 1.0
-        
-        A_trafo[3,1] = 1.0
-        A_trafo[3,5] = 1.0
-        A_trafo[3,9] = 1.0
-        
-        A_trafo[4,2] = 1.0
-        A_trafo[4,11] = 1.0
-        A_trafo[5,3] = 1.0
-        A_trafo[5,6] = 1.0
-        A_trafo[6,7] = 1.0
-        A_trafo[6,10] = 1.0
-        
-        
-    Y_prim = A_trafo @ Y_w @ A_trafo.T
-    
-    return Y_prim
 
 
 class opendss(object):

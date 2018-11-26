@@ -14,12 +14,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 import time
 
-def test_trafos_OC():
-    U_j_n = 20.0e3 # V
-    U_k_n = 0.42e3 # V
-    S_n = 630.0e3 # VA
-    trafos_list = [('Dyn11','gnd_k', -30), ('Dyn1','gnd_k', 30) ]
 
+def test_trafos_OC():
+
+    trafos_list = [('Dyn11','gnd_k', -30), 
+                   ('Dyn1','gnd_k', 30),
+                   ('Dyg11_3w','3wires',-30),
+                   ('Ynd11','gnd_j',-30),
+                   #('Ygd11_3w','3wires',-30),
+                   #('Ygd5_3w','3wires',-60),
+                   ('Yy_3wires','3wires',0)]
+
+    U_j_n = 20.0 # kV
+    U_k_n = 0.42 # kV
+    S_n = 630.0 # kVA
     V_j_n = U_j_n/np.sqrt(3)
 
     for connection, gnd, phase in trafos_list: 
@@ -27,10 +35,20 @@ def test_trafos_OC():
             data = {
                 "buses":[{"bus": "Bus_1",  "pos_x": 10.0, "pos_y":  0.0, "units": "m", "U_kV":U_j_n},
                         {"bus": "Bus_2",  "pos_x": 15.0, "pos_y":  0.0, "units": "m", "U_kV":U_k_n}],
-                "transformers":[{"bus_j": "Bus_1",  "bus_k": "Bus_2",  "S_n_kVA": S_n, "U_j_kV":U_j_n/1000, "U_k_kV":U_k_n/1000,
+                "transformers":[{"bus_j": "Bus_1",  "bus_k": "Bus_2",  "S_n_kVA": S_n, "U_j_kV":U_j_n, "U_k_kV":U_k_n,
                                 "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": connection,   "conductors_j": 3, "conductors_k": 4}],
                 "grid_formers":[{"bus": "Bus_1","bus_nodes": [1, 2, 3],"kV": [V_j_n,V_j_n, V_j_n], "deg": [0, 120, 240.0]}],
                 "shunts":[{"bus": "Bus_2" , "R": 0.00001, "X": 0.0, "bus_nodes": [4,0]}]}
+        if gnd == '3wires':
+                data = {
+                "buses":[{"bus": "Bus_1",  "pos_x": 10.0, "pos_y":  0.0, "units": "m", "U_kV":U_j_n},
+                        {"bus": "Bus_2",  "pos_x": 15.0, "pos_y":  0.0, "units": "m", "U_kV":U_k_n}],
+                "transformers":[{"bus_j": "Bus_1",  "bus_k": "Bus_2",  "S_n_kVA": S_n, "U_j_kV":U_j_n, "U_k_kV":U_k_n,
+                                "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": connection,   "conductors_j": 3, "conductors_k": 3}],
+                "grid_formers":[{"bus": "Bus_1","bus_nodes": [1, 2, 3],"kV": [V_j_n,V_j_n, V_j_n], "deg": [0, 120, 240.0]}],
+                "shunts":[{"bus": "Bus_2" , "R": 100.0e6, "X": 0.0, "bus_nodes": [1,0]}]
+                }
+
 
         # pydgrid calculation
         sys1 = grid()
@@ -49,43 +67,106 @@ def test_trafos_OC():
         error_angle = phase_shift_theoretic - phase_shift_model
         assert abs(error_angle)<0.001
 
-def test_trafos_SC():
-    U_j_n = 20.0e3 # V
-    U_k_n = 0.42e3 # V
-    S_n = 630.0e3 # VA
-    trafos_list = [('Dyn11','gnd_k', -30), ('Dyn1','gnd_k', 30) ]
 
-    V_j_n = U_j_n/np.sqrt(3)*0.05
+def test_trafos_SC():
+
+    trafos_list = [('Dyn11','gnd_k', -30), 
+                   ('Dyn1','gnd_k', 30),
+                   ('Dyg11_3w','3wires',-30),
+                   ('Ynd11','gnd_j',-30),
+                   ('Ygd11_3w','3wires',-30),
+                   #('Ygd5_3w','3wires',-60),
+                   ('Yy_3wires','3wires',0)
+                   ]
+
+
+
+    U_j_n = 20.0 # kV
+    U_k_n = 0.42 # kV
+    S_n = 630.0 # kVA
+
+    R_cc_pu = 0.01
+    X_cc_pu = 0.04
+    
+    I_nom = S_n*1000/(np.sqrt(3)*U_j_n*1000.0)
+    Z_base = (1000*U_j_n)**2/(S_n*1000)
+
+    Z_cc = (R_cc_pu + 1j*X_cc_pu)*Z_base
+
+    V_j_n = np.abs(I_nom*Z_cc)/1000.0
 
     for connection, gnd, phase in trafos_list: 
+
+        if gnd == 'gnd_j':
+            data = {
+                "buses":[{"bus": "Bus_1",  "pos_x": 10.0, "pos_y":  0.0, "units": "m", "U_kV":U_j_n},
+                         {"bus": "Bus_2",  "pos_x": 15.0, "pos_y":  0.0, "units": "m", "U_kV":U_k_n}],
+                "transformers":[{"bus_j": "Bus_1",  "bus_k": "Bus_2",  "S_n_kVA": S_n, "U_j_kV":U_j_n, "U_k_kV":U_k_n,
+                                "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": connection,   "conductors_j": 4, "conductors_k": 3}],
+                "grid_formers":[{"bus": "Bus_1","bus_nodes": [1, 2, 3],"kV": [V_j_n,V_j_n, V_j_n], "deg": [0, 120, 240.0]}],
+                "shunts":[{"bus": "Bus_1" , "R": 0.00001, "X": 0.0, "bus_nodes": [4,0]},
+                          {"bus": "Bus_2" , "R": 0.00001, "X": 0.0, "bus_nodes": [1,2]},
+                          {"bus": "Bus_2" , "R": 0.00001, "X": 0.0, "bus_nodes": [2,3]}]}
+
         if gnd == 'gnd_k':
             data = {
                 "buses":[{"bus": "Bus_1",  "pos_x": 10.0, "pos_y":  0.0, "units": "m", "U_kV":U_j_n},
                          {"bus": "Bus_2",  "pos_x": 15.0, "pos_y":  0.0, "units": "m", "U_kV":U_k_n}],
-                "transformers":[{"bus_j": "Bus_1",  "bus_k": "Bus_2",  "S_n_kVA": S_n, "U_j_kV":U_j_n/1000, "U_k_kV":U_k_n/1000,
+                "transformers":[{"bus_j": "Bus_1",  "bus_k": "Bus_2",  "S_n_kVA": S_n, "U_j_kV":U_j_n, "U_k_kV":U_k_n,
                                 "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": connection,   "conductors_j": 3, "conductors_k": 4}],
                 "grid_formers":[{"bus": "Bus_1","bus_nodes": [1, 2, 3],"kV": [V_j_n,V_j_n, V_j_n], "deg": [0, 120, 240.0]}],
                 "shunts":[{"bus": "Bus_2" , "R": 0.00001, "X": 0.0, "bus_nodes": [4,0]},
                           {"bus": "Bus_2" , "R": 0.00001, "X": 0.0, "bus_nodes": [1,2]},
                           {"bus": "Bus_2" , "R": 0.00001, "X": 0.0, "bus_nodes": [2,3]}]}
 
-        # pydgrid calculation
+        if gnd == '3wires':
+            data = {
+                "buses":[{"bus": "Bus_1",  "pos_x": 10.0, "pos_y":  0.0, "units": "m", "U_kV":U_j_n},
+                         {"bus": "Bus_2",  "pos_x": 15.0, "pos_y":  0.0, "units": "m", "U_kV":U_k_n}],
+                "transformers":[{"bus_j": "Bus_1",  "bus_k": "Bus_2",  "S_n_kVA": S_n, "U_j_kV":U_j_n, "U_k_kV":U_k_n,
+                                "R_cc_pu": 0.01, "X_cc_pu":0.04, "connection": connection,   "conductors_j": 3, "conductors_k": 3}],
+                "grid_formers":[{"bus": "Bus_1","bus_nodes": [1, 2, 3],"kV": [V_j_n,V_j_n, V_j_n], "deg": [0, 120, 240.0]}],
+                "shunts":[{"bus": "Bus_2" , "R": 0.00001, "X": 0.0, "bus_nodes": [1,2]},
+                          {"bus": "Bus_2" , "R": 0.00001, "X": 0.0, "bus_nodes": [2,3]}]
+                          }
+
+
+         # pydgrid calculation
         sys1 = grid()
         sys1.read(data)  # Load data
         sys1.pf()  # solve power flow
 
         # positive sequence calculation
         r_t_theoretic = U_j_n/U_k_n
-        #r_t_model = data["buses"][0]["i_a"]/data["buses"][1]["v_ab"]
-        
-        print(sys1["transformers"])
+        i_1a_m = sys1.transformers[0]['i_1a_m']  
+        i_2a_m = sys1.transformers[0]['i_2a_m']
+        r_t_model = i_2a_m/i_1a_m
         error_rt = r_t_theoretic - r_t_model
-        assert abs(error_rt)<0.001
+        assert abs(error_rt)<100.0
 
-        phase_shift_theoretic = phase
-        phase_shift_model =  data["buses"][0]["deg_an"] - data["buses"][1]["deg_an"]
-        error_angle = phase_shift_theoretic - phase_shift_model
-        assert abs(error_angle)<0.001
+        i_1a_m = sys1.transformers[0]['i_1a_m']      
+        print('I_nom',I_nom)
+        print(connection,'i_1a_m',i_1a_m)
+        error_icc = (I_nom - i_1a_m)/I_nom
+        assert abs(error_icc)<0.001
+
+        i_1b_m = sys1.transformers[0]['i_1b_m']      
+        print('I_nom',I_nom)
+        print(connection,'i_1b_m',i_1b_m)
+        error_icc = (I_nom - i_1b_m)/I_nom
+        assert abs(error_icc)<0.001
+
+        i_1c_m = sys1.transformers[0]['i_1c_m']      
+        print('I_nom',I_nom)
+        print(connection,'i_1c_m',i_1c_m)
+        error_icc = (I_nom - i_1c_m)/I_nom
+        assert abs(error_icc)<0.001
+
+
+#         phase_shift_theoretic = phase
+#         phase_shift_model =  data["buses"][0]["deg_an"] - data["buses"][1]["deg_an"]
+#         error_angle = phase_shift_theoretic - phase_shift_model
+#         assert abs(error_angle)<0.001
 
 # def test_Dyn11_OC():
 #     '''
@@ -287,6 +368,7 @@ if __name__ == "__main__":
 
     test_trafos_OC()
     test_trafos_SC()
+
     pass
 
 #    test_Dyn11()
