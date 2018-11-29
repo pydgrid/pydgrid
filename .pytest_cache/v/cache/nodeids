@@ -6,6 +6,8 @@
   "tests/test_monitor.py::test_monitor1",
   "tests/test_mv_2bus.py::test_line_sequence_z",
   "tests/test_mv_2bus.py::test_pr_mt_h",
+  "tests/test_solar.py::test_sevilla",
+  "tests/test_solar.py::test_passau",
   "tests/test_transformers.py::test_trafos_OC",
   "tests/test_transformers.py::test_trafos_SC",
   "tests/test_unitary_voltage_drop.py::test_manufacturer_1",
