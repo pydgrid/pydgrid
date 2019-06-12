@@ -118,7 +118,7 @@ def pf_eval(params,
 
             for it in range(N_gfeeds):
                 
-                if gfeed_type[it] == 0:
+                if gfeed_type[it] == 0: # 'ideal'
                
                     V_abc   = V_unknown[gfeed_bus_nodes[it][0:3],0]
                     S_abc_gf = gfeed_powers[it,0:3]
@@ -131,7 +131,7 @@ def pf_eval(params,
                     I_known[gfeed_bus_nodes[it][0:3],0] += I_abc_gfeed
                     I_known[gfeed_bus_nodes[it][3],0] +=  -np.sum(I_abc_gfeed) + gfeed_i_abcn[it,3]
  
-                if gfeed_type[it] == 1:
+                if gfeed_type[it] == 1: # 'vsc' (to be done) 
                     
                     params[0].gfeed_bus_nodes
                     vsc_pf_eval(it,params)
@@ -153,7 +153,7 @@ def pf_eval(params,
         V_unknown_m = np.abs(V_unknown)
         V_unknown_0_m = np.abs(V_unknown_0)
         error = np.linalg.norm((V_unknown_m - V_unknown_0_m)/(V_unknown_0_m+1),np.inf)
-        if error <1.0e-6: break
+        if error <1.0e-8: break
         V_unknown_0 = V_unknown
         params[ig].V_node[0:N_v,:] = V_known 
         params[ig].V_node[N_v:,:]  = V_unknown 

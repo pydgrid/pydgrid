@@ -736,7 +736,7 @@ class grid(object):
         N_nodes_i = N_nodes-N_v_known
         A_i = A_sp[N_v_known:(N_v_known+N_nodes_i),:] 
 
-        self.A = A_sp
+        self.A = A_sp.toarray()
         self.nodes = nodes
         self.N_nodes = len(nodes)
         self.N_nodes_i = N_nodes_i
@@ -780,6 +780,7 @@ class grid(object):
         self.Y_primitive_sp = Y_primitive_sp
         self.A_sp = A_sp
         
+        self.YpAt = (self.Y_primitive_sp @ self.A_sp.T).toarray()
         self.N_nz_nodes = N_nz_nodes
  
         node_sorter = []
@@ -897,8 +898,8 @@ class grid(object):
                   ('N_nodes_v',np.int32),('N_nodes_i',np.int32),('iters',np.int32),('N_nz_nodes',np.int32),
                   ('L_indptr',np.int32,yii['L_indptr'].shape), ('L_indices',np.int32,yii['L_indices'].shape), ('L_data',np.complex128,yii['L_data'].shape),
                   ('U_indptr',np.int32,yii['U_indptr'].shape), ('U_indices',np.int32,yii['U_indices'].shape), ('U_data',np.complex128,yii['U_data'].shape),
-                  ('perm_r',np.int32, yii['perm_r'].shape),('perm_c',np.int32, yii['perm_c'].shape)
-                  ])    
+                  ('perm_r',np.int32, yii['perm_r'].shape),('perm_c',np.int32, yii['perm_c'].shape),
+                  ('YpAt',np.complex128,self.YpAt.shape)])    
 
 
         params_pf = np.rec.array([(
@@ -919,7 +920,8 @@ class grid(object):
                                 self.N_nodes_v,self.N_nodes_i,0,self.N_nz_nodes,
                                 yii['L_indptr'], yii['L_indices'], yii['L_data'],
                                 yii['U_indptr'], yii['U_indices'], yii['U_data'],    
-                                yii['perm_r'],yii['perm_c']
+                                yii['perm_r'],yii['perm_c'],
+                                self.YpAt
                                 )],
                                 dtype=dt_pf)
                   
@@ -1692,6 +1694,88 @@ class grid(object):
         line_index = 0
         bus_idx = 0
         
+        for line in lines:  # find all the lines going out from the bus_from to bus_to
+            if (line['bus_j'] == bus_from) & (line['bus_k'] == bus_to):
+                line_index_from += [(line_index,1)]
+            if (line['bus_k'] == bus_from) & (line['bus_j'] == bus_to):
+                line_index_from += [(line_index,-1)]
+            line_index += 1 
+        for bus in buses:   # get bus_from index
+            if bus['bus'] == bus_from:
+                bus_index  = bus_idx
+            bus_idx += 1 
+        
+        line_index_from
+        
+        I_a = 0.0
+        I_b = 0.0
+        I_c = 0.0
+        I_n = 0.0
+        for line_idx, direction in line_index_from:
+        
+            if direction ==  1:
+                I_a += lines[line_idx]['i_j_a_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_j_a']))
+                I_b += lines[line_idx]['i_j_b_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_j_b']))
+                I_c += lines[line_idx]['i_j_c_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_j_c']))                              
+                I_n += lines[line_idx]['i_j_n_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_j_n']))                                          
+            if direction == -1:
+                I_a += -lines[line_idx]['i_k_a_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_k_a']))
+                I_b += -lines[line_idx]['i_k_b_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_k_b']))
+                I_c += -lines[line_idx]['i_k_c_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_k_c']))                             
+                I_n += -lines[line_idx]['i_k_n_m']*np.exp(1j*np.deg2rad(lines[line_idx]['deg_k_n'])) 
+                
+        v_an = buses[bus_index]['v_an']
+        v_bn = buses[bus_index]['v_bn']        
+        v_cn = buses[bus_index]['v_cn']        
+        v_ng = buses[bus_index]['v_ng']          
+        
+        V_a = v_an*np.exp(1j*np.deg2rad(buses[bus_index]['deg_an']))        
+        V_b = v_bn*np.exp(1j*np.deg2rad(buses[bus_index]['deg_bn']))  
+        V_c = v_cn*np.exp(1j*np.deg2rad(buses[bus_index]['deg_cn']))  
+        V_n = v_ng*np.exp(1j*np.deg2rad(buses[bus_index]['deg_ng']))  
+        
+        v_abc = np.array([v_an,v_bn,v_cn])
+        v_avg = np.average(v_abc)
+        unb_v = float(np.max(np.abs(v_abc-v_avg))/v_avg)   
+        
+        i_abc = np.array([np.abs(I_a),np.abs(I_b),np.abs(I_c)])
+        i_avg = np.average(i_abc)
+        unb_i = float(np.max(np.abs(i_abc-i_avg))/i_avg)   
+        
+        S = V_a*np.conjugate(I_a) + V_b*np.conjugate(I_b) + V_c*np.conjugate(I_c) + V_n*np.conj(I_n) 
+        mon = namedtuple('monitor', ['I_a_m', 'I_b_m', 'I_c_m','S','P','Q'])
+        phasor = namedtuple('phasor', ['V_a', 'V_b', 'V_c','I_a', 'I_b', 'I_c'])
+        mon.I_a_m = abs(I_a)
+        mon.I_b_m = abs(I_b)
+        mon.I_c_m = abs(I_c)
+        mon.I_a = I_a
+        mon.I_b = I_b
+        mon.I_c = I_c
+        mon.I_n = I_n
+        mon.S_m = abs(S)
+        mon.S = S
+        mon.P = S.real
+        mon.Q = S.imag
+        mon.V_a = V_a
+        mon.V_b = V_b
+        mon.V_c = V_c
+        mon.V_n = V_n  
+        mon.unb_v = unb_v  
+        mon.unb_i = unb_i  
+        mon.pf = S.real/np.abs(S)
+        mon.U = v_avg*np.sqrt(3)
+        mon.I = i_avg
+        return mon
+
+
+    def phasors(self,bus_from,bus_to):
+
+        lines = self.lines
+        buses = self.buses 
+        line_index_from = []
+        line_index = 0
+        bus_idx = 0
+        
         for line in lines:
             if (line['bus_j'] == bus_from) & (line['bus_k'] == bus_to):
                 line_index_from += [(line_index,1)]
@@ -1739,29 +1823,18 @@ class grid(object):
         unb_i = float(np.max(np.abs(i_abc-i_avg))/i_avg)   
         
         S = V_a*np.conjugate(I_a) + V_b*np.conjugate(I_b) + V_c*np.conjugate(I_c) + V_n*np.conj(I_n) 
-        mon = namedtuple('monitor', ['I_a_m', 'I_b_m', 'I_c_m','S','P','Q'], verbose=False)
-        mon.I_a_m = abs(I_a)
-        mon.I_b_m = abs(I_b)
-        mon.I_c_m = abs(I_c)
-        mon.I_a = I_a
-        mon.I_b = I_b
-        mon.I_c = I_c
-        mon.I_n = I_n
-        mon.S_m = abs(S)
-        mon.S = S
-        mon.P = S.real
-        mon.Q = S.imag
-        mon.V_a = V_a
-        mon.V_b = V_b
-        mon.V_c = V_c
-        mon.V_n = V_n  
-        mon.unb_v = unb_v  
-        mon.unb_i = unb_i  
-        mon.pf = S.real/np.abs(S)
-        mon.U = v_avg*np.sqrt(3)
-        mon.I = i_avg
-        return mon
-        
+        phasor = namedtuple('phasor', ['V_a', 'V_b', 'V_c','I_a', 'I_b', 'I_c'])
+        phasor = namedtuple('phasor', ['V_a', 'V_b', 'V_c','I_a', 'I_b', 'I_c'])
+        phasor.V_a = V_a
+        phasor.V_b = V_b
+        phasor.V_c = V_c
+        phasor.I_a = I_a
+        phasor.I_b = I_b
+        phasor.I_c = I_c
+        return phasor
+
+
+
 def LUstruct(A_sp):
     LU_sp = sla.splu(sparse.csc_matrix(A_sp))
     L_sp = LU_sp.L

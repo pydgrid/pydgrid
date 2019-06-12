@@ -31,7 +31,7 @@ New Vsource.source
 ~ Daily=
 ~ Duty=
 ~ spectrum=defaultvsource
-~ basefreq=60
+~ basefreq=50
 ~ enabled=true
 ~ like=
 
@@ -62,14 +62,14 @@ New Line.line_b1b2
 ~ EarthModel=Deri
 ~ cncables=
 ~ tscables=
-~ B1=130.5777
-~ B0=130.5777
+~ B1=108.8147
+~ B0=108.8147
 ~ normamps=508
 ~ emergamps=600
 ~ faultrate=0.1
 ~ pctperm=20
 ~ repair=3
-~ basefreq=60
+~ basefreq=50
 ~ enabled=true
 ~ like=
 
@@ -114,7 +114,7 @@ New Load.load_b2
 ~ puXharm=0
 ~ XRharm=6
 ~ spectrum=defaultload
-~ basefreq=60
+~ basefreq=50
 ~ enabled=true
 ~ like=
 
@@ -242,7 +242,7 @@ New LineCode.ug_600_al_xlpe_35kv
 ~ rmatrix="0.41796667 0.15136667 0.15136667 |0.15136667 0.41796667 0.15136667 |0.15136667 0.15136667 0.41796667 |"
 ~ xmatrix="0.27613333 -0.07446667 -0.07446667 |-0.07446667 0.27613333 -0.07446667 |-0.07446667 -0.07446667 0.27613333 |"
 ~ cmatrix="346.36800000 0.00000000 0.00000000 |0.00000000 346.36800000 0.00000000 |0.00000000 0.00000000 346.36800000 |"
-~ baseFreq=60
+~ baseFreq=50
 ~ normamps=508
 ~ emergamps=600
 ~ faultrate=0.1
@@ -261,7 +261,7 @@ Set Random=Gaussian
 Set hour=0
 Set sec=0
 Set year=0
-Set frequency=60
+Set frequency=50
 Set stepsize=0.001
 Set number=100
 Set circuit=mv
@@ -293,7 +293,7 @@ Set voltagebases=(     20.00)
 Set algorithm=normal
 Set Trapezoidal=no
 Set genmult=1
-Set Basefrequency=60
+Set Basefrequency=50
 Set harmonics=(ALL)
 Set maxcontroliter=10
 
