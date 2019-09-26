@@ -1842,9 +1842,9 @@ def LUstruct(A_sp):
 
     N = LU_sp.shape[0]
     Pr = sparse.lil_matrix((N, N))
-    Pr[LU_sp.perm_r, np.arange(N)] = 1
+    Pr[LU_sp.perm_r.astype(np.int64), np.arange(N)] = 1
     Pc = sparse.lil_matrix((N, N))
-    Pc[np.arange(N), LU_sp.perm_c] = 1
+    Pc[np.arange(N), LU_sp.perm_c.astype(np.int64)] = 1
     
     L_csr = sparse.csr_matrix(L_sp)
     U_csr = sparse.csr_matrix(U_sp)
