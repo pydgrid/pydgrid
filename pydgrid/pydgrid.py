@@ -9,7 +9,6 @@ import numpy as np
 import os
 import numba
 import string
-numba.caching.config.CACHE_DIR = '/home/jmmauricio/Documents'
 import multiprocessing
 from collections import namedtuple
 import json
