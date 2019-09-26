@@ -267,7 +267,7 @@ def man2param_1(man_electric, man_thermal):
     return params 
   
 
-def man2param(man_data, validation=False):
+def man2param(man_data, validation=False, method='lsq1'):
     '''
     
     Input
@@ -345,9 +345,18 @@ def man2param(man_data, validation=False):
    # x_i = np.linalg.solve(A, b_i)
    # x_d = np.linalg.solve(A, b_d)
 
-    x_i = np.linalg.lstsq(A, b_i, rcond=None)[0]
-    x_d = np.linalg.lstsq(A, b_d, rcond=None)[0]
+    if method == 'lsq1':
+        x_i = np.linalg.lstsq(A, b_i, rcond=None)[0]
+        x_d = np.linalg.lstsq(A, b_d, rcond=None)[0]
 
+    if method == 'lsq2':
+        b = np.hstack((b_i,b_d))
+        x = np.linalg.lstsq(A, b, rcond=None)[0]
+        print(b)
+        print(x)
+        x_i = x[0:5,0] 
+        x_d = x[0:5,1]
+        
     params = dict(
     a_i = x_i[0],
     b_i = x_i[1],
