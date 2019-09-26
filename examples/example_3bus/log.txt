@@ -1,3 +1,7 @@
 0 transformer to read 
+<<<<<<< HEAD
 Transformers read in: 0.000 sYs calc 0.012
+=======
+Transformers read in: 0.000 sYs calc 0.006
+>>>>>>> 4aac99a6bc921d369bf302e7dd31a204cfc5a423
 inv_Y_ii 0.000

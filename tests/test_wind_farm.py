@@ -78,8 +78,8 @@ def test_wind_farm_ss():
     grid_1.pf()  # solve power flow
     mon = grid_1.monitor(bus_from='POI',bus_to='GRID')                   
 
-    assert abs(mon.P-5910895.785662318)<0.0001     # from case resolved in november 2018
-    assert abs(mon.Q-(-490329.45241958584))<0.0001 # from case resolved in november 2018
+    assert abs(mon.P-5910895.785662318)<1     # from case resolved in november 2018
+    assert abs(mon.Q-(-490329.45241958584))<10 # from case resolved in november 2018
 
 
 if __name__ == "__main__":
