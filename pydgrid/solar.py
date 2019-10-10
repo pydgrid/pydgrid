@@ -38,8 +38,13 @@ class pv_gen(object):
         self.Panel_area = 10.0
         self.System_efficiency = 0.1
 
+        script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+        rel_path = "2091/data.txt"
+
+
+
         #df_ClearnessIndexTPM = pd.read_csv(os.path.join(os.path.dirname(__file__), "ClearnessIndexTPM.csv"))
-        df_ClearnessIndexTPM = pd.read_csv("ClearnessIndexTPM.csv")
+        df_ClearnessIndexTPM = pd.read_csv(os.path.join(script_dir, 'ClearnessIndexTPM.csv'))
         self.df_ClearnessIndexTPM = df_ClearnessIndexTPM.set_index('Unnamed: 0')
         self.dKArray = np.array(self.df_ClearnessIndexTPM) 
 
