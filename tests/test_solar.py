@@ -54,3 +54,8 @@ def test_passau():
 
 
   
+if __name__ == "__main__":
+    test_sevilla()
+    test_passau()
+    
+     

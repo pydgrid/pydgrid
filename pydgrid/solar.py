@@ -38,7 +38,8 @@ class pv_gen(object):
         self.Panel_area = 10.0
         self.System_efficiency = 0.1
 
-        df_ClearnessIndexTPM = pd.read_csv(os.path.join(os.path.dirname(__file__), "ClearnessIndexTPM.csv"))
+        #df_ClearnessIndexTPM = pd.read_csv(os.path.join(os.path.dirname(__file__), "ClearnessIndexTPM.csv"))
+        df_ClearnessIndexTPM = pd.read_csv("ClearnessIndexTPM.csv")
         self.df_ClearnessIndexTPM = df_ClearnessIndexTPM.set_index('Unnamed: 0')
         self.dKArray = np.array(self.df_ClearnessIndexTPM) 
 
@@ -321,11 +322,11 @@ if __name__ == "__main__":
 #    np.savez_compressed('clearness_outputs_2', clearness.T, delimiter=',')
 #    
 #    #
-    import matplotlib.pyplot as plt
-#    
-    fig, ax = plt.subplots()
-    ax.plot(drange[1:],pv.radiation_on_panel_clear_sky)
-    ax.plot(drange[1:],pv.radiation_on_panel)
+#    import matplotlib.pyplot as plt
+##    
+#    fig, ax = plt.subplots()
+#    ax.plot(drange[1:],pv.radiation_on_panel_clear_sky)
+#    ax.plot(drange[1:],pv.radiation_on_panel)
 #    ax.plot(drange[1:],radiations_on_panel*clearness_indexes)
 #    fig.autofmt_xdate()
 #    ax.grid(True)
