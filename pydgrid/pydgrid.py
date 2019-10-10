@@ -80,7 +80,7 @@ class grid(object):
         flog = open('log.txt','w')
         
         # power flow options
-        self.max_iter = 20
+        self.max_iter = 100
         
         # run options
         self.N_steps = 1000
