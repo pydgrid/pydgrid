@@ -44,7 +44,7 @@ class pv_gen(object):
          #df_ClearnessIndexTPM = pd.read_csv(os.path.join(os.path.dirname(__file__), "ClearnessIndexTPM.csv"))
         path = os.path.join(os.getcwd(), 'ClearnessIndexTPM.csv')
         print('path = ' + path)
-        df_ClearnessIndexTPM = pd.read_csv(path)
+        df_ClearnessIndexTPM = pd.read_csv('ClearnessIndexTPM.csv')
         self.df_ClearnessIndexTPM = df_ClearnessIndexTPM.set_index('Unnamed: 0')
         self.dKArray = np.array(self.df_ClearnessIndexTPM) 
         
