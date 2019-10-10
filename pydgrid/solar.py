@@ -41,10 +41,10 @@ class pv_gen(object):
         script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
         print(script_dir)
          #df_ClearnessIndexTPM = pd.read_csv(os.path.join(os.path.dirname(__file__), "ClearnessIndexTPM.csv"))
-        df_ClearnessIndexTPM = pd.read_csv(os.path.join(script_dir, 'ClearnessIndexTPM.csv'))
+        df_ClearnessIndexTPM = pd.read_csv(os.path.normcase(os.path.join(script_dir, 'ClearnessIndexTPM.csv')))
         self.df_ClearnessIndexTPM = df_ClearnessIndexTPM.set_index('Unnamed: 0')
         self.dKArray = np.array(self.df_ClearnessIndexTPM) 
-
+        print('os.getcwd() = ' + os.getcwd())
 
 
     
