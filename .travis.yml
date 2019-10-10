@@ -16,6 +16,7 @@ install:
   - pip install matplotlib  # Required
   - pip install numba  # Required
   - pip install bokeh  # Required
+  - pip install pandas #
   - pip install .  # Test installation correctness
 
 
