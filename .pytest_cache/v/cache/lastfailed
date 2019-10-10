@@ -1,5 +1,7 @@
 {
   "tests/test_kersting_ex6p1.py::test_solver2": true,
+  "tests/test_solar.py::test_passau": true,
+  "tests/test_solar.py::test_sevilla": true,
   "tests/test_transformers.py::test_Ygd11_3w_OC": true,
   "tests/test_transformers.py::test_Ygd11_3w_SC": true
 }
