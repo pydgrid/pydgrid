@@ -277,11 +277,14 @@ class grid(object):
                     S_va = -1000.0*load['kVA']
                     phi = np.arccos(load['pf'])
                     pq_1pn_list += [[S_va*np.exp(1j*phi*np.sign(load['pf']))]]
-                if 'kW' in load:
+                if ('kW' in load) and ('pf' in load):
                     S_va = -1000.0*load['kW']/load['pf']
                     phi = np.arccos(load['pf'])
                     pq_1pn_list += [[S_va*np.exp(1j*phi*np.sign(load['pf']))]]
-        
+            
+                if ('kW' in load) and ('kvar' in load):
+                    pq_1pn_list += [[-1000.0*(load['kW']+1j*load['kvar'])]]
+
             if load['type'] == '1P':
                 pq_1p_int_list += [[it_node_i ]]
                 it_node_i += 1
