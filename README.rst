@@ -16,7 +16,9 @@ pydgrid: Python Distribution Grid simulator
    
 .. image:: https://readthedocs.org/projects/pydgrid/badge/?version=latest
     :target: https://pydgrid.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status   
+    :alt: Documentation Status  
+    
+[![Build Status](https://travis-ci.org/pydgrid/pydgrid.svg?branch=master)](https://travis-ci.org/pydgrid/pydgrid)
 
 .. |license| image:: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
    :target: https://github.com/pydgrid/pydgrid/raw/master/COPYING
