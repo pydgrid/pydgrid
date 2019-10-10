@@ -1,7 +1,7 @@
 numba
 numpy
-pydgrid
-scipy
+pydgrid==0.5.2
+scipy 
 pandas
 matplotlib
 bokeh
