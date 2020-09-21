@@ -559,7 +559,7 @@ def vsc_pf_eval(it,params_pf):
     A_a0[2,2] = alpha/3.0
     
     # Fortescue
-    v_zpn = A_a0 @ v_abc 
+    v_zpn = A_a0 @ np.ascontiguousarray(v_abc) 
     v_z = v_zpn[0,0]
     v_p = v_zpn[1,0]
     v_n = v_zpn[2,0]

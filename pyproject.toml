@@ -1,0 +1,11 @@
+[build-system]
+requires = ["flit_core >=2,<3"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "pydgrid"
+author = "Juan Manuel Mauricio"
+author-email = "jmmauricio@us.es"
+home-page = "https://personal.us.es/jmmauricio/"
+classifiers = ["License :: OSI Approved :: MIT License"]
+
